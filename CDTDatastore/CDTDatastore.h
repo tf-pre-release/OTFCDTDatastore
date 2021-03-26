@@ -57,12 +57,6 @@ extern NSString * __nonnull const CDTDatastoreChangeNotification;
  * @see CDTDocumentRevision
  *
  */
-
-@protocol DatastoreDelegate <NSObject>
-@optional
-- (void)didRecieveResponseWith:(NSError*_Nullable)error datastore: (CDTDatastore*_Nullable)store;
-@end
-
 @interface CDTDatastore : NSObject
 
 @property (nonnull, nonatomic, strong, readonly) TD_Database *database;
@@ -70,7 +64,6 @@ extern NSString * __nonnull const CDTDatastoreChangeNotification;
 + (nonnull NSString *)versionString;
 
 @property (nonnull, strong) NSString *directory;
-@property (nonatomic, weak) id <DatastoreDelegate> _Nullable delegate;
 
 
 

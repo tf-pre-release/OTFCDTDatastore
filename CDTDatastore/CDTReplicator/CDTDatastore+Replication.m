@@ -49,6 +49,8 @@
 
 - (void)replicatorDidError:(CDTReplicator *)replicator info:(NSError *)info {
     self.error = info;
+//    self.completionHandler(self.error);
+//    self.instance = nil;
 }
 
 @end
@@ -166,15 +168,11 @@
                 completionHandler:(void (^ __nonnull)(NSError *__nullable))completionHandler
 {
     NSError* error = nil;
-    CDTDatastoreReplicationDelegate* delegate = [[CDTDatastoreReplicationDelegate alloc] initWithCompletionHandler:^(NSError * err) {
- //       [self removeOneTask];
-        [self.delegate didRecieveResponseWith:err datastore:self];
-    }];
+    CDTDatastoreReplicationDelegate* delegate = [[CDTDatastoreReplicationDelegate alloc] initWithCompletionHandler:completionHandler];
 
     CDTReplicator* replicator = [self pullReplicationSource:source
                                                       username:username password:password withDelegate:delegate error:&error];
-    if (!error) { 
-//        [self addNewTask];
+    if (!error) {
         [replicator startWithError:&error];
     }
 

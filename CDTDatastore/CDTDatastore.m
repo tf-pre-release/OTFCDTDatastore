@@ -55,7 +55,6 @@ NSString *const CDTDatastoreChangeNotification = @"CDTDatastoreChangeNotificatio
 
 @synthesize database = _database;
 @synthesize directory = _directory;
-@synthesize delegate;
 
 + (NSString *)versionString { return @CLOUDANT_SYNC_VERSION; }
 
