@@ -249,11 +249,6 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
                                                  name: TD_DatabaseWillBeDeletedNotification
                                                object: _db];
 
-    [self performSelector:@selector(checkIfNotCanceledThenStart)
-                 onThread:_replicatorThread
-               withObject:nil
-            waitUntilDone:NO];
-
 }
 
 -(void) checkIfNotCanceledThenStart
