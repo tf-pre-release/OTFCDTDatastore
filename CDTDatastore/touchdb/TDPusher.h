@@ -32,7 +32,30 @@
 @property BOOL createTarget;
 
 /** Block called to filter document revisions that are pushed to the remote server. */
-@property (nonatomic, copy) TD_FilterBlock filter;
+@property (nonatomic, copy) TD_FilterBlock _Nullable filter;
+
+/** Completion Block to return results. It returns two values Response and Error. Both are optional objects and can have nil value.*/
+typedef void(^ __nonnull ReplicatorTestCompletionHandler)(id __nullable response, NSError* __nullable error);
+
+
+/**
+ This function is created to be used in Test Cases.
+ It simply test the _revs_diff API call
+ and return it's response in completion block.
+
+ @param completionHandler A completion handler to return the response we got from the API call.
+*/
+- (void)testRevsDiff: (ReplicatorTestCompletionHandler) completionHandler;
+
+
+/**
+ This function is created to be used in Test Cases.
+ It simply test the _bulk_docs API call
+ and return it's response in completion block.
+
+ @param completionHandler A completion handler to return the response we got from the API call.
+ */
+-(void)testUploadBulkDocs: (ReplicatorTestCompletionHandler) completionHandler;
 
 /** Completion Block to return results. It returns two values Response and Error. Both are optional objects and can have nil value.*/
 typedef void(^ __nonnull ReplicatorTestCompletionHandler)(id __nullable response, NSError* __nullable error);

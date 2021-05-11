@@ -248,7 +248,6 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(databaseWasDeleted:)
                                                  name: TD_DatabaseWillBeDeletedNotification
                                                object: _db];
-
 }
 
 -(void) checkIfNotCanceledThenStart
@@ -755,11 +754,9 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
 - (void)testEndPointLocal:(ReplicatorTestCompletionHandler) completionHandler {
     NSString* checkpointID = self.remoteCheckpointDocID;
     [self asyncTaskStarted];
-    TDRemoteJSONRequest* request = [self
-                                    sendAsyncRequest:@"GET"
-                                    path:[@"_local/" stringByAppendingString:checkpointID]
-                                    body:nil
-                                    onCompletion:^(id response, NSError* error) {
+    [self sendAsyncRequest:@"GET" path:[@"_local/" stringByAppendingString:checkpointID]
+                      body:nil
+              onCompletion:^(id response, NSError* error) {
         // Got the response:
         completionHandler(response, error);
         [self asyncTasksFinished:1];
