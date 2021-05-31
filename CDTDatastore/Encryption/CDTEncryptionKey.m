@@ -91,7 +91,7 @@
 }
 
 #pragma mark - Public class methods
-+ (instancetype)encryptionKeyWithData:(NSData *)data
++ (instancetype)encryptionKeyWithData:(nullable NSData *)data
 {
     return [[[self class] alloc] initWithData:data];
 }

@@ -60,7 +60,7 @@ extern NSString * __nonnull const CDTDatastoreChangeNotification;
  */
 @interface CDTDatastore : NSObject
 
-@property (nonnull, nonatomic, strong, readonly) TD_Database *database;
+@property (nullable, nonatomic, strong, readonly) TD_Database *database;
 
 + (nonnull NSString *)versionString;
 

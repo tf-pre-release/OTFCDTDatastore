@@ -205,13 +205,12 @@ int runningProcess;
 
 -(void)endBackgroundTaskIfAny {
     if (self.backgroundTaskIdentifier != nil) {
-        [[UIApplication sharedApplication] endBackgroundTask: self.backgroundTaskIdentifier];
-        self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+        [[UIApplication sharedApplication] endBackgroundTask: *(self.backgroundTaskIdentifier)];
     }
 }
 
 -(void)beginBackgroundTask {
-    self.backgroundTaskIdentifier =
+    *(self.backgroundTaskIdentifier) =
     [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
         [self endBackgroundTaskIfAny];
     }];
@@ -239,6 +238,7 @@ int runningProcess;
         [self endBackgroundTaskIfAny];
     }];
 }
+
 
 ///  This function will help to set Encryption MODE. Set a mode according to your need.
 /// @param mode - It's a ENUM value that users can set from predefined enum cases.

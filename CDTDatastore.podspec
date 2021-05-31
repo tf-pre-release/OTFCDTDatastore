@@ -32,7 +32,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.default_subspec = 'standard'
-  s.dependency 'OTFToolBox/Core'
 
   ['standard', 'SQLCipher'].each do |subspec_label|
       s.subspec subspec_label do |sp|
@@ -70,6 +69,7 @@ Pod::Spec.new do |s|
     sp.dependency 'CDTDatastore/no-arc'
     sp.dependency 'CocoaLumberjack', '~> 2.0'
     sp.dependency 'GoogleToolboxForMac/NSData+zlib', '~> 2.1.1'
+    sp.dependency 'OTFToolBox/Core', '~> 0.0.1'
   end
 
   s.subspec 'no-arc' do |sp|

@@ -30,7 +30,7 @@ extern NSString *__nonnull const CDTDatastoreErrorDomain;
  */
 @interface CDTDatastoreManager : NSObject
 
-@property (nonnull, nonatomic, strong, readonly) TD_DatabaseManager *manager;
+@property (nullable, nonatomic, strong, readonly) TD_DatabaseManager *manager;
 
 /**
  Initialises the datastore manager with a directory where the files

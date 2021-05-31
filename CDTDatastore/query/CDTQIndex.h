@@ -118,7 +118,7 @@ extern NSString *const kCDTQTextType __deprecated;
  *
  * @return the JSON representation of the index settings
  */
-- (NSString *)settingsAsJSON;
+- (nullable NSString *)settingsAsJSON;
 
 @end
 

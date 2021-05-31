@@ -1,4 +1,6 @@
-source 'https://github.com/HippocratesTech/OTFCocoapodSpecs.git'
+
+source 'https://github.com/CocoaPods/Specs'
+source 'https://github.com/HippocratesTech/OTFCocoapodSpecs'
 
 use_frameworks!
 

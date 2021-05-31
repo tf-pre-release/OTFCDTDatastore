@@ -175,7 +175,7 @@ static NSString *const kCDTQTextDefaultTokenizer = @"simple";
     return [self.indexSettings isEqualToDictionary:settingsDict];
 }
 
--(NSString *) settingsAsJSON {
+-(nullable NSString *) settingsAsJSON {
     if (!self.indexSettings) {
         CDTLogWarn(CDTQ_LOG_CONTEXT, @"Index settings are nil.  Nothing to return.");
         return nil;

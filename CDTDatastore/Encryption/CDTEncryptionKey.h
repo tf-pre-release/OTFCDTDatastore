@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isEqualToEncryptionKey:(CDTEncryptionKey *)encryptionKey;
 
-+ (nullable instancetype)encryptionKeyWithData:(NSData *)data;
++ (nullable instancetype)encryptionKeyWithData:(nullable NSData *)data;
 
 @end
 NS_ASSUME_NONNULL_END
