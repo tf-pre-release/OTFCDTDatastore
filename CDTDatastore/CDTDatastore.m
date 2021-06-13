@@ -547,7 +547,7 @@ int runningProcess;
 - (NSArray *)getRevisionHistory:(CDTDocumentRevision *)revision
 {
     if (![self ensureDatabaseOpen]) {
-        return nil;
+        return [NSArray array];
     }
 
     NSMutableArray *result = [NSMutableArray array];
