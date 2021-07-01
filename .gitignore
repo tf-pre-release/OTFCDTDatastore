@@ -21,4 +21,4 @@ build
 #CocoaPods
 Pods
 Podfile.lock
-!.*
+.!*
