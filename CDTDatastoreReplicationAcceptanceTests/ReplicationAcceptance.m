@@ -278,7 +278,7 @@
     if([self.iamApiKey length] != 0) {
         [self.datastore pullReplicationWithSource:source IAMAPIKey:self.iamApiKey completionHandler:completionHandler];
     } else {
-        [self.datastore pullReplicationWithSource:source username:nil password:nil completionHandler:completionHandler];
+        [self.datastore pullReplicationWithSource:source replicator:nil username:nil password:nil completionHandler:completionHandler];
     }
 }
 
@@ -288,7 +288,7 @@
     if([self.iamApiKey length] != 0) {
         [self.datastore pullReplicationWithSource:source IAMAPIKey:self.iamApiKey completionHandler:completionHandler];
     } else {
-        [self.datastore pullReplicationWithSource:source username:nil password:nil completionHandler:completionHandler];
+        [self.datastore pullReplicationWithSource:source replicator:nil username:nil password:nil completionHandler:completionHandler];
     }
 }
 
@@ -298,7 +298,7 @@
     if([self.iamApiKey length] != 0) {
         [self.datastore pushReplicationWithTarget:target IAMAPIKey:self.iamApiKey completionHandler:completionHandler];
     } else {
-        [self.datastore pushReplicationWithTarget:target username:nil password:nil completionHandler:completionHandler];
+        [self.datastore pushReplicationWithTarget:target replicator:nil username:nil password:nil completionHandler:completionHandler];
     }
 }
 

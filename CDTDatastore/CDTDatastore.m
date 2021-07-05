@@ -70,7 +70,7 @@ int runningProcess;
 // Public init method defined in CDTDatastore+EncryptionKey.h
 - (instancetype)initWithManager:(CDTDatastoreManager *)manager
                        database:(TD_Database *)database
-          encryptionKeyProvider:(id<CDTEncryptionKeyProvider>)provider
+          encryptionKeyProvider:(nullable id<CDTEncryptionKeyProvider>)provider
                       directory: (NSString *)directory
 {
     NSParameterAssert(manager);

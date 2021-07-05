@@ -47,12 +47,11 @@
 {
     NSString *path = [[self createTemporaryDirectoryAndReturnPath]
         stringByAppendingPathComponent:@"datastoreEncryptionTests_exception"];
-
     TD_Database *db = [[TD_Database alloc] initWithPath:path];
-
     XCTAssertThrows([[CDTDatastore alloc] initWithManager:(CDTDatastoreManager *)@"manager"
                                                  database:db
-                                    encryptionKeyProvider:nil],
+                                    encryptionKeyProvider:nil
+                                                directory:path],
                     @"The key is mandatory. Inform a nil provider.");
 }
 
@@ -72,10 +71,11 @@
     CDTHelperFixedKeyProvider *fixedProvider = [CDTHelperFixedKeyProvider provider];
 
     XCTAssertNil(
-        [[CDTDatastore alloc] initWithManager:(CDTDatastoreManager *)@"manager"
-                                     database:db
-                        encryptionKeyProvider:fixedProvider],
-        @"Non-encrypted db can not be opened with a key, so datastore can not initialised");
+                 [[CDTDatastore alloc] initWithManager:(CDTDatastoreManager *)@"manager"
+                                              database:db
+                                 encryptionKeyProvider:fixedProvider
+                                             directory:path],
+                 @"Non-encrypted db can not be opened with a key, so datastore can not initialised");
 }
 
 - (void)testInitReturnsNilIfEncryptionKeyProviderReturnsAValueAndDBIsEncrypted
@@ -91,7 +91,8 @@
 
     XCTAssertNil([[CDTDatastore alloc] initWithManager:(CDTDatastoreManager *)@"manager"
                                               database:db
-                                 encryptionKeyProvider:fixedProvider],
+                                 encryptionKeyProvider:fixedProvider
+                                             directory:path],
                  @"Although the key provided is the key used to encrypt the database, the db can "
                  @"not be opened without the encryption libary");
 }
@@ -109,7 +110,8 @@
 
     XCTAssertNil([[CDTDatastore alloc] initWithManager:(CDTDatastoreManager *)@"manager"
                                               database:db
-                                 encryptionKeyProvider:fixedProvider],
+                                 encryptionKeyProvider:fixedProvider
+                                             directory:path],
                  @"An encrypted db can not be opened with or without key because there is not an "
                  @"encryption library available");
 }
@@ -126,7 +128,8 @@
     // Init without provider
     XCTAssertThrows([[CDTDatastore alloc] initWithManager:(CDTDatastoreManager *)@"manager"
                                                  database:db
-                                    encryptionKeyProvider:nil],
+                                    encryptionKeyProvider:nil
+                                                directory:path],
                     @"The key is mandatory. Inform a nil provider to not cipher the database");
 }
 
@@ -143,10 +146,11 @@
     CDTHelperFixedKeyProvider *fixedProvider = [CDTHelperFixedKeyProvider provider];
 
     XCTAssertNil(
-        [[CDTDatastore alloc] initWithManager:(CDTDatastoreManager *)@"manager"
-                                     database:db
-                        encryptionKeyProvider:fixedProvider],
-        @"Non-encrypted db can not be opened with a key, so datastore can not initialised");
+                 [[CDTDatastore alloc] initWithManager:(CDTDatastoreManager *)@"manager"
+                                              database:db
+                                 encryptionKeyProvider:fixedProvider
+                                             directory:path],
+                 @"Non-encrypted db can not be opened with a key, so datastore can not initialised");
 }
 
 #if defined ENCRYPT_DATABASE
