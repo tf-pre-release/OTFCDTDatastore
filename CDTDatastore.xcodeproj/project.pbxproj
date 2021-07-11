@@ -7,16 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00EDB86B4CD8031B88582037 /* Pods_base_CDTDatastore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BC830E330608A270BB71BAA /* Pods_base_CDTDatastore.framework */; };
 		14B068C526551CF1003B5E9C /* TestFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B068C426551CF1003B5E9C /* TestFile.swift */; };
-		177BC467264E073EFCF4868D /* Pods_base_tests_CDTDatastoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1DEC16DEAB3B39222C16E95 /* Pods_base_tests_CDTDatastoreTests.framework */; };
+		210F239EE83CDF4A10305BE0 /* Pods_base_tests_CDTDatastoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C452DACCD6B114F7D6E01E9D /* Pods_base_tests_CDTDatastoreTests.framework */; };
 		2E25F68D1F4C6DB900177ABA /* OHHTTPStubsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E25F68C1F4C6DB900177ABA /* OHHTTPStubsHelper.m */; };
 		2E25F68E1F4C6E3D00177ABA /* OHHTTPStubsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E25F68C1F4C6DB900177ABA /* OHHTTPStubsHelper.m */; };
-		32E743E32E63B171E84274D1 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D4DDF26A2FEBAF506AAC9B9 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTests.framework */; };
 		3567D22135DB02790BD939BA /* CDTDatastore+Replication.h in Headers */ = {isa = PBXBuildFile; fileRef = 3567D9F9C835096137DC8EF2 /* CDTDatastore+Replication.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3567D43713667ABFE05C08F2 /* CDTDatastore+Replication.h in Headers */ = {isa = PBXBuildFile; fileRef = 3567D9F9C835096137DC8EF2 /* CDTDatastore+Replication.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3567DA2E9930DA1BFABB6617 /* CDTDatastore+Replication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3567D4C1BDD33D0148CA9FF2 /* CDTDatastore+Replication.m */; };
 		3567DB3346B03BED878BC14F /* CDTDatastore+Replication.m in Sources */ = {isa = PBXBuildFile; fileRef = 3567D4C1BDD33D0148CA9FF2 /* CDTDatastore+Replication.m */; };
+		3FFF6742C1F9CEFB75B3AA44 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTestsOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B41C82DBF7153021EBCBB7 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTestsOSX.framework */; };
+		814F02C32CA38A8EBD34AFCA /* Pods_base_CDTDatastoreOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA46B3C9FFB0A67B37ECA01E /* Pods_base_CDTDatastoreOSX.framework */; };
+		8A62AAB07BC67D4FE81EECA3 /* Pods_base_CDTDatastore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A7E692F263C8AD517CDC15C /* Pods_base_CDTDatastore.framework */; };
+		8DFE2F5C0AC055850772D6B5 /* Pods_base_tests_CDTDatastoreTestsOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06B5B3CEAC5BCE86B479C2E1 /* Pods_base_tests_CDTDatastoreTestsOSX.framework */; };
 		8E19D00920A9C6BC0012F346 /* CDTQLifecycleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E19D00820A9C6BC0012F346 /* CDTQLifecycleTests.m */; };
 		8E19D00B20A9D0BB0012F346 /* CDTQLifecycleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E19D00820A9C6BC0012F346 /* CDTQLifecycleTests.m */; };
 		8E2DDDF81D1BEFBE00673564 /* CDTReplay429Interceptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E2DDDF61D1BEFBE00673564 /* CDTReplay429Interceptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -39,7 +41,6 @@
 		8E705A981F0E348F00FF0219 /* CDTIAMSessionCookieInterceptorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E705A961F0E325200FF0219 /* CDTIAMSessionCookieInterceptorTests.m */; };
 		8EFE944220E3A58F00B1C9F5 /* CDTLifecycleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EFE944120E3A58F00B1C9F5 /* CDTLifecycleTests.m */; };
 		8EFE944320E3A58F00B1C9F5 /* CDTLifecycleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EFE944120E3A58F00B1C9F5 /* CDTLifecycleTests.m */; };
-		90BE0CBF6ECA68CE8EA7D0F7 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTestsOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCFBE7A0842C507FB588F2D4 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTestsOSX.framework */; };
 		980F22711CB818260075A843 /* CDTQFilterFieldsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F77E0B1C44044000515CC3 /* CDTQFilterFieldsTest.m */; };
 		980F22721CB818260075A843 /* CDTQIndexCreatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F77E0C1C44044000515CC3 /* CDTQIndexCreatorTests.m */; };
 		980F22731CB818260075A843 /* CDTQIndexManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F77E0D1C44044000515CC3 /* CDTQIndexManagerTests.m */; };
@@ -677,6 +678,7 @@
 		98F77F0A1C45163400515CC3 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F77F091C45163300515CC3 /* libsqlite3.tbd */; };
 		98F77F0C1C45189600515CC3 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F77F0B1C45189600515CC3 /* libz.tbd */; };
 		98F77F0D1C451CEB00515CC3 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F77F091C45163300515CC3 /* libsqlite3.tbd */; };
+		A147C873E571592508435B00 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A898C8CCC45B8167FA02504E /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTests.framework */; };
 		C5AF64D51C76000C007E2551 /* CDTNSURLSessionConfigurationDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = C5AF64D41C76000C007E2551 /* CDTNSURLSessionConfigurationDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C5AF64D71C760013007E2551 /* CDTNSURLSessionConfigurationDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = C5AF64D41C76000C007E2551 /* CDTNSURLSessionConfigurationDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -747,19 +749,22 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		06966DB19FD201FECA0CA036 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig"; path = "Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig"; sourceTree = "<group>"; };
-		0915CB7DAA91E05363F795D1 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.release.xcconfig"; path = "Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.release.xcconfig"; sourceTree = "<group>"; };
+		06B5B3CEAC5BCE86B479C2E1 /* Pods_base_tests_CDTDatastoreTestsOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_base_tests_CDTDatastoreTestsOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14B068C426551CF1003B5E9C /* TestFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFile.swift; sourceTree = "<group>"; };
-		19099353DBD986236543D6C7 /* Pods-base-CDTDatastore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-CDTDatastore.release.xcconfig"; path = "Target Support Files/Pods-base-CDTDatastore/Pods-base-CDTDatastore.release.xcconfig"; sourceTree = "<group>"; };
+		2268AA754BEB74F9C6434342 /* Pods-base-CDTDatastoreOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-CDTDatastoreOSX.debug.xcconfig"; path = "Target Support Files/Pods-base-CDTDatastoreOSX/Pods-base-CDTDatastoreOSX.debug.xcconfig"; sourceTree = "<group>"; };
+		2375C6C1DADBA77DC0A79D7B /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig"; path = "Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig"; sourceTree = "<group>"; };
+		2E159BC934FDBAAC25BC23D7 /* Pods-base-tests-CDTDatastoreTestsOSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-tests-CDTDatastoreTestsOSX.release.xcconfig"; path = "Target Support Files/Pods-base-tests-CDTDatastoreTestsOSX/Pods-base-tests-CDTDatastoreTestsOSX.release.xcconfig"; sourceTree = "<group>"; };
 		2E25F68B1F4C6DB900177ABA /* OHHTTPStubsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OHHTTPStubsHelper.h; sourceTree = "<group>"; };
 		2E25F68C1F4C6DB900177ABA /* OHHTTPStubsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OHHTTPStubsHelper.m; sourceTree = "<group>"; };
+		2E75148CD867AAC0B1133011 /* Pods-base-tests-CDTDatastoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-tests-CDTDatastoreTests.release.xcconfig"; path = "Target Support Files/Pods-base-tests-CDTDatastoreTests/Pods-base-tests-CDTDatastoreTests.release.xcconfig"; sourceTree = "<group>"; };
 		3567D4C1BDD33D0148CA9FF2 /* CDTDatastore+Replication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CDTDatastore+Replication.m"; sourceTree = "<group>"; };
 		3567D9F9C835096137DC8EF2 /* CDTDatastore+Replication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CDTDatastore+Replication.h"; sourceTree = "<group>"; };
-		3D280EC2522BC87642D06B72 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.release.xcconfig"; path = "Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.release.xcconfig"; sourceTree = "<group>"; };
-		4BC830E330608A270BB71BAA /* Pods_base_CDTDatastore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_base_CDTDatastore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4C7F5ADA6F8ABEEBDFBF2EC3 /* Pods-base-tests-CDTDatastoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-tests-CDTDatastoreTests.debug.xcconfig"; path = "Target Support Files/Pods-base-tests-CDTDatastoreTests/Pods-base-tests-CDTDatastoreTests.debug.xcconfig"; sourceTree = "<group>"; };
-		6D4DDF26A2FEBAF506AAC9B9 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_base_raTests_CDTDatastoreReplicationAcceptanceTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7455D6BD378E2BAA72058FC7 /* Pods-base-tests-CDTDatastoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-tests-CDTDatastoreTests.release.xcconfig"; path = "Target Support Files/Pods-base-tests-CDTDatastoreTests/Pods-base-tests-CDTDatastoreTests.release.xcconfig"; sourceTree = "<group>"; };
+		47CBD852D979F8508E86074B /* Pods-base-CDTDatastore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-CDTDatastore.release.xcconfig"; path = "Target Support Files/Pods-base-CDTDatastore/Pods-base-CDTDatastore.release.xcconfig"; sourceTree = "<group>"; };
+		486768CE8456B654E321F243 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.release.xcconfig"; path = "Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.release.xcconfig"; sourceTree = "<group>"; };
+		4ACE6E4F4D3DE21E4F5DFD8E /* Pods-base-CDTDatastore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-CDTDatastore.debug.xcconfig"; path = "Target Support Files/Pods-base-CDTDatastore/Pods-base-CDTDatastore.debug.xcconfig"; sourceTree = "<group>"; };
+		55F64B3A295066A050C38BF7 /* Pods-base-tests-CDTDatastoreTestsOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-tests-CDTDatastoreTestsOSX.debug.xcconfig"; path = "Target Support Files/Pods-base-tests-CDTDatastoreTestsOSX/Pods-base-tests-CDTDatastoreTestsOSX.debug.xcconfig"; sourceTree = "<group>"; };
+		5A7E692F263C8AD517CDC15C /* Pods_base_CDTDatastore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_base_CDTDatastore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8282A1B74A0A7CF37DC4310B /* Pods-base-CDTDatastoreOSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-CDTDatastoreOSX.release.xcconfig"; path = "Target Support Files/Pods-base-CDTDatastoreOSX/Pods-base-CDTDatastoreOSX.release.xcconfig"; sourceTree = "<group>"; };
 		8E19D00820A9C6BC0012F346 /* CDTQLifecycleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CDTQLifecycleTests.m; sourceTree = "<group>"; };
 		8E2DDDF61D1BEFBE00673564 /* CDTReplay429Interceptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDTReplay429Interceptor.h; sourceTree = "<group>"; };
 		8E2DDDF71D1BEFBE00673564 /* CDTReplay429Interceptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDTReplay429Interceptor.m; sourceTree = "<group>"; };
@@ -1143,11 +1148,14 @@
 		98F77EDF1C44045000515CC3 /* ReplicatorURLProtocolTester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplicatorURLProtocolTester.m; sourceTree = "<group>"; };
 		98F77F091C45163300515CC3 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		98F77F0B1C45189600515CC3 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		C1DEC16DEAB3B39222C16E95 /* Pods_base_tests_CDTDatastoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_base_tests_CDTDatastoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A898C8CCC45B8167FA02504E /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_base_raTests_CDTDatastoreReplicationAcceptanceTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF6E2CE908BD6A15845C89FF /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.debug.xcconfig"; path = "Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B0B41C82DBF7153021EBCBB7 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTestsOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_base_raTests_CDTDatastoreReplicationAcceptanceTestsOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C452DACCD6B114F7D6E01E9D /* Pods_base_tests_CDTDatastoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_base_tests_CDTDatastoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5AF64D41C76000C007E2551 /* CDTNSURLSessionConfigurationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDTNSURLSessionConfigurationDelegate.h; sourceTree = "<group>"; };
-		CCFBE7A0842C507FB588F2D4 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTestsOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_base_raTests_CDTDatastoreReplicationAcceptanceTestsOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D3C383F671C1FF6042A843E5 /* Pods-base-CDTDatastore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-CDTDatastore.debug.xcconfig"; path = "Target Support Files/Pods-base-CDTDatastore/Pods-base-CDTDatastore.debug.xcconfig"; sourceTree = "<group>"; };
-		EB9B49EA8A41F557725D65C5 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.debug.xcconfig"; path = "Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.debug.xcconfig"; sourceTree = "<group>"; };
+		CA46B3C9FFB0A67B37ECA01E /* Pods_base_CDTDatastoreOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_base_CDTDatastoreOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EEACE1E6869EEE6458036510 /* Pods-base-tests-CDTDatastoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-tests-CDTDatastoreTests.debug.xcconfig"; path = "Target Support Files/Pods-base-tests-CDTDatastoreTests/Pods-base-tests-CDTDatastoreTests.debug.xcconfig"; sourceTree = "<group>"; };
+		FFDA68E649ED2894FDD504AB /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.release.xcconfig"; path = "Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1157,6 +1165,7 @@
 			files = (
 				987383691C47B38800937212 /* libz.tbd in Frameworks */,
 				9873836A1C47B38800937212 /* libsqlite3.tbd in Frameworks */,
+				814F02C32CA38A8EBD34AFCA /* Pods_base_CDTDatastoreOSX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1165,7 +1174,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				987385791C47B48F00937212 /* CDTDatastoreOSX.framework in Frameworks */,
-				90BE0CBF6ECA68CE8EA7D0F7 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTestsOSX.framework in Frameworks */,
+				3FFF6742C1F9CEFB75B3AA44 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTestsOSX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1176,6 +1185,7 @@
 				987386001C4D497A00937212 /* libz.tbd in Frameworks */,
 				9873857A1C47B49800937212 /* CDTDatastoreOSX.framework in Frameworks */,
 				987385651C47B45600937212 /* libsqlite3.tbd in Frameworks */,
+				8DFE2F5C0AC055850772D6B5 /* Pods_base_tests_CDTDatastoreTestsOSX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1206,7 +1216,7 @@
 			files = (
 				98F77F0C1C45189600515CC3 /* libz.tbd in Frameworks */,
 				98F77F0A1C45163400515CC3 /* libsqlite3.tbd in Frameworks */,
-				00EDB86B4CD8031B88582037 /* Pods_base_CDTDatastore.framework in Frameworks */,
+				8A62AAB07BC67D4FE81EECA3 /* Pods_base_CDTDatastore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1216,7 +1226,7 @@
 			files = (
 				98F77F0D1C451CEB00515CC3 /* libsqlite3.tbd in Frameworks */,
 				98F77B411C43FC9F00515CC3 /* CDTDatastore.framework in Frameworks */,
-				177BC467264E073EFCF4868D /* Pods_base_tests_CDTDatastoreTests.framework in Frameworks */,
+				210F239EE83CDF4A10305BE0 /* Pods_base_tests_CDTDatastoreTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1225,7 +1235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98F77D311C44028700515CC3 /* CDTDatastore.framework in Frameworks */,
-				32E743E32E63B171E84274D1 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTests.framework in Frameworks */,
+				A147C873E571592508435B00 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1235,14 +1245,18 @@
 		02943BDE85B62A36C00A394C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D3C383F671C1FF6042A843E5 /* Pods-base-CDTDatastore.debug.xcconfig */,
-				19099353DBD986236543D6C7 /* Pods-base-CDTDatastore.release.xcconfig */,
-				EB9B49EA8A41F557725D65C5 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.debug.xcconfig */,
-				0915CB7DAA91E05363F795D1 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.release.xcconfig */,
-				06966DB19FD201FECA0CA036 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig */,
-				3D280EC2522BC87642D06B72 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.release.xcconfig */,
-				4C7F5ADA6F8ABEEBDFBF2EC3 /* Pods-base-tests-CDTDatastoreTests.debug.xcconfig */,
-				7455D6BD378E2BAA72058FC7 /* Pods-base-tests-CDTDatastoreTests.release.xcconfig */,
+				4ACE6E4F4D3DE21E4F5DFD8E /* Pods-base-CDTDatastore.debug.xcconfig */,
+				47CBD852D979F8508E86074B /* Pods-base-CDTDatastore.release.xcconfig */,
+				2268AA754BEB74F9C6434342 /* Pods-base-CDTDatastoreOSX.debug.xcconfig */,
+				8282A1B74A0A7CF37DC4310B /* Pods-base-CDTDatastoreOSX.release.xcconfig */,
+				AF6E2CE908BD6A15845C89FF /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.debug.xcconfig */,
+				FFDA68E649ED2894FDD504AB /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.release.xcconfig */,
+				2375C6C1DADBA77DC0A79D7B /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig */,
+				486768CE8456B654E321F243 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.release.xcconfig */,
+				EEACE1E6869EEE6458036510 /* Pods-base-tests-CDTDatastoreTests.debug.xcconfig */,
+				2E75148CD867AAC0B1133011 /* Pods-base-tests-CDTDatastoreTests.release.xcconfig */,
+				55F64B3A295066A050C38BF7 /* Pods-base-tests-CDTDatastoreTestsOSX.debug.xcconfig */,
+				2E159BC934FDBAAC25BC23D7 /* Pods-base-tests-CDTDatastoreTestsOSX.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1253,10 +1267,12 @@
 				987385FF1C4D497A00937212 /* libz.tbd */,
 				98F77F0B1C45189600515CC3 /* libz.tbd */,
 				98F77F091C45163300515CC3 /* libsqlite3.tbd */,
-				4BC830E330608A270BB71BAA /* Pods_base_CDTDatastore.framework */,
-				6D4DDF26A2FEBAF506AAC9B9 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTests.framework */,
-				CCFBE7A0842C507FB588F2D4 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTestsOSX.framework */,
-				C1DEC16DEAB3B39222C16E95 /* Pods_base_tests_CDTDatastoreTests.framework */,
+				5A7E692F263C8AD517CDC15C /* Pods_base_CDTDatastore.framework */,
+				CA46B3C9FFB0A67B37ECA01E /* Pods_base_CDTDatastoreOSX.framework */,
+				A898C8CCC45B8167FA02504E /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTests.framework */,
+				B0B41C82DBF7153021EBCBB7 /* Pods_base_raTests_CDTDatastoreReplicationAcceptanceTestsOSX.framework */,
+				C452DACCD6B114F7D6E01E9D /* Pods_base_tests_CDTDatastoreTests.framework */,
+				06B5B3CEAC5BCE86B479C2E1 /* Pods_base_tests_CDTDatastoreTestsOSX.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2183,6 +2199,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 987383EA1C47B38800937212 /* Build configuration list for PBXNativeTarget "CDTDatastoreOSX" */;
 			buildPhases = (
+				45A8AB1CA0A4C8D479909D40 /* [CP] Check Pods Manifest.lock */,
 				987383031C47B38800937212 /* Sources */,
 				987383681C47B38800937212 /* Frameworks */,
 				9873836C1C47B38800937212 /* Headers */,
@@ -2201,12 +2218,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9873851D1C47B45300937212 /* Build configuration list for PBXNativeTarget "CDTDatastoreReplicationAcceptanceTestsOSX" */;
 			buildPhases = (
-				22E633583D2A31816722294B /* [CP] Check Pods Manifest.lock */,
+				9E1D9B637B6EDDFF8A029354 /* [CP] Check Pods Manifest.lock */,
 				987385061C47B45300937212 /* Sources */,
 				987385141C47B45300937212 /* Frameworks */,
 				9888EC061C512CA500E58783 /* Set Replication Settings */,
 				987385171C47B45300937212 /* Resources */,
-				AAE919864EADBBB9A735D4DC /* [CP] Embed Pods Frameworks */,
+				251A5334858729FEBB7FB601 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2221,9 +2238,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 987385731C47B45600937212 /* Build configuration list for PBXNativeTarget "CDTDatastoreTestsOSX" */;
 			buildPhases = (
+				1E8D1A7EC1C05C1FD9C12091 /* [CP] Check Pods Manifest.lock */,
 				987385261C47B45600937212 /* Sources */,
 				987385641C47B45600937212 /* Frameworks */,
 				987385681C47B45600937212 /* Resources */,
+				89C9723BD710DA8BEEC93B11 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2291,7 +2310,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 98F77B4A1C43FC9F00515CC3 /* Build configuration list for PBXNativeTarget "CDTDatastore" */;
 			buildPhases = (
-				45F21DFC30F0DF5F56999861 /* [CP] Check Pods Manifest.lock */,
+				FA502F4032F9D33273633C45 /* [CP] Check Pods Manifest.lock */,
 				98F77B311C43FC9F00515CC3 /* Sources */,
 				98F77B321C43FC9F00515CC3 /* Frameworks */,
 				98F77B331C43FC9F00515CC3 /* Headers */,
@@ -2310,12 +2329,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 98F77B4D1C43FC9F00515CC3 /* Build configuration list for PBXNativeTarget "CDTDatastoreTests" */;
 			buildPhases = (
-				9F18A1E6CAA9EE2A4270F828 /* [CP] Check Pods Manifest.lock */,
+				0FDD9C56C3EAE5F7588766F9 /* [CP] Check Pods Manifest.lock */,
 				98F77B3C1C43FC9F00515CC3 /* Sources */,
 				98F77B3D1C43FC9F00515CC3 /* Frameworks */,
 				98F77B3E1C43FC9F00515CC3 /* Resources */,
 				987385FB1C49657A00937212 /* CopyFiles */,
-				97BA6FFD5A326AE0312E6494 /* [CP] Embed Pods Frameworks */,
+				97B57708EB7A14FC03A045A0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 				987385FA1C49655000937212 /* PBXBuildRule */,
@@ -2332,12 +2351,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 98F77D361C44028700515CC3 /* Build configuration list for PBXNativeTarget "CDTDatastoreReplicationAcceptanceTests" */;
 			buildPhases = (
-				D9301F3A1D3F17F7017BDD8C /* [CP] Check Pods Manifest.lock */,
+				F3BFE6659BCE0EAEECD55715 /* [CP] Check Pods Manifest.lock */,
 				98F77D281C44028700515CC3 /* Sources */,
 				98F77D291C44028700515CC3 /* Frameworks */,
 				9888EC091C512CF800E58783 /* Set Replication Settings */,
 				98F77D2A1C44028700515CC3 /* Resources */,
-				C196BBF103D0657B8AF06199 /* [CP] Embed Pods Frameworks */,
+				85A472DB446816B2819CA07F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2511,7 +2530,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		22E633583D2A31816722294B /* [CP] Check Pods Manifest.lock */ = {
+		0FDD9C56C3EAE5F7588766F9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2526,14 +2545,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-base-tests-CDTDatastoreTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		45F21DFC30F0DF5F56999861 /* [CP] Check Pods Manifest.lock */ = {
+		1E8D1A7EC1C05C1FD9C12091 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2548,14 +2567,128 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-base-CDTDatastore-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-base-tests-CDTDatastoreTestsOSX-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		97BA6FFD5A326AE0312E6494 /* [CP] Embed Pods Frameworks */ = {
+		251A5334858729FEBB7FB601 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack-macOS/CocoaLumberjack.framework",
+				"${BUILT_PRODUCTS_DIR}/FMDB-macOS/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac-macOS/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/NSData+Base64-macOS/NSData_Base64.framework",
+				"${BUILT_PRODUCTS_DIR}/TRVSMonitor-macOS/TRVSMonitor.framework",
+				"${BUILT_PRODUCTS_DIR}/Unirest-macOS/Unirest.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSData_Base64.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TRVSMonitor.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Unirest.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		45A8AB1CA0A4C8D479909D40 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-base-CDTDatastoreOSX-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		85A472DB446816B2819CA07F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack-iOS/CocoaLumberjack.framework",
+				"${BUILT_PRODUCTS_DIR}/FMDB-iOS/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac-iOS/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/NSData+Base64-iOS/NSData_Base64.framework",
+				"${BUILT_PRODUCTS_DIR}/TRVSMonitor-iOS/TRVSMonitor.framework",
+				"${BUILT_PRODUCTS_DIR}/Unirest-iOS/Unirest.framework",
+				"${BUILT_PRODUCTS_DIR}/OTFToolBoxCore/OTFToolBoxCore.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSData_Base64.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TRVSMonitor.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Unirest.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OTFToolBoxCore.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		89C9723BD710DA8BEEC93B11 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-base-tests-CDTDatastoreTestsOSX/Pods-base-tests-CDTDatastoreTestsOSX-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack-macOS/CocoaLumberjack.framework",
+				"${BUILT_PRODUCTS_DIR}/FMDB-macOS/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac-macOS/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Expecta-macOS/Expecta.framework",
+				"${BUILT_PRODUCTS_DIR}/MRDatabaseContentChecker-macOS/MRDatabaseContentChecker.framework",
+				"${BUILT_PRODUCTS_DIR}/OCMock-macOS/OCMock.framework",
+				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs-macOS/OHHTTPStubs.framework",
+				"${BUILT_PRODUCTS_DIR}/RSSwizzle-macOS/RSSwizzle.framework",
+				"${BUILT_PRODUCTS_DIR}/Specta-macOS/Specta.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MRDatabaseContentChecker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RSSwizzle.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Specta.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-base-tests-CDTDatastoreTestsOSX/Pods-base-tests-CDTDatastoreTestsOSX-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		97B57708EB7A14FC03A045A0 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2565,26 +2698,26 @@
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack-iOS/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB-iOS/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac-iOS/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/OTFToolBoxCore-iOS/OTFToolBoxCore.framework",
-				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
-				"${BUILT_PRODUCTS_DIR}/MRDatabaseContentChecker/MRDatabaseContentChecker.framework",
-				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
-				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
-				"${BUILT_PRODUCTS_DIR}/RSSwizzle/RSSwizzle.framework",
-				"${BUILT_PRODUCTS_DIR}/Specta/Specta.framework",
+				"${BUILT_PRODUCTS_DIR}/Expecta-iOS/Expecta.framework",
+				"${BUILT_PRODUCTS_DIR}/MRDatabaseContentChecker-iOS/MRDatabaseContentChecker.framework",
+				"${BUILT_PRODUCTS_DIR}/OCMock-iOS/OCMock.framework",
+				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs-iOS/OHHTTPStubs.framework",
+				"${BUILT_PRODUCTS_DIR}/RSSwizzle-iOS/RSSwizzle.framework",
+				"${BUILT_PRODUCTS_DIR}/Specta-iOS/Specta.framework",
+				"${BUILT_PRODUCTS_DIR}/OTFToolBoxCore/OTFToolBoxCore.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OTFToolBoxCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MRDatabaseContentChecker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RSSwizzle.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Specta.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OTFToolBoxCore.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2619,7 +2752,7 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/buildplist.sh\"";
 		};
-		9F18A1E6CAA9EE2A4270F828 /* [CP] Check Pods Manifest.lock */ = {
+		9E1D9B637B6EDDFF8A029354 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2634,74 +2767,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-base-tests-CDTDatastoreTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AAE919864EADBBB9A735D4DC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack-macOS/CocoaLumberjack.framework",
-				"${BUILT_PRODUCTS_DIR}/FMDB-macOS/FMDB.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac-macOS/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/OTFToolBoxCore-macOS/OTFToolBoxCore.framework",
-				"${BUILT_PRODUCTS_DIR}/NSData+Base64-macOS/NSData_Base64.framework",
-				"${BUILT_PRODUCTS_DIR}/TRVSMonitor-macOS/TRVSMonitor.framework",
-				"${BUILT_PRODUCTS_DIR}/Unirest-macOS/Unirest.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OTFToolBoxCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSData_Base64.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TRVSMonitor.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Unirest.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C196BBF103D0657B8AF06199 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack-iOS/CocoaLumberjack.framework",
-				"${BUILT_PRODUCTS_DIR}/FMDB-iOS/FMDB.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac-iOS/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/OTFToolBoxCore-iOS/OTFToolBoxCore.framework",
-				"${BUILT_PRODUCTS_DIR}/NSData+Base64-iOS/NSData_Base64.framework",
-				"${BUILT_PRODUCTS_DIR}/TRVSMonitor-iOS/TRVSMonitor.framework",
-				"${BUILT_PRODUCTS_DIR}/Unirest-iOS/Unirest.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OTFToolBoxCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSData_Base64.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TRVSMonitor.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Unirest.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D9301F3A1D3F17F7017BDD8C /* [CP] Check Pods Manifest.lock */ = {
+		F3BFE6659BCE0EAEECD55715 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2717,6 +2790,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FA502F4032F9D33273633C45 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-base-CDTDatastore-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3238,6 +3333,7 @@
 /* Begin XCBuildConfiguration section */
 		987383EB1C47B38800937212 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2268AA754BEB74F9C6434342 /* Pods-base-CDTDatastoreOSX.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -3258,6 +3354,7 @@
 		};
 		987383EC1C47B38800937212 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8282A1B74A0A7CF37DC4310B /* Pods-base-CDTDatastoreOSX.release.xcconfig */;
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -3278,7 +3375,7 @@
 		};
 		9873851E1C47B45300937212 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 06966DB19FD201FECA0CA036 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig */;
+			baseConfigurationReference = 2375C6C1DADBA77DC0A79D7B /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = CDTDatastoreReplicationAcceptanceTests/Info.plist;
@@ -3292,7 +3389,7 @@
 		};
 		9873851F1C47B45300937212 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3D280EC2522BC87642D06B72 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.release.xcconfig */;
+			baseConfigurationReference = 486768CE8456B654E321F243 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.release.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = CDTDatastoreReplicationAcceptanceTests/Info.plist;
@@ -3306,6 +3403,7 @@
 		};
 		987385741C47B45600937212 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 55F64B3A295066A050C38BF7 /* Pods-base-tests-CDTDatastoreTestsOSX.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -3323,6 +3421,7 @@
 		};
 		987385751C47B45600937212 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2E159BC934FDBAAC25BC23D7 /* Pods-base-tests-CDTDatastoreTestsOSX.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -3345,7 +3444,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				INFOPLIST_FILE = CDTDatastoreTestApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cloudant.CDTDatastoreTestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3360,7 +3459,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				INFOPLIST_FILE = CDTDatastoreTestApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cloudant.CDTDatastoreTestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3523,7 +3622,7 @@
 		};
 		98F77B4B1C43FC9F00515CC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D3C383F671C1FF6042A843E5 /* Pods-base-CDTDatastore.debug.xcconfig */;
+			baseConfigurationReference = 4ACE6E4F4D3DE21E4F5DFD8E /* Pods-base-CDTDatastore.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
@@ -3535,6 +3634,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = CDTDatastore/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cloudant.CDTDatastore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3547,7 +3647,7 @@
 		};
 		98F77B4C1C43FC9F00515CC3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 19099353DBD986236543D6C7 /* Pods-base-CDTDatastore.release.xcconfig */;
+			baseConfigurationReference = 47CBD852D979F8508E86074B /* Pods-base-CDTDatastore.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
@@ -3559,6 +3659,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = CDTDatastore/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cloudant.CDTDatastore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3570,7 +3671,7 @@
 		};
 		98F77B4E1C43FC9F00515CC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4C7F5ADA6F8ABEEBDFBF2EC3 /* Pods-base-tests-CDTDatastoreTests.debug.xcconfig */;
+			baseConfigurationReference = EEACE1E6869EEE6458036510 /* Pods-base-tests-CDTDatastoreTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -3586,7 +3687,7 @@
 		};
 		98F77B4F1C43FC9F00515CC3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7455D6BD378E2BAA72058FC7 /* Pods-base-tests-CDTDatastoreTests.release.xcconfig */;
+			baseConfigurationReference = 2E75148CD867AAC0B1133011 /* Pods-base-tests-CDTDatastoreTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -3601,7 +3702,7 @@
 		};
 		98F77D341C44028700515CC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EB9B49EA8A41F557725D65C5 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.debug.xcconfig */;
+			baseConfigurationReference = AF6E2CE908BD6A15845C89FF /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = NO;
@@ -3615,7 +3716,7 @@
 		};
 		98F77D351C44028700515CC3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0915CB7DAA91E05363F795D1 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.release.xcconfig */;
+			baseConfigurationReference = FFDA68E649ED2894FDD504AB /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = NO;

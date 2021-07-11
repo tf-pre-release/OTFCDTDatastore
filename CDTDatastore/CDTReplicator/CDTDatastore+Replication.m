@@ -118,16 +118,25 @@
 }
 
 - (void)pushReplicationWithTarget:(NSURL *_Nullable)target
-                       replicator: (CDTReplicator *)replicator
+                       replicator: (nullable CDTReplicator *)replicator
                          username:(NSString *_Nullable)username
                          password:(NSString *_Nullable)password
                 completionHandler:(void (^ __nonnull)(NSError *__nullable))completionHandler
 {
     NSError* error = nil;
     CDTDatastoreReplicationDelegate* delegate = [[CDTDatastoreReplicationDelegate alloc] initWithCompletionHandler:completionHandler];
-    replicator.delegate = delegate;
-    if (self.sessionConfigDelegate != nil) {
-        replicator.sessionConfigDelegate = self.sessionConfigDelegate;
+
+    if (replicator == nil) {
+        replicator = [self pushReplicationTarget:target
+                                        username:username
+                                        password:password
+                                    withDelegate:delegate error:&error];
+    } else {
+        replicator.delegate = delegate;
+
+        if (self.sessionConfigDelegate != nil) {
+            replicator.sessionConfigDelegate = self.sessionConfigDelegate;
+        }
     }
 
     if (!error){
@@ -170,10 +179,15 @@
 {
     NSError* error = nil;
     CDTDatastoreReplicationDelegate* delegate = [[CDTDatastoreReplicationDelegate alloc] initWithCompletionHandler:completionHandler];
-    replicator.delegate = delegate;
 
-    if (self.sessionConfigDelegate != nil) {
-        replicator.sessionConfigDelegate = self.sessionConfigDelegate;
+    if (replicator == nil) {
+        replicator = [self pullReplicationSource:source username:username password:password withDelegate:delegate error:&error];
+    } else {
+        replicator.delegate = delegate;
+
+        if (self.sessionConfigDelegate != nil) {
+            replicator.sessionConfigDelegate = self.sessionConfigDelegate;
+        }
     }
 
     if (!error) {

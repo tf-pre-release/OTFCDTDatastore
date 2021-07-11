@@ -33,7 +33,11 @@
 #import <FMDB/FMDatabase.h>
 #import <FMDB/FMDatabaseAdditions.h>
 #import <FMDB/FMDatabaseQueue.h>
+
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#endif
+
 #import <sqlite3.h>
 
 #import "Version.h"
@@ -43,7 +47,9 @@ NSString *const CDTDatastoreChangeNotification = @"CDTDatastoreChangeNotificatio
 @interface CDTDatastore ()
 
 @property (nonatomic, strong, readonly) id<CDTEncryptionKeyProvider> keyProvider;
+#if TARGET_OS_IPHONE
 @property UIBackgroundTaskIdentifier *backgroundTaskIdentifier;
+#endif
 
 @property (readonly, weak) CDTDatastoreManager *manager;
 - (void)TDdbChanged:(NSNotification *)n;
@@ -95,67 +101,16 @@ int runningProcess;
                                                      selector:@selector(TDdbChanged:)
                                                          name:TD_DatabaseChangeNotification
                                                        object:database];
+            #if TARGET_OS_IPHONE
             [self encryptFile:NSFileProtectionCompleteUnlessOpen];
+            #endif
         }
     }
 
     return self;
 }
 
-
-// Commenting below App life cycle functions as we've implemented different modes that are conflicting functionality with below these functions.
-
-/*
-//MARK: - Will be called when user unlock the device, so we will change encryption policy to CompleteUnlessOpen.
--(void)applicationProtectedDataDidBecomeAvailable:(NSNotification*)note {
-    NSLog(@"applicationProtectedDataDidBecomeAvailable");
-    [self encryptFile:NSFileProtectionCompleteUnlessOpen];
-}
-
-//MARK: - Will be called when user Lock the device, so we will change encryption policy to Complete.
--(void)applicationProtectedDataWillBecomeUnavailable:(NSNotification*)note {
-    NSLog(@"applicationProtectedDataWillBecomeUnavailable");
-    if (runningProcess > 0) {
-        [self encryptFile:NSFileProtectionCompleteUnlessOpen];
-    } else {
-        [self encryptFile:NSFileProtectionComplete];
-    }
-}
-
-//MARK:- Will be called when application is about to terminate, we can change policy in that case.
--(void)applicationWillTerminateNotification:(NSNotification*)note {
-    [self encryptFile:NSFileProtectionComplete];
-}
-
--(void)applicationDidEnterBackgroundNotification:(NSNotification*)note {
-    if (runningProcess > 0) {
-        self.backgroundTaskIdentifier =
-        [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-            [self encryptFile:NSFileProtectionComplete];
-            [self endBackgroundTaskIfAny];
-        }];
-    }
-}
-
--(void)applicationWillEnterForegroundNotification:(NSNotification*)note {
-    [self endBackgroundTaskIfAny];
-    [self encryptFile:NSFileProtectionComplete];
-}
-
--(void)addNewTask {
-    runningProcess += 1;
-    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground, runningProcess == 1) {
-        [self applicationDidEnterBackgroundNotification: nil];
-    }
-}
-
--(void)removeOneTask {
-    if (runningProcess > 0) {
-        runningProcess -= 1;
-    }
-}
-*/
-
+#if TARGET_OS_IPHONE
 -(void)encrypt: (NSDictionary*) attributes {
     NSString *dbPath = self.directory;
     if ([[NSFileManager defaultManager] fileExistsAtPath: dbPath]) {
@@ -167,12 +122,11 @@ int runningProcess;
 
 -(void)encryptFile: (NSFileProtectionType)type {
     NSDictionary *attributes = nil;
-#if TARGET_OS_IPHONE
+
     if (@available(iOS 9.0, *)) {
         attributes = @{NSFileProtectionKey : type};
         [self encrypt:attributes];
     }
-#endif
 }
 
 - (NSFileProtectionType) isProtectedItemAtURL:(NSURL *)URL {
@@ -239,7 +193,6 @@ int runningProcess;
     }];
 }
 
-
 ///  This function will help to set Encryption MODE. Set a mode according to your need.
 /// @param mode - It's a ENUM value that users can set from predefined enum cases.
 -(void)setProtectionLevel: (OTFProtectionLevel)level {
@@ -255,7 +208,7 @@ int runningProcess;
             break;
     }
 }
-
+#endif
 
 - (void)dealloc {
     _database = nil;
@@ -675,7 +628,9 @@ int runningProcess;
     // convert CDTMutableDocument to TD_Revision
 
     // we know it shouldn't have a TD_revision behind it, since its a create
+    #if TARGET_OS_IPHONE
     [self encryptFile: NSFileProtectionCompleteUnlessOpen];
+    #endif
     TD_Revision *converted =
     [[TD_Revision alloc] initWithDocID:revision.docId revID:nil deleted:false];
     converted.body = [[TD_Body alloc] initWithProperties:revision.body];
@@ -720,7 +675,9 @@ int runningProcess;
             *error = TDStatusToNSError(status, nil);
             *rollback = YES;
             saved = nil;
+#if TARGET_OS_IPHONE
             [self encryptFile:NSFileProtectionComplete];
+#endif
             return;
         } else {
             saved = [[CDTDocumentRevision alloc] initWithDocId:new.docID
@@ -785,7 +742,9 @@ int runningProcess;
         [[NSNotificationCenter defaultCenter] postNotificationName:CDTDatastoreChangeNotification
                                                             object:self
                                                           userInfo:userInfo];
+#if TARGET_OS_IPHONE
         [self encryptFile:NSFileProtectionComplete];
+#endif
     }
     return saved;
 }

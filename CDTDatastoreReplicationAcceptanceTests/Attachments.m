@@ -58,7 +58,7 @@
                               self.remoteDbPrefix,
                               [CloudantReplicationBase generateRandomString:5]];
     NSURL *remoteDbURL = [self.remoteRootURL URLByAppendingPathComponent:self.remoteDbName];
-    
+
     [self createRemoteDatabase:self.remoteDbName
                    instanceURL:self.remoteRootURL];
     self.primaryRemoteDatabaseURL = remoteDbURL;
