@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		147CCEDD26AACC7900D3B9E1 /* CDTError.h in Headers */ = {isa = PBXBuildFile; fileRef = 147CCEDB26AACC7900D3B9E1 /* CDTError.h */; };
+		147CCEDE26AACC7900D3B9E1 /* CDTError.m in Sources */ = {isa = PBXBuildFile; fileRef = 147CCEDC26AACC7900D3B9E1 /* CDTError.m */; };
 		14B068C526551CF1003B5E9C /* TestFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B068C426551CF1003B5E9C /* TestFile.swift */; };
 		210F239EE83CDF4A10305BE0 /* Pods_base_tests_CDTDatastoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C452DACCD6B114F7D6E01E9D /* Pods_base_tests_CDTDatastoreTests.framework */; };
 		2E25F68D1F4C6DB900177ABA /* OHHTTPStubsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E25F68C1F4C6DB900177ABA /* OHHTTPStubsHelper.m */; };
@@ -750,6 +752,8 @@
 
 /* Begin PBXFileReference section */
 		06B5B3CEAC5BCE86B479C2E1 /* Pods_base_tests_CDTDatastoreTestsOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_base_tests_CDTDatastoreTestsOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		147CCEDB26AACC7900D3B9E1 /* CDTError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDTError.h; sourceTree = "<group>"; };
+		147CCEDC26AACC7900D3B9E1 /* CDTError.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CDTError.m; sourceTree = "<group>"; };
 		14B068C426551CF1003B5E9C /* TestFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFile.swift; sourceTree = "<group>"; };
 		2268AA754BEB74F9C6434342 /* Pods-base-CDTDatastoreOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-CDTDatastoreOSX.debug.xcconfig"; path = "Target Support Files/Pods-base-CDTDatastoreOSX/Pods-base-CDTDatastoreOSX.debug.xcconfig"; sourceTree = "<group>"; };
 		2375C6C1DADBA77DC0A79D7B /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig"; path = "Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1398,6 +1402,8 @@
 				98F77C1C1C43FCEE00515CC3 /* Version.h */,
 				98F77B3B1C43FC9F00515CC3 /* Info.plist */,
 				9891D1091C511A820068FD1A /* CDTDefines.h */,
+				147CCEDB26AACC7900D3B9E1 /* CDTError.h */,
+				147CCEDC26AACC7900D3B9E1 /* CDTError.m */,
 			);
 			path = CDTDatastore;
 			sourceTree = "<group>";
@@ -2158,6 +2164,7 @@
 				8E705A921F0D360700FF0219 /* CDTSessionCookieInterceptorBase.h in Headers */,
 				98F77CAD1C43FCEE00515CC3 /* TDBase64.h in Headers */,
 				98F77C701C43FCEE00515CC3 /* CDTURLSessionTask.h in Headers */,
+				147CCEDD26AACC7900D3B9E1 /* CDTError.h in Headers */,
 				98F77CD11C43FCEE00515CC3 /* TDReplicator.h in Headers */,
 				98F77D0D1C43FDA700515CC3 /* ExceptionUtils.h in Headers */,
 				98F77D171C43FDA700515CC3 /* MYRegexUtils.h in Headers */,
@@ -3101,6 +3108,7 @@
 				98F77C771C43FCEE00515CC3 /* CDTQIndexCreator.m in Sources */,
 				98F77CBC1C43FCEE00515CC3 /* TDMisc.m in Sources */,
 				98F77CDC1C43FCEE00515CC3 /* CDTChangedDictionary.m in Sources */,
+				147CCEDE26AACC7900D3B9E1 /* CDTError.m in Sources */,
 				8E705A8B1F0CE58500FF0219 /* CDTIAMSessionCookieInterceptor.m in Sources */,
 				98F77C1E1C43FCEE00515CC3 /* CDTAttachment.m in Sources */,
 				98F77C4F1C43FCEE00515CC3 /* CDTEncryptionKeyNilProvider.m in Sources */,

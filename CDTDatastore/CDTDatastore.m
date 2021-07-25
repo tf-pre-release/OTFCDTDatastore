@@ -41,6 +41,7 @@
 #import <sqlite3.h>
 
 #import "Version.h"
+#import "CDTError.h"
 
 NSString *const CDTDatastoreChangeNotification = @"CDTDatastoreChangeNotification";
 
@@ -111,21 +112,25 @@ int runningProcess;
 }
 
 #if TARGET_OS_IPHONE
--(void)encrypt: (NSDictionary*) attributes {
+-(void)encrypt: (NSDictionary*) attributes error:(NSError*)error {
     NSString *dbPath = self.directory;
     if ([[NSFileManager defaultManager] fileExistsAtPath: dbPath]) {
         NSURL *dbURL = [NSURL URLWithString: dbPath];
         NSError *error;
         [[NSFileManager defaultManager] setAttributes:attributes ofItemAtPath: [dbURL path] error:&error];
+        @throw error;
+    } else {
+        @throw [CDTError errorWith: NoFileFoundAtPath];
     }
 }
 
--(void)encryptFile: (NSFileProtectionType)type {
+-(void)encryptFile: (NSFileProtectionType)type error:(NSError*)error {
     NSDictionary *attributes = nil;
-
     if (@available(iOS 9.0, *)) {
         attributes = @{NSFileProtectionKey : type};
-        [self encrypt:attributes];
+        [self encrypt:attributes error: error];
+    } else {
+        @throw [CDTError errorWith: EncryptionAvailableAboveiOS9];
     }
 }
 
@@ -170,41 +175,49 @@ int runningProcess;
     }];
 }
 
--(void)setRunToCompletionModeWithin10Sec {
-    [self startTimerWithDuration: 10];
+-(NSError*)setRunToCompletionModeWithin10Sec {
+    return [self startTimerWithDuration: 10];
 }
 
--(void)setRunToCompletionBeyond10Sec {
-    [self startTimerWithDuration: 20];
+-(NSError*)setRunToCompletionBeyond10Sec {
+    return [self startTimerWithDuration: 20];
 }
 
--(void)setBackgroundMode {
+-(NSError*)setBackgroundMode {
     [self beginBackgroundTask];
-    [self startTimerWithDuration: 30];
+    return [self startTimerWithDuration: 30];
 }
 
--(void)startTimerWithDuration: (NSTimeInterval)seconds {
+
+-(nullable NSError*)startTimerWithDuration: (NSTimeInterval)seconds {
     NSLog(@"Encryption mode changed NSFileProtectionCompleteUnlessOpen");
-    [self encryptFile: NSFileProtectionCompleteUnlessOpen];
+    NSError *err;
+    [self encryptFile: NSFileProtectionCompleteUnlessOpen error: err];
     [NSTimer scheduledTimerWithTimeInterval:seconds repeats:false block:^(NSTimer * _Nonnull timer) {
-        [self encryptFile: NSFileProtectionComplete];
+        [self encryptFile: NSFileProtectionComplete error: err];
         NSLog(@"Encryption mode changed NSFileProtectionComplete");
         [self endBackgroundTaskIfAny];
     }];
+
+    if (err != nil) {
+        return err;
+    } else {
+        return nil;
+    }
 }
 
 ///  This function will help to set Encryption MODE. Set a mode according to your need.
 /// @param mode - It's a ENUM value that users can set from predefined enum cases.
--(void)setProtectionLevel: (OTFProtectionLevel)level {
+-(void)setProtectionLevel: (OTFProtectionLevel)level error:(NSError *__autoreleasing *)error {
     switch(level) {
         case OTFProtectionLevelRunToCompletionWithIn10Seconds:
-            [self setRunToCompletionModeWithin10Sec];
+            *error = [self setRunToCompletionModeWithin10Sec];
             break;
         case OTFProtectionLevelRunToCompletionBeyond10Seconds:
-            [self setRunToCompletionBeyond10Sec];
+            *error = [self setRunToCompletionBeyond10Sec];
             break;
         case OTFProtectionLevelBackgroundMode:
-            [self setBackgroundMode];
+            *error = [self setBackgroundMode];
             break;
     }
 }
@@ -245,9 +258,6 @@ int runningProcess;
      - @"source": NSURL of remote db pulled from,
      - @"winner": new winning TD_Revision, _if_ it changed (often same as rev).
      */
-
-    //    LogTo(CDTReplicatorLog, @"CDTReplicator: dbChanged");
-
     NSDictionary *nUserInfo = n.userInfo;
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
 
