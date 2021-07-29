@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2BA0E6BC5DE3CECC0F206107 /* Pods_base_CDTDatastore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E20ED843AB63EA624A7FC5FB /* Pods_base_CDTDatastore.framework */; };
 		147CCEDD26AACC7900D3B9E1 /* CDTError.h in Headers */ = {isa = PBXBuildFile; fileRef = 147CCEDB26AACC7900D3B9E1 /* CDTError.h */; };
 		147CCEDE26AACC7900D3B9E1 /* CDTError.m in Sources */ = {isa = PBXBuildFile; fileRef = 147CCEDC26AACC7900D3B9E1 /* CDTError.m */; };
-		14B068C526551CF1003B5E9C /* TestFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B068C426551CF1003B5E9C /* TestFile.swift */; };
 		210F239EE83CDF4A10305BE0 /* Pods_base_tests_CDTDatastoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C452DACCD6B114F7D6E01E9D /* Pods_base_tests_CDTDatastoreTests.framework */; };
 		2E25F68D1F4C6DB900177ABA /* OHHTTPStubsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E25F68C1F4C6DB900177ABA /* OHHTTPStubsHelper.m */; };
 		2E25F68E1F4C6E3D00177ABA /* OHHTTPStubsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E25F68C1F4C6DB900177ABA /* OHHTTPStubsHelper.m */; };
@@ -750,11 +748,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		19778B3E647C4BEE5EC9C149 /* Pods-base-CDTDatastore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-CDTDatastore.release.xcconfig"; path = "Target Support Files/Pods-base-CDTDatastore/Pods-base-CDTDatastore.release.xcconfig"; sourceTree = "<group>"; };
 		06B5B3CEAC5BCE86B479C2E1 /* Pods_base_tests_CDTDatastoreTestsOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_base_tests_CDTDatastoreTestsOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		147CCEDB26AACC7900D3B9E1 /* CDTError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDTError.h; sourceTree = "<group>"; };
 		147CCEDC26AACC7900D3B9E1 /* CDTError.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CDTError.m; sourceTree = "<group>"; };
-		14B068C426551CF1003B5E9C /* TestFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFile.swift; sourceTree = "<group>"; };
 		2268AA754BEB74F9C6434342 /* Pods-base-CDTDatastoreOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-CDTDatastoreOSX.debug.xcconfig"; path = "Target Support Files/Pods-base-CDTDatastoreOSX/Pods-base-CDTDatastoreOSX.debug.xcconfig"; sourceTree = "<group>"; };
 		2375C6C1DADBA77DC0A79D7B /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig"; path = "Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX.debug.xcconfig"; sourceTree = "<group>"; };
 		2E159BC934FDBAAC25BC23D7 /* Pods-base-tests-CDTDatastoreTestsOSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-tests-CDTDatastoreTestsOSX.release.xcconfig"; path = "Target Support Files/Pods-base-tests-CDTDatastoreTestsOSX/Pods-base-tests-CDTDatastoreTestsOSX.release.xcconfig"; sourceTree = "<group>"; };
@@ -2585,7 +2581,6 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTestsOSX-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack-macOS/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB-macOS/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac-macOS/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/NSData+Base64-macOS/NSData_Base64.framework",
@@ -2594,7 +2589,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSData_Base64.framework",
@@ -2635,7 +2629,6 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests/Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack-iOS/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB-iOS/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac-iOS/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/NSData+Base64-iOS/NSData_Base64.framework",
@@ -2645,7 +2638,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSData_Base64.framework",
@@ -2665,7 +2657,6 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-base-tests-CDTDatastoreTestsOSX/Pods-base-tests-CDTDatastoreTestsOSX-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack-macOS/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB-macOS/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac-macOS/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Expecta-macOS/Expecta.framework",
@@ -2677,7 +2668,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
@@ -2699,7 +2689,6 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-base-tests-CDTDatastoreTests/Pods-base-tests-CDTDatastoreTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack-iOS/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB-iOS/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac-iOS/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Expecta-iOS/Expecta.framework",
@@ -2712,7 +2701,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
