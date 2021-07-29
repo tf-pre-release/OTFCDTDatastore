@@ -16,7 +16,10 @@
 #import <Foundation/Foundation.h>
 #import "CDTDatastoreManager.h"
 #import "CDTNSURLSessionConfigurationDelegate.h"
+#if TARGET_OS_IPHONE
 #import <OTFToolBoxCore/OTFToolBoxCore-Swift.h>
+#endif
+
 @class CDTDocumentRevision;
 @class FMDatabase;
 
@@ -264,16 +267,18 @@ typedef NS_ENUM(NSUInteger, OTFProtectionLevel) {
  */
 - (BOOL)compactWithError:(NSError *__autoreleasing __nullable * __nullable)error;
 
+#if TARGET_OS_IPHONE
 /// This function will help to set FILE Protection manually by users.
 /// @param type Its FileProtection Type Enum provided by Apple, user can pass any Protection case whatever they need to set on there files.
 -(void)encryptFile: (NSFileProtectionType _Nonnull)type;
 
 ///  This function will help to set Protection level. Set a mode according to your need.
-/// @param mode - It's a ENUM value that users can set from predefined enum cases.
--(void)setProtectionLevel: (OTFProtectionLevel)level;
+/// @param level - It's a ENUM value that users can set from predefined enum cases.
+-(void)setProtectionLevel: (OTFProtectionLevel)level error:(NSError *__autoreleasing __nullable * __nullable)error;
 
 /// This funtion will return the current applied file protection policy on files.
 - (NSFileProtectionType _Nullable)appliedProtectionPolicyOnDb;
+#endif
 
 /**
  * Set the delegate for handling customisation of the NSURLSession
@@ -288,12 +293,4 @@ typedef NS_ENUM(NSUInteger, OTFProtectionLevel) {
  */
 
 @property (nullable, nonatomic, weak) NSObject<CDTNSURLSessionConfigurationDelegate> *sessionConfigDelegate;
-
-/// These below two functionsare being used internally only to manage tasks pool.
-/// This function will increase the runningProcess variable count by 1. runningProcess is an internal Integer variable declared in CDTDatastore.m class, we're using it to check if we've any running process at the time when we're moving app to background. If we have any ongoing process that could
-/*
--(void)addNewTask;
-
--(void)removeOneTask;
- */
 @end

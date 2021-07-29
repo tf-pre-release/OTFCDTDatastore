@@ -27,8 +27,8 @@ Pod::Spec.new do |s|
   s.author       = { "Cloudant, Inc." => "support@cloudant.com" }
   s.source       = { :git => "https://github.com/HippocratesTech/CDTDatastore", :tag => s.version }
 
-  s.ios.deployment_target = '9.0'
-  s.osx.deployment_target = '10.5'
+  s.ios.deployment_target = '13.0'
+  s.osx.deployment_target = '10.9'
   s.requires_arc = true
 
   s.default_subspec = 'standard'
@@ -69,7 +69,7 @@ Pod::Spec.new do |s|
     sp.dependency 'CDTDatastore/no-arc'
     sp.dependency 'CocoaLumberjack', '~> 2.0'
     sp.dependency 'GoogleToolboxForMac/NSData+zlib', '~> 2.1.1'
-    sp.dependency 'OTFToolBox/Core', '~> 0.0.1'
+    sp.ios.dependency 'OTFToolBoxCore', '0.0.1'
   end
 
   s.subspec 'no-arc' do |sp|

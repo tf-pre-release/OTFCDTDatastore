@@ -16,14 +16,14 @@ abstract_target 'base' do
     pod 'CocoaLumberjack'
     pod 'SQLCipher/fts', '~> 3.1.0' if ENV["encrypted"]
     pod 'GoogleToolboxForMac/NSData+zlib', '~> 2.1.1'
-    pod 'OTFToolBox/Core', '~> 0.0.1'
 
     target :CDTDatastore do
         platform :ios, '13.0'
+        pod 'OTFToolBox/Core', '~> 0.0.1'
     end
-#    target :CDTDatastoreOSX do
-#        platform :osx, '10.9'
-#    end
+    target :CDTDatastoreOSX do
+        platform :osx, '10.9'
+    end
 
     abstract_target 'tests' do
 
@@ -38,9 +38,9 @@ abstract_target 'base' do
             platform :ios, '13.0'
         end
 
-#        target :CDTDatastoreTestsOSX do
-#            platform :osx, '10.9'
-#        end
+        target :CDTDatastoreTestsOSX do
+            platform :osx, '10.9'
+        end
 
     end
 
@@ -49,9 +49,9 @@ abstract_target 'base' do
         pod 'TRVSMonitor'
         pod 'NSData+Base64'
 
-#        target :CDTDatastoreReplicationAcceptanceTestsOSX do
-#            platform :osx, '10.9'
-#        end
+        target :CDTDatastoreReplicationAcceptanceTestsOSX do
+            platform :osx, '10.9'
+        end
 
         target :CDTDatastoreReplicationAcceptanceTests do
           platform :ios, '13.0'

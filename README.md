@@ -315,12 +315,12 @@ In CDTDatastore framework, we have given 3 types of OTFProtectionLevels that wil
 To use encryption modes in application, user need to call below function with the help of CDTDatastore object - 
 
 ```objc
-# -(void)setProtectionLevel: (OTFProtectionLevel)level;'
+# -(void)setProtectionLevel: (OTFProtectionLevel)level error:(NSError*_Nullable)error;'
 
 and you can call encryption function like this with the help of datastore object in OBJECTIVE C -
 
-# [datastore setProtectionLevel: RunToCompletionWithin10Seconds];
-You can replace RunToCompletionWithin10Seconds with any other available mode.
+# [datastore setProtectionLevel: RunToCompletionWithin10Seconds error: error];
+You can replace RunToCompletionWithin10Seconds with any other available mode. This function can throw an exception as well. So it is recommended to handle exception properly while using this function.
 ```
 
 
