@@ -73,8 +73,7 @@ static NSString *kRetryCountKey = @"com.cloudant.CDTRequestLimitInterceptor.retr
         int retryCount = [(NSNumber*)[context stateForKey:kRetryCountKey] intValue];
 
         if (retryCount < self.maxRetries) {
-            CDTLogInfo(CDTTD_REMOTE_REQUEST_CONTEXT, @"429 error code (too many requests) received. "
-                       "Will retry in %.3f seconds.", sleep);
+            os_log_info(CDTOSLog, "429 error code (too many requests) received. Will retry in %{public}.3f seconds.", sleep);
             
             // sleep for a short time before making next request
             [NSThread sleepForTimeInterval:sleep];
@@ -82,8 +81,7 @@ static NSString *kRetryCountKey = @"com.cloudant.CDTRequestLimitInterceptor.retr
             [context setState:@(retryCount+1) forKey:kRetryCountKey];
             context.shouldRetry = true;
         } else {
-            CDTLogWarn(CDTTD_REMOTE_REQUEST_CONTEXT, @"Maximum number of retries (%d) exceeded in "
-                       "CDTRequestLimitInterceptor.", self.maxRetries);
+            os_log_debug(CDTOSLog, "Maximum number of retries (%{public}d) exceeded in CDTRequestLimitInterceptor.", self.maxRetries);
         }
 
     }

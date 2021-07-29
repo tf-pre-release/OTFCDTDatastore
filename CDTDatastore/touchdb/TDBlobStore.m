@@ -121,7 +121,7 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
 
     NSString *filename = [TD_Database filenameForKey:thisKey inBlobFilenamesTableInDatabase:db];
     if (filename) {
-        CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"Key already exists with filename %@", filename);
+        os_log_debug(CDTOSLog, "Key already exists with filename %{public}@", filename);
 
         if (outKey) {
             *outKey = thisKey;
@@ -134,7 +134,7 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
     filename = [TD_Database generateAndInsertRandomFilenameBasedOnKey:thisKey
                                      intoBlobFilenamesTableInDatabase:db];
     if (!filename) {
-        CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"No filename generated");
+        os_log_error(CDTOSLog, "No filename generated");
 
         if (outError) {
             *outError = [TDBlobStore errorNoFilenameGenerated];
@@ -150,7 +150,7 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
     // Save to disk
     NSError *thisError = nil;
     if (![writer writeEntireBlobWithData:blob error:&thisError]) {
-        CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"Data not stored in %@: %@", blobPath, thisError);
+        os_log_error(CDTOSLog, "Data not stored in %{public}@: %{public}@", blobPath, thisError);
 
         [TD_Database deleteRowForKey:thisKey inBlobFilenamesTableInDatabase:db];
 
@@ -198,8 +198,7 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
 
         // Remove from db
         if (![TD_Database deleteRowForKey:oneRow.key inBlobFilenamesTableInDatabase:db]) {
-            CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"%@: Failed to delete '%@' from db", self,
-                        oneRow.blobFilename);
+            os_log_error(CDTOSLog, "%{public}@: Failed to delete '%{public}@' from db", self, oneRow.blobFilename);
 
             success = NO;
 
@@ -227,7 +226,7 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
     NSError* thisError = nil;
     NSArray* currentFiles = [defaultManager contentsOfDirectoryAtPath:path error:&thisError];
     if (!currentFiles) {
-        CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"Can not read dir %@: %@", path, thisError);
+        os_log_error(CDTOSLog, "Can not read dir %{public}@: %{public}@", path, thisError);
         return;
     }
 
@@ -241,9 +240,8 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
         NSString* filePath = [TDBlobStore blobPathWithStorePath:path blobFilename:filename];
 
         if (![defaultManager removeItemAtPath:filePath error:&thisError]) {
-            CDTLogError(CDTDATASTORE_LOG_CONTEXT,
-                        @"%@: Failed to delete '%@' not related to an attachment: %@", self,
-                        filename, thisError);
+            os_log_error(CDTOSLog, "%{public}@: Failed to delete '%{public}@' not related to an attachment: %{public}@", self,
+                         filename, thisError);
         }
     }
 }
@@ -259,9 +257,9 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
         NSURL *tempDirURL = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
 
         _tempDir = [tempDirURL.path copy];
-        CDTLogInfo(CDTDATASTORE_LOG_CONTEXT, @"TDBlobStore %@ created tempDir %@", _path, _tempDir);
+        os_log_info(CDTOSLog, "TDBlobStore %{public}@ created tempDir %{public}@", _path, _tempDir);
         if (!_tempDir)
-            CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"TDBlobStore: Unable to create temp dir: %@", error);
+            os_log_debug(CDTOSLog, "TDBlobStore: Unable to create temp dir: %{public}@", error);
 #endif
     }
     return _tempDir;
@@ -353,7 +351,7 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
     // Search filename
     NSString *filename = [self filenameInDatabase:db];
     if (filename) {
-        CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"Key already exists with filename %@", filename);
+        os_log_debug(CDTOSLog, "Key already exists with filename %{public}@", filename);
 
         [self cancel];
 
@@ -363,7 +361,7 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
     // Create if not exists
     filename = [self generateAndInsertRandomFilenameInDatabase:db];
     if (!filename) {
-        CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"No filename generated");
+        os_log_error(CDTOSLog, "No filename generated");
 
         [self cancel];
 
@@ -377,8 +375,7 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
 
     NSError *error = nil;
     if ([defaultManager fileExistsAtPath:dstPath]) {
-        CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"File exists at path %@. Delete before moving",
-                    dstPath);
+        os_log_debug(CDTOSLog, "File exists at path %{public}@. Delete before moving", dstPath);
 
         // If this ever happens, we can safely assume that on a previous moment
         // 'TDBlobStore:storeBlob:creatingKey:withDatabase:error:' (or
@@ -386,8 +383,7 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
         // rollback. Therefore, the file in the destination path is not linked to any attachment
         // and we can remove it.
         if (![defaultManager removeItemAtPath:dstPath error:&error]) {
-            CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"Not deleted pre-existing file at path %@: %@",
-                        dstPath, error);
+            os_log_error(CDTOSLog, "Not deleted pre-existing file at path %{public}@: %{public}@", dstPath, error);
 
             [self deleteFilenameInDatabase:db];
 
@@ -399,8 +395,7 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
 
     // Move temp file to correct location in blob store:
     if (![defaultManager moveItemAtPath:_tempPath toPath:dstPath error:&error]) {
-        CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"File not moved to final destination %@: %@",
-                    dstPath, error);
+        os_log_error(CDTOSLog, "File not moved to final destination %{public}@: %{public}@", dstPath, error);
 
         [self deleteFilenameInDatabase:db];
 

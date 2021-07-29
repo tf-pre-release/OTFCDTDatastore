@@ -148,7 +148,7 @@ static dispatch_semaphore_t g_asyncTaskMonitor;
     [cdtURLSessionTask processError:error onThread:self.thread];
     [cdtURLSessionTask processData:data];
     [cdtURLSessionTask completedThread:self.thread];
-    CDTLogVerbose(CDTTD_REMOTE_REQUEST_CONTEXT, @"Signalling asyncTaskMonitor");
+    os_log_debug(CDTOSLog, "Signalling asyncTaskMonitor");
     dispatch_semaphore_signal(g_asyncTaskMonitor);
 }
 

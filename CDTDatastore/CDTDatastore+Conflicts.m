@@ -180,10 +180,7 @@
 
             if (TDStatusIsError(status)) {
                 localError = TDStatusToNSError(status, nil);
-                CDTLogWarn(CDTDATASTORE_LOG_CONTEXT,
-                        @"CDTDatastore+Conflicts -resolveConflictsForDocument: Failed"
-                        @" to delete non-winning revision (%@) for document %@",
-                        theRev.revId, docId);
+                os_log_debug(CDTOSLog, "CDTDatastore+Conflicts -resolveConflictsForDocument: Failed to delete non-winning revision (%{public}@) for document %{public}@", theRev.revId, docId);
                 return status;
             }
         }

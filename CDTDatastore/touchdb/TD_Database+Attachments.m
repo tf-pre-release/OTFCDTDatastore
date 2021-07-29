@@ -247,9 +247,7 @@
     if (db.changes == 0) {
         // Oops. This means a glitch in our attachment-management or pull code,
         // or else a bug in the upstream server.
-        CDTLogWarn(CDTDATASTORE_LOG_CONTEXT,
-                @"Can't find inherited attachment '%@' from seq#%lld to copy to #%lld", name,
-                fromSequence, toSequence);
+        os_log_debug(CDTOSLog, "Can't find inherited attachment '%{public}@' from seq#%{public}lld to copy to #%{public}lld", name, fromSequence, toSequence);
         result = kTDStatusNotFound;  // Fail if there is no such attachment on fromSequence
     }
 
@@ -293,7 +291,7 @@
         case kTDAttachmentEncodingGZIP:
             attachment = [NSData gtm_dataByInflatingData:attachment];
     }
-    if (!attachment) CDTLogWarn(CDTDATASTORE_LOG_CONTEXT, @"Unable to decode attachment!");
+    if (!attachment) os_log_debug(CDTOSLog, "Unable to decode attachment!");
     return attachment;
 }
 
@@ -329,8 +327,7 @@
             }
             NSData* keyData = [r dataNoCopyForColumnIndex:0];
             if (keyData.length != sizeof(TDBlobKey)) {
-                CDTLogWarn(CDTDATASTORE_LOG_CONTEXT, @"%@: Attachment %lld.'%@' has bogus key size %u",
-                        self, sequence, filename, (unsigned)keyData.length);
+                os_log_debug(CDTOSLog, "%{public}@: Attachment %{public}lld.'%{public}@' has bogus key size %{public}u", self, sequence, filename, (unsigned)keyData.length);
                 *outStatus = kTDStatusCorruptError;
                 return;
             }
@@ -368,8 +365,7 @@
     NSError *error = nil;
     NSData *contents = [blob dataWithError:&error];
     if (!contents) {
-        CDTLogWarn(CDTDATASTORE_LOG_CONTEXT, @"%@: Failed to load attachment %lld.'%@' -- %@", self,
-                   sequence, filename, error);
+        os_log_debug(CDTOSLog, "%{public}@: Failed to load attachment %{public}lld.'%{public}@' -- %{public}@", self, sequence, filename, error);
 
         *outStatus = kTDStatusCorruptError;
 
@@ -429,8 +425,7 @@
                                                      withDatabase:db];
                 data = (blob ? [blob dataWithError:nil] : nil);
                 if (!data)
-                    CDTLogWarn(CDTDATASTORE_LOG_CONTEXT,
-                            @"TD_Database: Failed to get attachment for key %@", keyData);
+                    os_log_debug(CDTOSLog, "TD_Database: Failed to get attachment for key %{public}@", keyData);
             }
         }
 
@@ -535,15 +530,11 @@
                             // ...then remove the 'data' and 'follows' key:
                             [editedAttachment removeObjectForKey:@"follows"];
                             editedAttachment[@"stub"] = $true;
-                            CDTLogVerbose(CDTDATASTORE_LOG_CONTEXT,
-                                       @"Stubbed out attachment %@/'%@': revpos %d < %d", rev, name,
-                                       revPos, minRevPos);
+                            os_log_debug(CDTOSLog, "Stubbed out attachment %{public}@/'%{public}@': revpos %{public}d < %{public}d", rev, name, revPos, minRevPos);
                         } else if (addFollows) {
                             [editedAttachment removeObjectForKey:@"stub"];
                             editedAttachment[@"follows"] = $true;
-                            CDTLogVerbose(CDTDATASTORE_LOG_CONTEXT,
-                                       @"Added 'follows' for attachment %@/'%@': revpos %d >= %d",
-                                       rev, name, revPos, minRevPos);
+                            os_log_debug(CDTOSLog, "Added 'follows' for attachment %{public}@/'%{public}@': revpos %{public}d >= %{public}d", rev, name, revPos, minRevPos);
                         }
                         return editedAttachment;
                     }];
@@ -694,9 +685,7 @@
             if (attachment->revpos == 0)
                 attachment->revpos = generation;
             else if (attachment->revpos > generation) {
-                CDTLogWarn(CDTDATASTORE_LOG_CONTEXT,
-                        @"Attachment %@ . '%@' has weird revpos %u; setting to %u", rev, name,
-                        attachment->revpos, generation);
+                os_log_debug(CDTOSLog, "Attachment %{public}@ . '%{public}@' has weird revpos %{public}u; setting to %{public}u", rev, name, attachment->revpos, generation);
                 attachment->revpos = generation;
             }
 
@@ -822,7 +811,7 @@
     if (!blobDeleted) {
         return kTDStatusAttachmentError;
     }
-    CDTLogInfo(CDTDATASTORE_LOG_CONTEXT, @"Unneeded attachment blobs deleted");
+    os_log_info(CDTOSLog, "Unneeded attachment blobs deleted");
     return kTDStatusOK;
 }
 

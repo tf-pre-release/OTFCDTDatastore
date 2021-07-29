@@ -58,7 +58,7 @@
         NSURLComponents * sourceComponents = [NSURLComponents componentsWithURL:source resolvingAgainstBaseURL:NO];
         if(sourceComponents.user && sourceComponents.password){
             if (username && password) {
-                CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"Credentials provided via the URL and username and password parameters, discarding URL credentials.");
+                os_log_debug(CDTOSLog, "Credentials provided via the URL and username and password parameters, discarding URL credentials.");
             } else {
                 CDTSessionCookieInterceptor * cookieInterceptor = [[CDTSessionCookieInterceptor alloc] initWithUsername:sourceComponents.user password:sourceComponents.password];
                 [self addInterceptor:cookieInterceptor];
@@ -80,7 +80,7 @@
     if (self = [super initWithIAMAPIKey:IAMAPIKey]) {
         NSURLComponents * sourceComponents = [NSURLComponents componentsWithURL:source resolvingAgainstBaseURL:NO];
         if(sourceComponents.user && sourceComponents.password){
-            CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"Credentials provided via the URL but IAM API key was provided, discarding URL credentials.");
+            os_log_debug(CDTOSLog, "Credentials provided via the URL but IAM API key was provided, discarding URL credentials.");
         }
         CDTIAMSessionCookieInterceptor * cookieInterceptor = [[CDTIAMSessionCookieInterceptor alloc] initWithAPIKey:IAMAPIKey];
         [self addInterceptor:cookieInterceptor];
@@ -118,8 +118,7 @@
 - (BOOL)validateRemoteDatastoreURL:(NSURL *)url error:(NSError *__autoreleasing *)error
 {
     if (url == nil) {
-        CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                @"CDTPullReplication -dictionaryForReplicatorDocument Error: source is nil.");
+        os_log_debug(CDTOSLog, "CDTPullReplication -dictionaryForReplicatorDocument Error: source is nil.");
 
         if (error) {
             NSString *msg = @"Cannot sync data. Local data source not specified.";

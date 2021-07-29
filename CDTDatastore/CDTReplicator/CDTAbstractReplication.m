@@ -115,11 +115,8 @@ NS_ASSUME_NONNULL_END
         // check for strings
         for (id key in candidateHeaders) {
             if (![key isKindOfClass:[NSString class]]) {
-                CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                           @"CDTAbstractReplication " @"-validateOptionalHeaders Error: "
-                           @"Replication HTTP header key is invalid (%@).\n It must be NSString. "
-                           @"Found type %@",
-                           key, [key class]);
+                os_log_debug(CDTOSLog, "CDTAbstractReplication -validateOptionalHeaders Error: Replication HTTP header key is invalid (%{public}@).\n It must be NSString. Found type %{public}@",
+                             key, [key class]);
 
                 if (error) {
                     NSString *msg = @"Cannot sync data. Bad optional HTTP header.";
@@ -133,11 +130,8 @@ NS_ASSUME_NONNULL_END
             }
 
             if (![candidateHeaders[key] isKindOfClass:[NSString class]]) {
-                CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                           @"CDTAbstractReplication " @"-validateOptionalHeaders Error: "
-                           @"Value for replication HTTP header %@ is invalid (%@).\n"
-                           @"It must be NSString. Found type %@.",
-                           key, candidateHeaders[key], [candidateHeaders[key] class]);
+                os_log_debug(CDTOSLog, "CDTAbstractReplication -validateOptionalHeaders Error: Value for replication HTTP header %{public}@ is invalid (%{public}@).\nIt must be NSString. Found type %{public}@.",
+                             key, candidateHeaders[key], [candidateHeaders[key] class]);
 
                 if (error) {
                     NSString *msg = @"Cannot sync data. Bad optional HTTP header.";
@@ -172,10 +166,7 @@ NS_ASSUME_NONNULL_END
         }
 
         if ([badHeaders count] > 0) {
-            CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                    @"CDTAbstractionReplication " @"-validateOptionalHeaders Error: "
-                    @"You may not use these prohibited headers: %@",
-                    badHeaders);
+            os_log_debug(CDTOSLog, "CDTAbstractionReplication -validateOptionalHeaders Error: You may not use these prohibited headers: %{public}@", badHeaders);
 
             if (error) {
                 NSString *msg = @"Cannot sync data. Bad optional HTTP header.";
@@ -197,9 +188,8 @@ NS_ASSUME_NONNULL_END
     NSString *scheme = [url.scheme lowercaseString];
     NSArray *validSchemes = @[ @"http", @"https" ];
     if (![validSchemes containsObject:scheme]) {
-        CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                @"%@ -validateRemoteDatastoreURL Error. " @"Invalid scheme: %@", [self class],
-                url.scheme);
+        os_log_debug(CDTOSLog, "%{public}@ -validateRemoteDatastoreURL Error. Invalid scheme: %{public}@",
+                     [self class], url.scheme);
 
         if (error) {
             NSString *msg = @"Cannot sync data. Invalid Remote Database URL";
@@ -217,9 +207,7 @@ NS_ASSUME_NONNULL_END
     BOOL passwordSupplied = url.password != nil && ![url.password isEqualToString:@""];
 
     if ((!usernameSupplied && passwordSupplied) || (usernameSupplied && !passwordSupplied)) {
-        CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"%@ -validateRemoteDatastoreURL Error. "
-                @"Must have both username and password, or neither. ",
-                [self class]);
+        os_log_debug(CDTOSLog, "%{public}@ -validateRemoteDatastoreURL Error. Must have both username and password, or neither. ", [self class]);
 
         if (error) {
             NSString *msg =

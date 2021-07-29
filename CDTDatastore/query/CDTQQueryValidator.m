@@ -379,15 +379,12 @@
     for (id obj in clauses) {
         valid = NO;
         if (![obj isKindOfClass:[NSDictionary class]]) {
-            CDTLogError(CDTQ_LOG_CONTEXT, @"Operator argument must be a dictionary %@",
-                        [clauses description]);
+            os_log_error(CDTOSLog, "Operator argument must be a dictionary %{public}@", [clauses description]);
             break;
         }
         NSDictionary *clause = (NSDictionary *)obj;
         if ([clause count] != 1) {
-            CDTLogError(CDTQ_LOG_CONTEXT,
-                        @"Operator argument clause should only have one key value pair: %@",
-                        [clauses description]);
+            os_log_error(CDTOSLog, "Operator argument clause should only have one key value pair: %{public}@", [clauses description]);
             break;
         }
 
@@ -411,7 +408,7 @@
             valid = [CDTQQueryValidator validateTextClause:clause[key]
                                        withTextClauseLimit:textClauseLimitReached];
         } else {
-            CDTLogError(CDTQ_LOG_CONTEXT, @"%@ operator cannot be a top level operator", key);
+            os_log_error(CDTOSLog, "%{public}@ operator cannot be a top level operator", key);
             break;
         }
 
@@ -469,26 +466,24 @@
 + (BOOL)validateTextClause:(NSObject *)clause withTextClauseLimit:(BOOL *)textClauseLimitReached
 {
     if (![clause isKindOfClass:[NSDictionary class]]) {
-        CDTLogError(CDTQ_LOG_CONTEXT, @"Text search expects an NSDictionary, found %@ instead.",
-                    clause);
+        os_log_error(CDTOSLog, "Text search expects an NSDictionary, found %{public}@ instead.", clause);
         return NO;
     }
     
     NSDictionary *textClause = (NSDictionary *) clause;
     if ([textClause count] != 1) {
-        CDTLogError(CDTQ_LOG_CONTEXT, @"Unexpected content %@ in text search.", textClause);
+        os_log_error(CDTOSLog, "Unexpected content %{public}@ in text search.", textClause);
         return NO;
     }
     
     NSString *operator = [textClause allKeys][0];
     if (![operator isEqualToString:SEARCH]) {
-        CDTLogError(CDTQ_LOG_CONTEXT, @"Invalid operator %@ in text search.", operator);
+        os_log_error(CDTOSLog, "Invalid operator %{public}@ in text search.", operator);
         return NO;
     }
     
     if (*textClauseLimitReached) {
-        CDTLogError(CDTQ_LOG_CONTEXT, @"Multiple text search clauses not allowed in a query.  "
-                                       "Rewrite query to contain at most one text search clause.");
+        os_log_error(CDTOSLog, "Multiple text search clauses not allowed in a query. Rewrite query to contain at most one text search clause.");
         return NO;
     }
     
@@ -521,7 +516,7 @@
     } else if ([predicateValue isKindOfClass:[NSString class]] || [predicateValue isKindOfClass:[NSNumber class]]) {
         return YES;
     } else {
-        CDTLogError(CDTQ_LOG_CONTEXT,@"Only types NSString and NSNumber can be used with %@ operator", operator);
+        os_log_error(CDTOSLog, "Only types NSString and NSNumber can be used with %{public}@ operator", operator);
         return NO;
     }
 }
@@ -541,10 +536,7 @@
        ![((NSArray *) modulus)[1] isKindOfClass:[NSNumber class]] ||
        [((NSArray *) modulus)[0] integerValue] == 0) {
         valid = NO;
-        CDTLogError(CDTQ_LOG_CONTEXT,
-                    @"$mod operator requires a two element NSArray containing NSNumbers "
-                    @"where the first number, the divisor, is not zero.  As in: "
-                    @"{ \"$mod\" : [ 2, 1 ] }.  Where 2 is the divisor and 1 is the remainder.");
+        os_log_error(CDTOSLog, "$mod operator requires a two element NSArray containing NSNumbers where the first number, the divisor, is not zero.  As in: { \"$mod\" : [ 2, 1 ] }.  Where 2 is the divisor and 1 is the remainder.");
     }
     
     return valid;
@@ -556,7 +548,7 @@
     
     if(![textSearch isKindOfClass:[NSString class]]){
         valid = NO;
-        CDTLogError(CDTQ_LOG_CONTEXT, @"$search operator requires an NSString");
+        os_log_error(CDTOSLog, "$search operator requires an NSString");
     }
     
     return valid;
@@ -568,7 +560,7 @@
 
     if (![exists isKindOfClass:[NSNumber class]]) {
         valid = NO;
-        CDTLogError(CDTQ_LOG_CONTEXT, @"$exists operator expects YES or NO");
+        os_log_error(CDTOSLog, "$exists operator expects YES or NO");
     }
 
     return valid;
@@ -577,8 +569,7 @@
 + (BOOL)validateCompoundOperatorOperand:(NSObject *)operand
 {
     if (![operand isKindOfClass:[NSArray class]]) {
-        CDTLogError(CDTQ_LOG_CONTEXT, @"Argument to compound operator is not an NSArray: %@",
-                    [operand description]);
+        os_log_error(CDTOSLog, "Argument to compound operator is not an NSArray: %{public}@", [operand description]);
         return NO;
     }
     return YES;

@@ -101,7 +101,7 @@ static NSCharacterSet* kIllegalNameChars;
 
 - (void)dealloc
 {
-    CDTLogInfo(CDTDATASTORE_LOG_CONTEXT, @"DEALLOC %@", self);
+    os_log_info(CDTOSLog, "@DEALLOC %{public}@", self);
     [self close];
 }
 
@@ -133,11 +133,11 @@ static NSCharacterSet* kIllegalNameChars;
         if (!db) {
             NSString* path = [self pathForName:name];
             if (!path) {
-                CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"Database name not valid");
+                os_log_error(CDTOSLog, "Database name not valid");
             } else {
                 db = [[TD_Database alloc] initWithPath:path];
                 if (_options.readOnly && !db.exists) {
-                    CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"Read-only db does not exist. Return nil");
+                    os_log_debug(CDTOSLog, "Read-only db does not exist. Return nil");
                     
                     db = nil;
                 } else {
@@ -203,12 +203,12 @@ static NSCharacterSet* kIllegalNameChars;
 
 - (void) close {
     @synchronized(self) {
-        CDTLogInfo(CDTDATASTORE_LOG_CONTEXT, @"CLOSING %@ ...", self);
+        os_log_info(CDTOSLog, "CLOSING %{public}@ ...", self);
         for (TD_Database* db in _databases.allValues) {
             [db close];
         }
         [_databases removeAllObjects];
-        CDTLogInfo(CDTDATASTORE_LOG_CONTEXT, @"CLOSED %@", self);
+        os_log_info(CDTOSLog, "CLOSED %{public}@", self);
     }
 }
 

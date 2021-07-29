@@ -18,10 +18,10 @@
 
 #import "CloudantSyncTests.h"
 
-#import "CDTFetchChanges.h"
-#import "CDTDatastore.h"
-#import "CDTDatastoreManager.h"
-#import "CDTDocumentRevision.h"
+#import <CDTDatastore/CDTFetchChanges.h>
+#import <CDTDatastore/CDTDatastore.h>
+#import <CDTDatastore/TD_DatabaseManager.h>
+#import <CDTDatastore/CDTDocumentRevision.h>
 
 #define CDTFETCHANGESTESTS_TOTALDOCCOUNT 1100
 #define CDTFETCHANGESTESTS_DELETEDOCCOUNT 5

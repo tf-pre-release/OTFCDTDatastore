@@ -76,16 +76,10 @@
         [CDTQQuerySqlTranslator translateQuery:query toUseIndexes:indexes state:state];
 
     if (state.textIndexMissing) {
-        CDTLogError(CDTQ_LOG_CONTEXT,
-                    @"No text index defined, cannot execute query containing a text search.");
+        os_log_error(CDTOSLog, "No text index defined, cannot execute query containing a text search.");
         return nil;
     } else if (state.textIndexRequired && state.atLeastOneIndexMissing) {
-        CDTLogError(
-            CDTQ_LOG_CONTEXT,
-            @"Query %@ contains a text search but is missing json index(es).  "
-             "All indexes must exist in order to execute a query containing a text search.  "
-             "Create all necessary indexes for the query and re-execute.",
-            query);
+        os_log_error(CDTOSLog, "Query %{public}@ contains a text search but is missing json index(es).  All indexes must exist in order to execute a query containing a text search.  Create all necessary indexes for the query and re-execute.", query);
         return nil;
     } else if (!state.textIndexRequired &&
                   (!state.atLeastOneIndexUsed || state.atLeastOneORIndexMissing)) {
@@ -164,10 +158,7 @@
             if (!chosenIndex) {
                 state.atLeastOneIndexMissing = YES;
 
-                CDTLogWarn(CDTQ_LOG_CONTEXT,
-                           @"No single index contains all of %@; add index for these fields to "
-                           @"query efficiently.",
-                           basicClauses);
+                os_log_debug(CDTOSLog, "No single index contains all of %@; add index for these fields to query efficiently.", basicClauses);
             } else {
                 state.atLeastOneIndexUsed = YES;
                 
@@ -176,8 +167,7 @@
                                         basicClauses usingIndex:chosenIndex];
                 
                 if (!select) {
-                    CDTLogError(CDTQ_LOG_CONTEXT, @"Error generating SELECT clause for %@",
-                                basicClauses);
+                    os_log_error(CDTOSLog, "Error generating SELECT clause for %{public}@", basicClauses);
                     return nil;
                 }
                 
@@ -207,10 +197,7 @@
                     state.atLeastOneIndexMissing = YES;
                     state.atLeastOneORIndexMissing = YES;
 
-                    CDTLogWarn(CDTQ_LOG_CONTEXT,
-                               @"No single index contains all of %@; add index for these fields to "
-                               @"query efficiently.",
-                               basicClauses);
+                    os_log_debug(CDTOSLog, "No single index contains all of %{public}@; add index for these fields to query efficiently.", basicClauses);
                 } else {
                     state.atLeastOneIndexUsed = YES;
                     
@@ -220,8 +207,7 @@
                                                              usingIndex:chosenIndex];
                     
                     if (!select) {
-                        CDTLogError(CDTQ_LOG_CONTEXT, @"Error generating SELECT clause for %@",
-                                    basicClauses);
+                        os_log_error(CDTOSLog, "Error generating SELECT clause for %{public}@", basicClauses);
                         return nil;
                     }
                     
@@ -249,7 +235,7 @@
                 [CDTQQuerySqlTranslator selectStatementForTextClause:(NSDictionary *)textClause
                                                           usingIndex:textIndex];
             if (!select) {
-                CDTLogError(CDTQ_LOG_CONTEXT, @"Error generating SELECT clause for %@", textClause);
+                os_log_error(CDTOSLog, "Error generating SELECT clause for %{public}@", textClause);
                 return nil;
             }
             
@@ -330,16 +316,13 @@
 + (NSString *)chooseIndexForAndClause:(NSArray *)clause fromIndexes:(NSDictionary *)indexes
 {
     if ([CDTQQuerySqlTranslator isOperator:SIZE inClause:clause]) {
-        CDTLogInfo(
-            CDTQ_LOG_CONTEXT,
-            @"$size operator found in clause %@.  Indexes are not used with $size operations.",
-            clause);
+        os_log_info(CDTOSLog, "$size operator found in clause %{public}@.  Indexes are not used with $size operations.", clause);
         return nil;
     }
     NSSet *neededFields = [NSSet setWithArray:[self fieldsForAndClause:clause]];
 
     if (neededFields.count == 0) {
-        CDTLogError(CDTQ_LOG_CONTEXT, @"Invalid clauses in $and clause %@", clause);
+        os_log_error(CDTOSLog, "Invalid clauses in $and clause %{public}@", clause);
         return nil;  // no point in querying empty set of fields
     }
 
@@ -403,8 +386,7 @@
 
     for (NSDictionary *component in clause) {
         if (component.count != 1) {
-            CDTLogError(CDTQ_LOG_CONTEXT,
-                        @"Expected single predicate per clause dictionary, got %@", component);
+            os_log_error(CDTOSLog, "Expected single predicate per clause dictionary, got %{public}@", component);
             return nil;
         }
 
@@ -412,8 +394,7 @@
         NSDictionary *predicate = component[fieldName];
 
         if (predicate.count != 1) {
-            CDTLogError(CDTQ_LOG_CONTEXT,
-                        @"Expected single operator per predicate dictionary, got %@", component);
+            os_log_error(CDTOSLog, "Expected single operator per predicate dictionary, got %{public}@", component);
             return nil;
         }
 
@@ -424,9 +405,7 @@
             NSDictionary *negatedPredicate = predicate[NOT];
 
             if (negatedPredicate.count != 1) {
-                CDTLogError(CDTQ_LOG_CONTEXT,
-                            @"Expected single operator per predicate dictionary, got %@",
-                            component);
+                os_log_error(CDTOSLog, "Expected single operator per predicate dictionary, got %{public}@", component);
                 return nil;
             }
 

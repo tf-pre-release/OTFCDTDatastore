@@ -101,9 +101,9 @@ static const int responseInterceptorCancelledError = 2;
             return;
         }
     }
-    CDTLogVerbose(CDTTD_REMOTE_REQUEST_CONTEXT, @"Waiting on asyncTaskMonitor");
+    os_log_debug(CDTOSLog, "Waiting on asyncTaskMonitor");
     [self.session waitForFreeSlot];
-    CDTLogVerbose(CDTTD_REMOTE_REQUEST_CONTEXT, @"Wait completed");
+    os_log_debug(CDTOSLog, "Waiting on asyncTaskMonitor");
     [self.inProgressTask resume];
 }
 - (void)cancel
@@ -144,8 +144,7 @@ static const int responseInterceptorCancelledError = 2;
         ctx = [obj interceptRequestInContext:ctx];
         if (ctx == nil) {
             // if interceptor returns nil, log an error, send the requestDidError message, and exit early
-            CDTLogWarn(CDTTD_REMOTE_REQUEST_CONTEXT, @"Aborting request because interceptor %@ returned nil",
-                       obj);
+            os_log_debug(CDTOSLog, "Aborting request because interceptor %{public}@ returned nil", obj);
             NSError *err = [NSError errorWithDomain:CDTURLSessionTaskErrorDomain
                                                code:requestInterceptorCancelledError
                                            userInfo:@{@"message": [NSString stringWithFormat:@"Task was cancelled by request interceptor %@ returning nil", obj]}];
@@ -228,8 +227,7 @@ static const int responseInterceptorCancelledError = 2;
         ctx = [obj interceptResponseInContext:ctx];
         if (ctx == nil) {
             // if interceptor returns nil, log an error, send the requestDidError message, and exit early
-            CDTLogWarn(CDTTD_REMOTE_REQUEST_CONTEXT, @"Aborting response interceptors because interceptor %@ returned nil",
-                       obj);
+            os_log_debug(CDTOSLog, "Aborting response interceptors because interceptor %{public}@ returned nil", obj);
             NSError *err = [NSError errorWithDomain:CDTURLSessionTaskErrorDomain
                                                code:responseInterceptorCancelledError
                                            userInfo:@{@"message": [NSString stringWithFormat:@"Task was cancelled by response interceptor %@ returning nil", obj]}];

@@ -259,7 +259,7 @@ int runningProcess;
 
 - (void)dealloc {
     _database = nil;
-    CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"-dealloc CDTDatastore %@", self);
+    os_log_debug(CDTOSLog, "-dealloc CDTDatastore %{public}@", self);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -659,10 +659,7 @@ int runningProcess;
     }
 
     if (![self validateAttachments:revision.attachments]) {
-        CDTLogWarn(
-                   CDTDATASTORE_LOG_CONTEXT,
-                   @"Attachments dictionary is not keyed by attachment name. "
-                   "When accessing attachments on saved revisions they will be keyed by attachment name");
+        os_log_debug(CDTOSLog, "Attachments dictionary is not keyed by attachment name. When accessing attachments on saved revisions they will be keyed by attachment name");
     }
 
     if (![self ensureDatabaseOpen]) {
@@ -694,9 +691,7 @@ int runningProcess;
                     [downloadedAttachments addObject:attachmentData];
                 } else {  // Error downloading the attachment, bail
                     // error out variable set by -stream...
-                    CDTLogWarn(CDTDATASTORE_LOG_CONTEXT,
-                               @"Error reading %@ from stream for doc <%@, %@>, rolling back",
-                               attachment.name, converted.docID, converted.revID);
+                    os_log_debug(CDTOSLog, "Error reading %{public}@ from stream for doc <%{public}@, %{public}@>, rolling back", attachment.name, converted.docID, converted.revID);
                     return nil;
                 }
             } else {
@@ -822,10 +817,7 @@ int runningProcess;
     }
 
     if (![self validateAttachments:revision.attachments]) {
-        CDTLogWarn(
-                   CDTDATASTORE_LOG_CONTEXT,
-                   @"Attachments dictionary is not keyed by attachment name. "
-                   "When accessing attachments on saved revisions they will be keyed by attachment name");
+        os_log_debug(CDTOSLog, "Attachments dictionary is not keyed by attachment name. When accessing attachments on saved revisions they will be keyed by attachment name");
     }
 
     if (![self ensureDatabaseOpen]) {
@@ -854,9 +846,7 @@ int runningProcess;
                     [downloadedAttachments addObject:attachmentData];
                 } else {  // Error downloading the attachment, bail
                     // error out variable set by -stream...
-                    CDTLogWarn(CDTDATASTORE_LOG_CONTEXT,
-                               @"Error reading %@ from stream for doc <%@, %@>, rolling back",
-                               attachment.name, converted.docID, converted.revID);
+                    os_log_debug(CDTOSLog, "Error reading %{public}@ from stream for doc <%{public}@, %{public}@>, rolling back", attachment.name, converted.docID, converted.revID);
                     return nil;
                 }
             } else {

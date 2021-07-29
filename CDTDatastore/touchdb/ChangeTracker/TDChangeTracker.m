@@ -102,8 +102,7 @@
                                              options:TDJSONWritingAllowFragments
                                                error:&error];
                 if (!value) {
-                    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"Illegal filter parameter %@ = %@", key,
-                            _filterParameters[key]);
+                    os_log_info(CDTOSLog, "Illegal filter parameter %{public}@ = %{public}@", key, _filterParameters[key]);
                     continue;
                 }
             }
@@ -113,17 +112,14 @@
 
     if (_docIDs) {
         if (_filterName) {
-            CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"You can't set both a replication filter and "
-                                             @"doc_ids, since doc_ids uses the internal _doc_ids "
-                                             @"filter.");
+            os_log_info(CDTOSLog, "You can't set both a replication filter and doc_ids, since doc_ids uses the internal _doc_ids filter.");
         } else {
             NSError* error;
             NSString* docIDsParam = [TDJSON stringWithJSONObject:_docIDs
                                                          options:TDJSONWritingAllowFragments
                                                            error:&error];
             if (!docIDsParam || error) {
-                CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"Illegal doc IDs %@, %@", [_docIDs description],
-                        [error localizedDescription]);
+                os_log_info(CDTOSLog, "Illegal doc IDs %{public}@, %{public}@", [_docIDs description], [error localizedDescription]);
             }
             [path appendFormat:@"&filter=_doc_ids&doc_ids=%@", TDEscapeURLParam(docIDsParam)];
         }
@@ -143,7 +139,7 @@
 
 - (void)setUpstreamError:(NSString*)message
 {
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Server error: %@", self, message);
+    os_log_info(CDTOSLog, "%{public}@: Server error: %{public}@", self, message);
     self.error =
         [NSError errorWithDomain:@"TDChangeTracker" code:kTDStatusUpstreamError userInfo:nil];
 }
@@ -179,11 +175,10 @@
         NSTimeInterval retryDelay = kInitialRetryDelay * (1 << MIN(_retryCount, 16U));
         retryDelay = MIN(retryDelay, kMaxRetryDelay);
         ++_retryCount;
-        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Connection error, retrying in %.1f sec: %@", self,
-                retryDelay, error.localizedDescription);
+        os_log_info(CDTOSLog, "%{public}@: Connection error, retrying in %{public}.1f sec: %{public}@", self, retryDelay, error.localizedDescription);
         [self performSelector:@selector(retry) withObject:nil afterDelay:retryDelay];
     } else {
-        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Can't connect, giving up: %@", self, error);
+        os_log_info(CDTOSLog, "%{public}@: Can't connect, giving up: %{public}@", self, error);
         self.error = error;
         [self stopped];
     }

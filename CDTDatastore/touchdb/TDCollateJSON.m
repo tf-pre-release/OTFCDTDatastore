@@ -80,7 +80,7 @@ static ValueType valueTypeOf(char c)
         case '{':
             return kObject;
         default:
-            CDTLogInfo(CDTTD_JSON_CONTEXT, @"Unexpected character '%c' parsing JSON", c);
+            os_log_info(CDTOSLog, "Unexpected character '%{public}c' parsing JSON", c);
             return kIllegal;
     }
 }
@@ -101,7 +101,7 @@ extern char convertEscape(const char** in)
             int uc = (digittoint(digits[0]) << 12) | (digittoint(digits[1]) << 8) |
                      (digittoint(digits[2]) << 4) | (digittoint(digits[3]));
             if (uc > 127)
-                CDTLogInfo(CDTTD_JSON_CONTEXT, @"TDCollateJSON can't correctly compare \\u%.4s", digits);
+                os_log_info(CDTOSLog, "TDCollateJSON can't correctly compare \\u{public}%.4s", digits);
             return (char)uc;
         }
         case 'b':

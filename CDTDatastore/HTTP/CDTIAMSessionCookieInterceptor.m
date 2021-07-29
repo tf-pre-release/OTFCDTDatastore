@@ -96,7 +96,7 @@ static const NSInteger CDTIAMSessionCookieRequestTimeout = 600;
 
 - (NSData *)getBearerToken {
 
-    CDTLogDebug(CDTREPLICATION_LOG_CONTEXT, @"Getting bearer token");
+    os_log_debug(CDTOSLog, "Getting bearer token");
     
     // TODO allow over-riding of URL
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:_IAMTokenURL];
@@ -114,33 +114,23 @@ static const NSInteger CDTIAMSessionCookieRequestTimeout = 600;
                                       
                                       if (httpResp && httpResp.statusCode / 100 == 2) {
                                           token = data;
-                                          CDTLogDebug(CDTREPLICATION_LOG_CONTEXT, @"Got IAM token");
+                                          os_log_debug(CDTOSLog, "Got IAM token");
                                       } else if (!httpResp) {
                                           // Network failure of some kind; often transient. Try again next time.
-                                          CDTLogError(CDTREPLICATION_LOG_CONTEXT, @"Error getting cookie response from the server at %@, error: %@",
-                                                      request.URL,
-                                                      [error localizedDescription]);
+                                          os_log_error(CDTOSLog, "Error getting cookie response from the server at %{public}@, error: %{public}@",
+                                                       request.URL, [error localizedDescription]);
                                       } else if (httpResp.statusCode / 100 == 5) {
                                           // Server error of some kind; often transient. Try again next time.
-                                          CDTLogError(CDTREPLICATION_LOG_CONTEXT,
-                                                      @"Failed to get cookie from the server at %@, response code was %ld.",
-                                                      request.URL,
-                                                      (long)httpResp.statusCode);
+                                          os_log_error(CDTOSLog, "Failed to get cookie from the server at %{public}@, response code was %{public}ld.",
+                                                       request.URL, (long)httpResp.statusCode);
                                       } else if (httpResp.statusCode == 401) {
                                           // Credentials are not valid, fail and don't retry.
-                                          CDTLogError(CDTREPLICATION_LOG_CONTEXT, @"Credentials are incorrect for the server at %@, cookie "
-                                                      @"authentication will not be attempted "
-                                                      @"again by this interceptor object",
-                                                      request.URL);
+                                          os_log_error(CDTOSLog, "Credentials are incorrect for the server at %{public}@, cookie authentication will not be attempted again by this interceptor object", request.URL);
                                           self.shouldMakeSessionRequest = NO;
                                       } else {
                                           // Most other HTTP status codes are non-transient failures; don't retry.
-                                          CDTLogError(CDTREPLICATION_LOG_CONTEXT,
-                                                      @"Failed to get cookie from the server at %@, response code %ld. Cookie "
-                                                      @"authentication will not be attempted again by this interceptor "
-                                                      @"object",
-                                                      request.URL,
-                                                      (long)httpResp.statusCode);
+                                          os_log_error(CDTOSLog, "Failed to get cookie from the server at %{public}@, response code %{public}ld. Cookie authentication will not be attempted again by this interceptor object",
+                                                       request.URL, (long)httpResp.statusCode);
                                           self.shouldMakeSessionRequest = NO;
                                       }
                                       dispatch_semaphore_signal(sema);

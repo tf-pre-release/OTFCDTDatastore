@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		14B068C526551CF1003B5E9C /* TestFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B068C426551CF1003B5E9C /* TestFile.swift */; };
 		2BA0E6BC5DE3CECC0F206107 /* Pods_base_CDTDatastore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E20ED843AB63EA624A7FC5FB /* Pods_base_CDTDatastore.framework */; };
 		2E25F68D1F4C6DB900177ABA /* OHHTTPStubsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E25F68C1F4C6DB900177ABA /* OHHTTPStubsHelper.m */; };
 		2E25F68E1F4C6E3D00177ABA /* OHHTTPStubsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E25F68C1F4C6DB900177ABA /* OHHTTPStubsHelper.m */; };
@@ -156,7 +155,6 @@
 		9873834C1C47B38800937212 /* CDTEncryptionKeySimpleProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F77B891C43FCEE00515CC3 /* CDTEncryptionKeySimpleProvider.m */; };
 		9873834D1C47B38800937212 /* CDTQValueExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F77BC71C43FCEE00515CC3 /* CDTQValueExtractor.m */; };
 		9873834E1C47B38800937212 /* CDTQQueryConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F77BBB1C43FCEE00515CC3 /* CDTQQueryConstants.m */; };
-		9873834F1C47B38800937212 /* CDTLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F77B661C43FCEE00515CC3 /* CDTLogging.m */; };
 		987383501C47B38800937212 /* CDTEncryptionKeychainProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F77B961C43FCEE00515CC3 /* CDTEncryptionKeychainProvider.m */; };
 		987383511C47B38800937212 /* TDPuller.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F77C071C43FCEE00515CC3 /* TDPuller.m */; };
 		987383521C47B38800937212 /* TDStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F77C151C43FCEE00515CC3 /* TDStatus.m */; };
@@ -415,7 +413,6 @@
 		98F77C2E1C43FCEE00515CC3 /* CDTDocumentRevision.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F77B621C43FCEE00515CC3 /* CDTDocumentRevision.m */; };
 		98F77C2F1C43FCEE00515CC3 /* CDTFetchChanges.h in Headers */ = {isa = PBXBuildFile; fileRef = 98F77B631C43FCEE00515CC3 /* CDTFetchChanges.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		98F77C311C43FCEE00515CC3 /* CDTLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 98F77B651C43FCEE00515CC3 /* CDTLogging.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98F77C321C43FCEE00515CC3 /* CDTLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F77B661C43FCEE00515CC3 /* CDTLogging.m */; };
 		98F77C331C43FCEE00515CC3 /* CDTMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 98F77B671C43FCEE00515CC3 /* CDTMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		98F77C341C43FCEE00515CC3 /* CDTMisc.h in Headers */ = {isa = PBXBuildFile; fileRef = 98F77B681C43FCEE00515CC3 /* CDTMisc.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		98F77C351C43FCEE00515CC3 /* CDTMisc.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F77B691C43FCEE00515CC3 /* CDTMisc.m */; };
@@ -746,7 +743,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		14B068C426551CF1003B5E9C /* TestFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFile.swift; sourceTree = "<group>"; };
 		19778B3E647C4BEE5EC9C149 /* Pods-base-CDTDatastore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-base-CDTDatastore.release.xcconfig"; path = "Target Support Files/Pods-base-CDTDatastore/Pods-base-CDTDatastore.release.xcconfig"; sourceTree = "<group>"; };
 		2E25F68B1F4C6DB900177ABA /* OHHTTPStubsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OHHTTPStubsHelper.h; sourceTree = "<group>"; };
 		2E25F68C1F4C6DB900177ABA /* OHHTTPStubsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OHHTTPStubsHelper.m; sourceTree = "<group>"; };
@@ -833,7 +829,6 @@
 		98F77B631C43FCEE00515CC3 /* CDTFetchChanges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDTFetchChanges.h; sourceTree = "<group>"; };
 		98F77B641C43FCEE00515CC3 /* CDTFetchChanges.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDTFetchChanges.m; sourceTree = "<group>"; };
 		98F77B651C43FCEE00515CC3 /* CDTLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDTLogging.h; sourceTree = "<group>"; };
-		98F77B661C43FCEE00515CC3 /* CDTLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDTLogging.m; sourceTree = "<group>"; };
 		98F77B671C43FCEE00515CC3 /* CDTMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDTMacros.h; sourceTree = "<group>"; };
 		98F77B681C43FCEE00515CC3 /* CDTMisc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDTMisc.h; sourceTree = "<group>"; };
 		98F77B691C43FCEE00515CC3 /* CDTMisc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDTMisc.m; sourceTree = "<group>"; };
@@ -1309,7 +1304,6 @@
 		98F77B2C1C43FC9F00515CC3 = {
 			isa = PBXGroup;
 			children = (
-				14B068C426551CF1003B5E9C /* TestFile.swift */,
 				98F77B381C43FC9F00515CC3 /* CDTDatastore */,
 				98F77B441C43FC9F00515CC3 /* CDTDatastoreTests */,
 				98F77D2D1C44028700515CC3 /* CDTDatastoreReplicationAcceptanceTests */,
@@ -1357,7 +1351,6 @@
 				98F77B631C43FCEE00515CC3 /* CDTFetchChanges.h */,
 				98F77B641C43FCEE00515CC3 /* CDTFetchChanges.m */,
 				98F77B651C43FCEE00515CC3 /* CDTLogging.h */,
-				98F77B661C43FCEE00515CC3 /* CDTLogging.m */,
 				98F77B671C43FCEE00515CC3 /* CDTMacros.h */,
 				98F77B681C43FCEE00515CC3 /* CDTMisc.h */,
 				98F77B691C43FCEE00515CC3 /* CDTMisc.m */,
@@ -2743,7 +2736,6 @@
 				9873834C1C47B38800937212 /* CDTEncryptionKeySimpleProvider.m in Sources */,
 				9873834D1C47B38800937212 /* CDTQValueExtractor.m in Sources */,
 				9873834E1C47B38800937212 /* CDTQQueryConstants.m in Sources */,
-				9873834F1C47B38800937212 /* CDTLogging.m in Sources */,
 				987383501C47B38800937212 /* CDTEncryptionKeychainProvider.m in Sources */,
 				987383511C47B38800937212 /* TDPuller.m in Sources */,
 				987383521C47B38800937212 /* TDStatus.m in Sources */,
@@ -2903,7 +2895,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				98F77C621C43FCEE00515CC3 /* CDTEncryptionKeychainUtils+AES.m in Sources */,
-				14B068C526551CF1003B5E9C /* TestFile.swift in Sources */,
 				98F77CD01C43FCEE00515CC3 /* TDRemoteRequest.m in Sources */,
 				98F77CB01C43FCEE00515CC3 /* TDBatcher.m in Sources */,
 				98F77CBE1C43FCEE00515CC3 /* TDMultipartDocumentReader.m in Sources */,
@@ -2978,7 +2969,6 @@
 				98F77C521C43FCEE00515CC3 /* CDTEncryptionKeySimpleProvider.m in Sources */,
 				98F77C8C1C43FCEE00515CC3 /* CDTQValueExtractor.m in Sources */,
 				98F77C801C43FCEE00515CC3 /* CDTQQueryConstants.m in Sources */,
-				98F77C321C43FCEE00515CC3 /* CDTLogging.m in Sources */,
 				98F77C5E1C43FCEE00515CC3 /* CDTEncryptionKeychainProvider.m in Sources */,
 				98F77CCA1C43FCEE00515CC3 /* TDPuller.m in Sources */,
 				98F77CD81C43FCEE00515CC3 /* TDStatus.m in Sources */,
@@ -3508,7 +3498,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 31F27F1DFF41D9D9D74D0C77 /* Pods-base-tests-CDTDatastoreTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = CDTDatastoreTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -3524,7 +3513,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DAAE9AB8A870822C3B9D5E7A /* Pods-base-tests-CDTDatastoreTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = CDTDatastoreTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -3539,7 +3527,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C0C0A7725FB64DD8529B4713 /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = NO;
 				INFOPLIST_FILE = CDTDatastoreReplicationAcceptanceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -3553,7 +3540,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6EAB5D65BC0629AE060B61FA /* Pods-base-raTests-CDTDatastoreReplicationAcceptanceTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = NO;
 				INFOPLIST_FILE = CDTDatastoreReplicationAcceptanceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

@@ -108,7 +108,7 @@
             *error = [NSError errorWithDomain:CDTQIndexManagerErrorDomain
                                          code:CDTQIndexErrorSqlError
                                      userInfo:userInfo];
-            CDTLogError(CDTQ_LOG_CONTEXT, @"Problem updating index %@", indexName);
+            os_log_error(CDTOSLog, "Problem updating index %{public}@", indexName);
         }
     }
 
@@ -132,7 +132,7 @@
 
     fetcher.documentChangedBlock = ^(CDTDocumentRevision *revision) {
 
-      CDTLogVerbose(CDTQ_LOG_CONTEXT, @"documentChangedBlock: <%@,%@>", indexName, revision.docId);
+        os_log_debug(CDTOSLog, "documentChangedBlock: <%{public}@,%{public}@>", indexName, revision.docId);
 
       [updateBatch addObject:revision];
 
@@ -150,7 +150,7 @@
 
     fetcher.documentWithIDWasDeletedBlock = ^(NSString *docId) {
 
-      CDTLogVerbose(CDTQ_LOG_CONTEXT, @"documentWithIDWasDeletedBlock: <%@,%@>", indexName, docId);
+        os_log_debug(CDTOSLog, "documentWithIDWasDeletedBlock: <%{public}@,%{public}@>", indexName, docId);
 
       [deleteBatch addObject:docId];
 
@@ -167,8 +167,8 @@
     fetcher.fetchRecordChangesCompletionBlock = ^(NSString *newSeqVal, NSString *prevSeqVal,
                                                   NSError *error) {
 
-      CDTLogVerbose(CDTQ_LOG_CONTEXT, @"fetchRecordChangesCompletionBlock: <%@,%@>", indexName,
-                    newSeqVal);
+        os_log_debug(CDTOSLog, "fetchRecordChangesCompletionBlock: <%{public}@,%{public}@>",
+                     indexName, newSeqVal);
 
       CDTQIndexUpdater *self = weakSelf;
       if (self) {
@@ -223,8 +223,8 @@
                 }
 
                 if (!success) {
-                    CDTLogError(CDTQ_LOG_CONTEXT, @"Updating index %@ failed, CDTSqlParts: %@",
-                                indexName, insert);
+                    os_log_error(CDTOSLog, "Updating index %{public}@ failed, CDTSqlParts: %{public}@",
+                                 indexName, insert);
                     break;
                 }
             }
@@ -322,10 +322,7 @@
     }
 
     if (n_arrays > 1) {
-        CDTLogError(
-            CDTQ_LOG_CONTEXT,
-            @"Indexing %@ in index %@ includes >1 array field; only array field per index allowed",
-            rev.docId, indexName);
+        os_log_error(CDTOSLog, "Indexing %{public}@ in index %{public}@ includes >1 array field; only array field per index allowed", rev.docId, indexName);
         return nil;
     }
 

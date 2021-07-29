@@ -160,10 +160,7 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
     if (nil != updates) {
         for (NSString* statement in [updates componentsSeparatedByString:@";"]) {
             if (statement.length && ![db executeUpdate:statement]) {
-                CDTLogWarn(CDTDATASTORE_LOG_CONTEXT, @"TD_Database: Could not initialize schema of %@ -- "
-                                               @"May be an old/incompatible format. "
-                                                "SQLite error: %@",
-                        _path, db.lastErrorMessage);
+                os_log_debug(CDTOSLog, "TD_Database: Could not initialize schema of %{public}@ -- May be an old/incompatible format. SQLite error: %{public}@", _path, db.lastErrorMessage);
                 [db close];
                 return NO;
             }
@@ -176,10 +173,7 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
             // problem in which case it's nil.
             FMResultSet* results = [db executeQuery:statement];
             if (statement.length && results == nil) {
-                CDTLogWarn(CDTDATASTORE_LOG_CONTEXT, @"TD_Database: Could not initialize schema of %@ -- "
-                                               @"May be an old/incompatible format. "
-                                                "SQLite error: %@",
-                        _path, db.lastErrorMessage);
+                os_log_debug(CDTOSLog, "TD_Database: Could not initialize schema of %{public}@ -- May be an old/incompatible format. SQLite error: %{public}@",_path, db.lastErrorMessage);
                 [db close];
                 return NO;
             }
@@ -189,11 +183,7 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
     // at the end, update user_version
     NSString* statement = [NSString stringWithFormat:@"PRAGMA user_version = %li", (long)version];
     if (statement.length && ![db executeUpdate:statement]) {
-        CDTLogWarn(
-            CDTDATASTORE_LOG_CONTEXT,
-            @"TD_Database: Could not initialize schema of %@ -- May be an old/incompatible format. "
-             "SQLite error: %@",
-            _path, db.lastErrorMessage);
+        os_log_debug(CDTOSLog, "TD_Database: Could not initialize schema of %{public}@ -- May be an old/incompatible format. SQLite error: %{public}@", _path, db.lastErrorMessage);
         [db close];
         return NO;
     }
@@ -207,10 +197,7 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
     if (nil != updates) {
         for (NSString* statement in [updates componentsSeparatedByString:@";"]) {
             if (statement.length && ![db executeUpdate:statement]) {
-                CDTLogWarn(CDTDATASTORE_LOG_CONTEXT, @"TD_Database: Could not initialize schema of %@ -- "
-                                               @"May be an old/incompatible format. "
-                                                "SQLite error: %@",
-                        _path, db.lastErrorMessage);
+                os_log_debug(CDTOSLog, "TD_Database: Could not initialize schema of %{public}@ -- May be an old/incompatible format. SQLite error: %{public}@", _path, db.lastErrorMessage);
                 [db close];
                 return NO;
             }
@@ -242,7 +229,7 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
                 NSError* error = nil;
                 result = [db setKeyWithProvider:provider error:&error];
                 if (!result) {
-                    CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"Key not set for DB at %@: %@", _path, error);
+                    os_log_error(CDTOSLog, "Key not set for DB at %{public}@: %{public}@", _path, error);
                 }
             }];
         }
@@ -294,7 +281,7 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
         isValid = [TD_Database sameEncryptionKeyIn:_keyProviderToOpenDB and:provider];
         
         if (!isValid) {
-            CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"DB is open but key provided is wrong");
+            os_log_error(CDTOSLog, "DB is open but key provided is wrong");
         }
     }
     
@@ -344,9 +331,7 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
 
         // Incompatible version changes increment the hundreds' place:
         if (dbVersion >= 300) {
-            CDTLogWarn(CDTDATASTORE_LOG_CONTEXT,
-                    @"TD_Database: Database version (%d) is newer than I know how to work with",
-                    dbVersion);
+            os_log_debug(CDTOSLog, "TD_Database: Database version (%{public}d) is newer than I know how to work with", dbVersion);
             [db close];
             result = NO;
             return;
@@ -532,8 +517,8 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
                                    encryptionKeyProvider:provider
                                                    error:&error];
         if (!_attachments) {
-            CDTLogWarn(CDTDATASTORE_LOG_CONTEXT, @"%@: Couldn't open attachment store at %@", self,
-                       self.attachmentStorePath);
+            os_log_debug(CDTOSLog, "%{public}@: Couldn't open attachment store at %{public}@",
+                         self, self.attachmentStorePath);
             [db close];
             result = NO;
             return;
@@ -572,7 +557,7 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
         return NO;
     }
 
-    CDTLogInfo(CDTDATASTORE_LOG_CONTEXT, @"Close %@", _path);
+    os_log_info(CDTOSLog, "Close %{public}@", _path);
     [[NSNotificationCenter defaultCenter] postNotificationName:TD_DatabaseWillCloseNotification
                                                         object:self];
     for (TD_View* view in _views.allValues) [view databaseClosing];
@@ -612,7 +597,7 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
                                                         object:self];
 
     if (self.open && ![self closeInternal]) {
-        CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"Database at path %@ could not be closed", _path);
+        os_log_error(CDTOSLog, "Database at path %{public}@ could not be closed", _path);
 
         return NO;
     }
@@ -623,7 +608,7 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
 
 + (BOOL)deleteClosedDatabaseAtPath:(NSString *)path error:(NSError **)outError
 {
-    CDTLogInfo(CDTDATASTORE_LOG_CONTEXT, @"Deleting %@", path);
+    os_log_info(CDTOSLog, "Deleting %{public}@", path);
     
     BOOL success = YES;
 
@@ -642,9 +627,9 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
 
 - (void)dealloc
 {
-    CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"-dealloc TD_Database %@", self);
+    os_log_debug(CDTOSLog, "-dealloc TD_Database %{public}@", self);
     if (self.isOpen) {
-        CDTLogWarn(CDTDATASTORE_LOG_CONTEXT, @"dealloced without being closed first! %@", self);
+        os_log_debug(CDTOSLog, "dealloced without being closed first! %{public}@", self);
         [self close];
     }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -662,7 +647,7 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
         }
         @catch (NSException* x)
         {
-            CDTLogWarn(CDTDATASTORE_LOG_CONTEXT, @"Exception raised during -inTransaction: %@", x);
+            os_log_debug(CDTOSLog, "Exception raised during -inTransaction: %{public}@", x);
             status = kTDStatusException;
         }
         @finally { *rollback = TDStatusIsError(status); }
@@ -803,8 +788,8 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
     NSMutableDictionary* docProperties =
         [TDJSON JSONObjectWithData:json options:TDJSONReadingMutableContainers error:NULL];
     if (!docProperties) {
-        CDTLogWarn(CDTDATASTORE_LOG_CONTEXT, @"Unparseable JSON for doc=%@, rev=%@: %@", docID, revID,
-                [json my_UTF8ToString]);
+        os_log_debug(CDTOSLog, "Unparseable JSON for doc=%{public}@, rev=%{public}@: %{public}@", docID, revID,
+                     [json my_UTF8ToString]);
         return extra;
     }
     [docProperties addEntriesFromDictionary:extra];
@@ -927,7 +912,7 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
           }
         }];
     } else {
-        CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"Database is not open");
+        os_log_debug(CDTOSLog, "Database is not open");
     }
 
     return result;
@@ -1534,7 +1519,7 @@ const TDChangesOptions kDefaultTDChangesOptions = {UINT_MAX, 0, NO, NO, YES};
     } else {
         flags |= SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
     }
-    CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"Open %@ (flags=%X)", path, flags);
+    os_log_debug(CDTOSLog, "Open %{public}@ (flags=%{public}X)", path, flags);
 
     FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithPath:path flags:flags];
 

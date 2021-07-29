@@ -17,6 +17,8 @@
 #import "CDTSessionCookieInterceptorBase.h"
 #import "CDTLogging.h"
 
+#import <os/log.h>
+
 /** Number of seconds to wait for _session to respond. */
 static const NSInteger CDTSessionCookieRequestTimeout = 600;
 
@@ -46,24 +48,29 @@ static const NSInteger CDTSessionCookieRequestTimeout = 600;
 
 - (BOOL)hasValidCookieWithName:(nonnull NSString*)cookieName forRequestURL:(nonnull NSURL*)requestUrl
 {
-    CDTLogDebug(CDTREPLICATION_LOG_CONTEXT, @"Checking cookies.");
+    os_log_debug(CDTOSLog, "Checking cookies.");
+    
+    if (@available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *)) {
+        const char *msg = @"Checking cookies.".UTF8String;
+        os_log_debug(OS_LOG_DEFAULT, "%{public}s", msg);
+    }
     // Get the existing cookies
     // Compare them to the current time and return YES if we should renew
     NSDate *timeNow = [NSDate date];
     for (NSHTTPCookie* c in _cookies)
     {
         if ([c.name isEqualToString: cookieName]) {
-            CDTLogDebug(CDTREPLICATION_LOG_CONTEXT, @"Already have %@ cookie.", cookieName);
+            os_log_debug(CDTOSLog, "Already have %{public}@ cookie.", cookieName);
             if ([c.expiresDate timeIntervalSinceDate: timeNow] > [@300.0 doubleValue]) {
                 // It is more than 5 minutes until the session expires
-                CDTLogDebug(CDTREPLICATION_LOG_CONTEXT, @"%@ cookie is still valid.", cookieName);
+                os_log_debug(CDTOSLog, "%{public}@ cookie is still valid.", cookieName);
                 return YES;
             } else {
-                CDTLogDebug(CDTREPLICATION_LOG_CONTEXT, @"%@ cookie is expired or expiring soon.", cookieName);
+                os_log_debug(CDTOSLog, "%{public}@ cookie is expired or expiring soon.", cookieName);
             }
         }
     }
-    CDTLogDebug(CDTREPLICATION_LOG_CONTEXT, @"Will attempt to get new %@ cookie.", cookieName);
+    os_log_debug(CDTOSLog, "Will attempt to get new %{public}@ cookie.", cookieName);
     return NO;
 }
 
@@ -141,44 +148,30 @@ static const NSInteger CDTSessionCookieRequestTimeout = 600;
                                           // Store the cookie value from the header
                                           if (data && sessionStartedHandler(data)) {
                                               cookies = [NSHTTPCookie cookiesWithResponseHeaderFields: httpResp.allHeaderFields forURL:request.URL];
-                                              CDTLogDebug(CDTREPLICATION_LOG_CONTEXT, @"Got cookie");
+                                              os_log_debug(CDTOSLog, "Got cookie");
                                           }
                                       } else if (!httpResp) {
                                           // Network failure of some kind; often transient. Try again next time.
-                                          CDTLogError(CDTREPLICATION_LOG_CONTEXT, @"Error making cookie response, error:%@",
-                                                      [error localizedDescription]);
+                                          os_log_error(CDTOSLog, "Error making cookie response, error:%{public}@",
+                                                       [error localizedDescription]);
                                       } else if (httpResp.statusCode / 100 == 5) {
                                           // Server error of some kind; often transient. Try again next time.
-                                          CDTLogError(CDTREPLICATION_LOG_CONTEXT,
-                                                      @"Failed to get cookie from the server at %@, response code was %ld.",
-                                                      url,
-                                                      (long)httpResp.statusCode);
+                                          os_log_error(CDTOSLog, "Failed to get cookie from the server at %{public}@, response code was %{public}ld.",
+                                                       url, (long)httpResp.statusCode);
                                       } else if (httpResp.statusCode == 401) {
                                           // Credentials are not valid, fail and don't retry.
-                                          CDTLogError(CDTREPLICATION_LOG_CONTEXT, @"Credentials are incorrect, cookie "
-                                                      @"authentication will not be attempted "
-                                                      @"again by this interceptor object");
+                                          os_log_error(CDTOSLog, "Credentials are incorrect, cookie authentication will not be attempted again by this interceptor object");
                                           self.shouldMakeSessionRequest = NO;
                                       } else {
                                           // Most other HTTP status codes are non-transient failures; don't retry.
                                           NSString *dataJsonResponse = [[NSString alloc] initWithData:data
                                                                                              encoding:NSUTF8StringEncoding];
                                           if(dataJsonResponse) {
-                                            CDTLogError(CDTREPLICATION_LOG_CONTEXT,
-                                                      @"Failed to get cookie from the server at %@, "
-                                                      @"response code %ld, response message: %@. Cookie "
-                                                      @"authentication will not be attempted again by this interceptor "
-                                                      @"object",
-                                                      url,
-                                                      (long)httpResp.statusCode,
-                                                      dataJsonResponse);
+                                              os_log_error(CDTOSLog, "Failed to get cookie from the server at %{public}@, response code %{public}ld, response message: %{public}@. Cookie authentication will not be attempted again by this interceptor object",
+                                                           url, (long)httpResp.statusCode, dataJsonResponse);
                                           } else {
-                                            CDTLogError(CDTREPLICATION_LOG_CONTEXT,
-                                                      @"Failed to get cookie from the server at %@, response code %ld. Cookie "
-                                                      @"authentication will not be attempted again by this interceptor "
-                                                      @"object",
-                                                      url,
-                                                      (long)httpResp.statusCode);
+                                              os_log_error(CDTOSLog, "Failed to get cookie from the server at %{public}@, response code %{public}ld. Cookie authentication will not be attempted again by this interceptor object",
+                                                           url, (long)httpResp.statusCode);
                                           }
                                           self.shouldMakeSessionRequest = NO;
                                       }

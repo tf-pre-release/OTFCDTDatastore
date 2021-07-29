@@ -39,8 +39,7 @@
     if (self) {
         _thisKey = [CDTEncryptionKey encryptionKeyWithData:key];
         if (!_thisKey) {
-            CDTLogError(CDTDATASTORE_LOG_CONTEXT,
-                        @"Key could not be created with provided data. Abort initialisation");
+            os_log_error(CDTOSLog, "Key could not be created with provided data. Abort initialisation");
 
             self = nil;
         }

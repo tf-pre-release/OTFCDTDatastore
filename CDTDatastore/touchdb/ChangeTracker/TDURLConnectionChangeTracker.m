@@ -73,7 +73,7 @@ static const float kChangeQueuePollingRate = 0.1f;
     @synchronized (self) {
         if (self.task) return NO;
 
-        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Starting...", [self class]);
+        os_log_info(CDTOSLog, "%{public}@: Starting...", [self class]);
         [super start];
 
         NSURL* url = self.changesFeedURL;
@@ -92,8 +92,7 @@ static const float kChangeQueuePollingRate = 0.1f;
             NSString* authHeader = [self.authorizer authorizeURLRequest:self.request forRealm:nil];
             if (authHeader) {
                 if ([requestHeadersKeys containsObject:@"Authorization"]) {
-                    CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"%@ Overwriting 'Authorization' header with "
-                               @"value %@", self, authHeader);
+                    os_log_debug(CDTOSLog, "%{public}@ Overwriting 'Authorization' header with value %{public}@", self, authHeader);
                 }
                 [self.request setValue: authHeader forHTTPHeaderField:@"Authorization"];
             }
@@ -106,7 +105,7 @@ static const float kChangeQueuePollingRate = 0.1f;
         self.inputBuffer = [NSMutableData dataWithCapacity:0];
 
         self.startTime = [NSDate date];
-        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Started... <%@>", self, TDCleanURLtoString(url));
+        os_log_info(CDTOSLog, "%{public}@: Started... <%{public}@>", self, TDCleanURLtoString(url));
     }
     return YES;
 }
@@ -127,7 +126,7 @@ static const float kChangeQueuePollingRate = 0.1f;
                                                  selector:@selector(start)
                                                    object:nil];  // cancel pending retries
         if (self.task) {
-            CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: stop", [self class]);
+            os_log_info(CDTOSLog, "%{public}@: stop", [self class]);
             [self clearConnection];
         }
         [super stop];
@@ -136,14 +135,14 @@ static const float kChangeQueuePollingRate = 0.1f;
 
 - (void)retryOrError:(NSError*)error
 {
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: retryOrError: %@", [self class], error);
+    os_log_info(CDTOSLog, "%{public}@: retryOrError: %{public}@", [self class], error);
     if (++_retryCount <= kMaxRetries && TDMayBeTransientError(error)) {
         self.totalRetries++;
         [self clearConnection];
         NSTimeInterval retryDelay = kInitialRetryDelay * (1 << (_retryCount - 1));
         [self performSelector:@selector(start) withObject:nil afterDelay:retryDelay];
     } else {
-        CDTLogError(CDTREPLICATION_LOG_CONTEXT, @"%@: Can't connect, giving up: %@", self, error);
+        os_log_error(CDTOSLog, "%{public}@: Can't connect, giving up: %{public}@", self, error);
         
         self.error = error;
         [self stop];
@@ -156,8 +155,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
   completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *))completionHandler{
     NSURLProtectionSpace *space = challenge.protectionSpace;
     NSString *authMethod = space.authenticationMethod;
-    CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"Got challenge for %@: method=%@, proposed=%@, err=%@",
-                  [self class], authMethod, challenge.proposedCredential, challenge.error);
+    os_log_debug(CDTOSLog, "Got challenge for %{public}@: method=%{public}@, proposed=%{public}@, err=%{public}@", [self class], authMethod, challenge.proposedCredential, challenge.error);
     
     if ($equal(authMethod, NSURLAuthenticationMethodHTTPBasic)) {
         // On basic auth challenge, use proposed credential on first attempt. On second attempt,
@@ -172,8 +170,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
                                           authenticationMethod:authMethod];
             }
             if (cred) {
-                CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@ challenge: useCredential: %@",
-                              [self class], cred);
+                os_log_debug(CDTOSLog, "%{public}@ challenge: useCredential: %{public}@", [self class], cred);
                 completionHandler(NSURLSessionAuthChallengeUseCredential,cred);
                 // Update my authorizer so my owner (the replicator) can pick it up when I'm done
                 _authorizer = [[TDBasicAuthorizer alloc] initWithCredential:cred];
@@ -181,8 +178,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
             }
         }
         
-        CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@ challenge: continueWithoutCredential",
-                      [self class]);
+        os_log_debug(CDTOSLog, "%{public}@ challenge: continueWithoutCredential", [self class]);
         completionHandler(NSURLSessionAuthChallengeUseCredential,nil);
     }
     else if ($equal(authMethod, NSURLAuthenticationMethodServerTrust)) {
@@ -190,19 +186,18 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
         SecTrustRef trust = space.serverTrust;
         if ([TDRemoteRequest checkTrust:trust forHost:space.host]) {
             
-            CDTLogVerbose(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@ useCredential for trust: %@",
-                          self, trust);
+            os_log_debug(CDTOSLog, "%{public}@ useCredential for trust: %{public}@", self, trust);
             NSURLCredential *cred = [NSURLCredential credentialForTrust:trust];
             completionHandler(NSURLSessionAuthChallengeUseCredential, cred);
             
         }
         else {
-            CDTLogWarn(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@ challenge: cancel", self);
+            os_log_debug(CDTOSLog, "%{public}@ challenge: cancel", self);
             completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge,nil);
         }
     }
     else {
-        CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"%@ challenge: performDefaultHandling", self);
+        os_log_debug(CDTOSLog, "%{public}@ challenge: performDefaultHandling", self);
         completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
     }
     
@@ -212,7 +207,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 {
     NSHTTPURLResponse *httpresponse = (NSHTTPURLResponse *)response;
     TDStatus status = (TDStatus)httpresponse.statusCode;
-    CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@: didReceiveResponse, status %ld", [self class], (long)status);
+    os_log_debug(CDTOSLog, "%{public}@: didReceiveResponse, status %{public}ld", [self class], (long)status);
     
     [self.inputBuffer setLength:0];
 
@@ -224,9 +219,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
             NSString* authorization = [self.requestHeaders objectForKey:@"Authorization"];
             NSString* authResponse = [httpresponse allHeaderFields][@"WWW-Authenticate"];
             
-            CDTLogError(CDTREPLICATION_LOG_CONTEXT,
-                       @"%@: HTTP auth failed; sent Authorization: %@  ;  got WWW-Authenticate: %@", [self class],
-                       authorization, authResponse);
+            os_log_error(CDTOSLog, "%{public}@: HTTP auth failed; sent Authorization: %{public}@  ;  got WWW-Authenticate: %{public}@", [self class], authorization, authResponse);
             errorInfo = $dict({ @"HTTPAuthorization", authorization },
                               { @"HTTPAuthenticateHeader", authResponse });
         }
@@ -243,8 +236,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 
 -(void)receivedData:(NSData *)data
 {
-    CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@: didReceiveData: %ld bytes",
-                  [self class], (unsigned long)[data length]);
+    os_log_debug(CDTOSLog, "%{public}@: didReceiveData: %{public}ld bytes", [self class], (unsigned long)[data length]);
     
     [self.inputBuffer appendData:data];
     [self finishedLoading];
@@ -253,8 +245,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 -(void) finishedLoading
 {
     //parse the input buffer into JSON (or NSArray of changes?)
-    CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@: didFinishLoading, %u bytes", self,
-               (unsigned)self.inputBuffer.length);
+    os_log_debug(CDTOSLog, "%{public}@: didFinishLoading, %{public}u bytes", self, (unsigned)self.inputBuffer.length);
     
     BOOL restart = NO;
     NSString* errorMessage = nil;
@@ -267,8 +258,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
             // The response at least starts out as what we'd expect, so it looks like the connection
             // was closed unexpectedly before the full response was sent.
             NSTimeInterval elapsed = [self.startTime timeIntervalSinceNow] * -1.0;
-            CDTLogError(CDTREPLICATION_LOG_CONTEXT, @"%@: connection closed unexpectedly after "
-                        @"%.1f sec. will retry", self, elapsed);
+            os_log_error(CDTOSLog, "%{public}@: connection closed unexpectedly after %{public}.1f sec. will retry", self, elapsed);
             
             [self retryOrError:[NSError errorWithDomain:NSURLErrorDomain
                                                    code:NSURLErrorNetworkConnectionLost
@@ -344,9 +334,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
     }
     
     if (!match) {
-        CDTLogError(CDTREPLICATION_LOG_CONTEXT, @"%@: Unparseable response from %@. Did not find "
-                    @"start of the expected response: %@", self,
-                    TDCleanURLtoString(self.request.URL), prefixString);
+        os_log_error(CDTOSLog, "%{public}@: Unparseable response from %{public}@. Did not find start of the expected response: %{public}@", self, TDCleanURLtoString(self.request.URL), prefixString);
     }
     
     return match;

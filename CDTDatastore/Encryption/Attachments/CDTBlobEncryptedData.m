@@ -51,11 +51,11 @@ NSString *const CDTBlobEncryptedDataErrorDomain = @"CDTBlobEncryptedDataErrorDom
         CDTBlobData *thisBlob = [CDTBlobData blobWithPath:path];
 
         if (!thisBlob) {
-            CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"Cannot create blob data with path %@", path);
+            os_log_error(CDTOSLog, "Cannot create blob data with path %{public}@", path);
 
             self = nil;
         } else if (!encryptionKey) {
-            CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"Supply an encryption key");
+            os_log_error(CDTOSLog, "Supply an encryption key");
 
             self = nil;
         } else {
@@ -99,8 +99,8 @@ NSString *const CDTBlobEncryptedDataErrorDomain = @"CDTBlobEncryptedDataErrorDom
 
         success = (version == CDTBLOBENCRYPTEDDATA_VERSION_VALUE);
         if (!success) {
-            CDTLogDebug(CDTDATASTORE_LOG_CONTEXT,
-                        @"Wrong version: %ui. File is not encrypted or it is corrupted", version);
+            os_log_debug(CDTOSLog, "Wrong version: %{public}ui. File is not encrypted or it is corrupted",
+                         version);
 
             thisError = [CDTBlobEncryptedData errorWrongVersion];
         }
@@ -157,7 +157,7 @@ NSString *const CDTBlobEncryptedDataErrorDomain = @"CDTBlobEncryptedDataErrorDom
 {
     // Validate data
     if (!data) {
-        CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"Data is nil");
+        os_log_debug(CDTOSLog, "Data is nil");
 
         if (error) {
             *error = [CDTBlobEncryptedData errorNoDataProvided];
@@ -188,7 +188,7 @@ NSString *const CDTBlobEncryptedDataErrorDomain = @"CDTBlobEncryptedDataErrorDom
 - (BOOL)openForWriting
 {
     if ([self.blob isBlobOpenForWriting]) {
-        CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"Blob already open");
+        os_log_debug(CDTOSLog, "Blob already open");
 
         return YES;
     }
@@ -209,13 +209,13 @@ NSString *const CDTBlobEncryptedDataErrorDomain = @"CDTBlobEncryptedDataErrorDom
 - (BOOL)appendData:(NSData *)data
 {
     if (![self.blob isBlobOpenForWriting]) {
-        CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"Blob is not open. No data can be added");
+        os_log_debug(CDTOSLog, "Blob is not open. No data can be added");
 
         return NO;
     }
 
     if (!data) {
-        CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"Data is nil");
+        os_log_debug(CDTOSLog, "Data is nil");
 
         return NO;
     }
@@ -228,7 +228,7 @@ NSString *const CDTBlobEncryptedDataErrorDomain = @"CDTBlobEncryptedDataErrorDom
 - (void)close
 {
     if (![self.blob isBlobOpenForWriting]) {
-        CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"Blob already closed");
+        os_log_debug(CDTOSLog, "Blob already closed");
 
         return;
     }

@@ -1,5 +1,4 @@
-
-source 'https://github.com/CocoaPods/Specs'
+source 'https://cdn.cocoapods.org'
 source 'https://github.com/HippocratesTech/OTFCocoapodSpecs'
 
 use_frameworks!
@@ -14,7 +13,7 @@ end
 
 abstract_target 'base' do
     pod FMDB, '= 2.6'
-    pod 'CocoaLumberjack', '~> 2.0'
+    pod 'CocoaLumberjack'
     pod 'SQLCipher/fts', '~> 3.1.0' if ENV["encrypted"]
     pod 'GoogleToolboxForMac/NSData+zlib', '~> 2.1.1'
     pod 'OTFToolBox/Core', '~> 0.0.1'

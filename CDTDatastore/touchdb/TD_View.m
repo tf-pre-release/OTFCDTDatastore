@@ -140,7 +140,7 @@ static id<TDViewCompiler> sCompiler;
     if (!mapSource) return NO;
     TDMapBlock mapBlock = [[TD_View compiler] compileMapFunction:mapSource language:language];
     if (!mapBlock) {
-        CDTLogInfo(CDTTD_VIEW_CONTEXT, @"View %@ has unknown map function: %@", _name, mapSource);
+        os_log_info(CDTOSLog, "View %{public}@ has unknown map function: %{public}@", _name, mapSource);
         return NO;
     }
     NSString* reduceSource = viewProps[@"reduce"];
@@ -148,8 +148,7 @@ static id<TDViewCompiler> sCompiler;
     if (reduceSource) {
         reduceBlock = [[TD_View compiler] compileReduceFunction:reduceSource language:language];
         if (!reduceBlock) {
-            CDTLogWarn(CDTTD_VIEW_CONTEXT, @"View %@ has unknown reduce function: %@", _name,
-                    reduceSource);
+            os_log_debug(CDTOSLog, "View %{public}@ has unknown reduce function: %{public}@", _name, reduceSource);
             return NO;
         }
     }
@@ -204,7 +203,7 @@ static id fromJSON(NSData* json)
 
 - (TDStatus)updateIndex
 {
-    CDTLogInfo(CDTTD_VIEW_CONTEXT, @"Re-indexing view %@ ...", _name);
+    os_log_info(CDTOSLog, "Re-indexing view %{public}@ ...", _name);
     Assert(_mapBlock, @"Cannot reindex view '%@' which has no map block set", _name);
 
     int viewID = self.viewID;
@@ -259,7 +258,7 @@ static id fromJSON(NSData* json)
                 if (!key) key = $null;
                 NSString* keyJSON = toJSONString(key);
                 NSString* valueJSON = toJSONString(value);
-                CDTLogInfo(CDTTD_VIEW_CONTEXT, @"    emit(%@, %@)", keyJSON, valueJSON);
+                os_log_info(CDTOSLog, "    emit(%{public}@, %{public}@)", keyJSON, valueJSON);
                 if ([fmdb executeUpdate:@"INSERT INTO maps (view_id, sequence, key, value) VALUES "
                                          "(?, ?, ?, ?)",
                                         @(viewID), @(sequence), keyJSON, valueJSON])
@@ -356,8 +355,7 @@ static id fromJSON(NSData* json)
                                                                        options:_mapContentOptions
                                                                     inDatabase:db];
                     if (!properties) {
-                        CDTLogWarn(CDTTD_VIEW_CONTEXT, @"Failed to parse JSON of doc %@ rev %@", docID,
-                                revID);
+                        os_log_debug(CDTOSLog, "Failed to parse JSON of doc %{public}@ rev %{public}@", docID, revID);
                         continue;
                     }
 
@@ -369,7 +367,7 @@ static id fromJSON(NSData* json)
                     }
 
                     // Call the user-defined map() to emit new key/value pairs from this revision:
-                    CDTLogInfo(CDTTD_VIEW_CONTEXT, @"  call map for sequence=%lld...", sequence);
+                    os_log_info(CDTOSLog, "  call map for sequence=%{public}lld...", sequence);
                     _mapBlock(properties, emit);
                     if (emitFailed) {
                         status = kTDStatusCallbackError;
@@ -385,17 +383,14 @@ static id fromJSON(NSData* json)
                 return;
             }
 
-            CDTLogInfo(CDTTD_VIEW_CONTEXT,
-                    @"...Finished re-indexing view %@ to #%lld (deleted %u, added %u)", _name,
-                    dbMaxSequence, deleted, inserted);
+            os_log_info(CDTOSLog, "...Finished re-indexing view %{public}@ to #%{public}lld (deleted %{public}u, added %{public}u)", _name, dbMaxSequence, deleted, inserted);
             status = kTDStatusOK;
         }
         @finally
         {
             [r close];
             if (status >= kTDStatusBadRequest)
-                CDTLogWarn(CDTTD_VIEW_CONTEXT, @"TouchDB: Failed to rebuild view '%@': %@", _name,
-                        @(status));
+                os_log_debug(CDTOSLog, "TouchDB: Failed to rebuild view '%{public}@': %{public}@", _name, @(status));
             *rollback = (status < kTDStatusBadRequest);
         }
     }];
@@ -467,7 +462,7 @@ static id fromJSON(NSData* json)
         [args addObject:@(options->skip)];
     }
 
-    CDTLogInfo(CDTTD_VIEW_CONTEXT, @"Query %@: %@\n\tArguments: %@", _name, sql, args);
+    os_log_info(CDTOSLog, "Query %{public}@: %{public}@\n\tArguments: %{public}@", _name, sql, args);
 
     FMResultSet* r = [fmdb executeQuery:sql withArgumentsInArray:args];
     if (!r) *outStatus = kTDStatusDBError;
@@ -493,9 +488,7 @@ static id fromJSON(NSData* json)
             // Reduced or grouped query:
             // Reduced or grouped query:
             if (!_reduceBlock && !group) {
-                CDTLogWarn(CDTTD_VIEW_CONTEXT,
-                        @"Cannot use reduce option in view %@ which has no reduce block defined",
-                        _name);
+                os_log_debug(CDTOSLog, "Cannot use reduce option in view %{public}@ which has no reduce block defined", _name);
                 *outStatus = kTDStatusBadParam;
                 return;
             }
@@ -535,8 +528,7 @@ static id fromJSON(NSData* json)
                                                      inDatabase:db];
                         }
                     }
-                    CDTLogVerbose(CDTTD_VIEW_CONTEXT, @"Query %@: Found row with key=%@, value=%@, id=%@",
-                               _name, toJSONString(key), toJSONString(value), toJSONString(docID));
+                    os_log_debug(CDTOSLog, "Query %{public}@: Found row with key=%{public}@, value=%{public}@, id=%{public}@", _name, toJSONString(key), toJSONString(value), toJSONString(docID));
                     [rows addObject:$dict({ @"id", docID }, { @"key", key }, { @"value", value },
                                           { @"doc", docContents })];
                 }
@@ -545,7 +537,7 @@ static id fromJSON(NSData* json)
 
         [r close];
         *outStatus = kTDStatusOK;
-        CDTLogInfo(CDTTD_VIEW_CONTEXT, @"Query %@: Returning %u rows", _name, (unsigned)rows.count);
+        os_log_info(CDTOSLog, "Query %{public}@: Returning %{public}u rows", _name, (unsigned)rows.count);
     }];
     return rows;
 }
@@ -608,8 +600,7 @@ static id groupKey(NSData* keyJSON, unsigned groupLevel)
                 }
                 lastKeyData = [keyData copy];
             }
-            CDTLogVerbose(CDTTD_VIEW_CONTEXT, @"Query %@: Will reduce row with key=%@, value=%@", _name,
-                       [keyData my_UTF8ToString], [valueData my_UTF8ToString]);
+            os_log_debug(CDTOSLog, "Query %{public}@: Will reduce row with key=%{public}@, value=%{public}@", _name, [keyData my_UTF8ToString], [valueData my_UTF8ToString]);
             [keysToReduce addObject:keyData];
             [valuesToReduce addObject:valueData ?: $null];
         }
@@ -619,8 +610,8 @@ static id groupKey(NSData* keyJSON, unsigned groupLevel)
         // Finish the last group (or the entire list, if no grouping):
         id key = group ? groupKey(lastKeyData, groupLevel) : $null;
         id reduced = [self reduceKeys:keysToReduce values:valuesToReduce];
-        CDTLogVerbose(CDTTD_VIEW_CONTEXT, @"Query %@: Reduced to key=%@, value=%@", _name,
-                   toJSONString(key), toJSONString(reduced));
+        os_log_debug(CDTOSLog, "Query %{public}@: Reduced to key=%{public}@, value=%{public}@", _name,
+                     toJSONString(key), toJSONString(reduced));
         [rows addObject:$dict({ @"key", key }, { @"value", reduced })];
     }
     return rows;
