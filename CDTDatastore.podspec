@@ -13,11 +13,11 @@ limitations under the License.
 EOT
 
 Pod::Spec.new do |s|
-  s.name         = "CDTDatastore"
+  s.name         = "OTFCDTDatastore"
   s.version      = "0.0.1"
-  s.summary      = "CDTDatastore is a document datastore which syncs."
+  s.summary      = "OTFCDTDatastore is a document datastore which syncs."
   s.description  = <<-DESC
-                    CDTDatastore is a JSON document datastore which speaks the
+                      OTFCDTDatastore is a JSON document datastore which speaks the
                     Apache CouchDB(tm) replication protocol.
 
                     * Replicates with Cloudant and CouchDB.
@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   s.homepage     = "http://github.com/cloudant/CDTDatastore"
   s.license      = {:type => 'Apache, Version 2.0', :text => license}
   s.author       = { "Cloudant, Inc." => "support@cloudant.com" }
-  s.source       = { :git => "https://github.com/HippocratesTech/CDTDatastore", :tag => s.version }
+  s.source       = { :git => "https://github.com/HippocratesTech/OTFCDTDatastore", :tag => s.version }
 
   s.ios.deployment_target = '13.0'
   s.osx.deployment_target = '10.9'
