@@ -56,8 +56,7 @@
     for (NSString *field in path) {
         currentLevel = currentLevel[field];
         if (currentLevel == nil || ![currentLevel isKindOfClass:[NSDictionary class]]) {
-            CDTLogVerbose(CDTQ_LOG_CONTEXT, @"Could not extract field %@ from document %@",
-                          possiblyDottedField, body);
+            os_log_debug(CDTOSLog, "Could not extract field %@ from document %{public}@", possiblyDottedField, body);
             return nil;  // we ran out of stuff before we reached the full path length
         }
     }

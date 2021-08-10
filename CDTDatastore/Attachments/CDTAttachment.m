@@ -82,13 +82,11 @@
         NSData *gzippedData = [self.blob dataWithError:&error];
         data = (gzippedData ? [NSData gtm_dataByInflatingData:gzippedData] : nil);
     } else {
-        CDTLogWarn(CDTDOCUMENT_REVISION_LOG_CONTEXT,
-                   @"Unknown attachment encoding %i, returning nil", self.encoding);
+        os_log_debug(CDTOSLog, "Unknown attachment encoding %{public}i, returning nil", self.encoding);
     }
 
     if (!data && error) {
-        CDTLogWarn(CDTDOCUMENT_REVISION_LOG_CONTEXT, @"Data for attachment not retrieved: %@",
-                   error);
+        os_log_debug(CDTOSLog, "Data for attachment not retrieved: %{public}@", error);
     }
 
     return data;
@@ -107,8 +105,7 @@
 - (instancetype)initWithData:(NSData *)data name:(NSString *)name type:(NSString *)type
 {
     if (data == nil) {
-        CDTLogInfo(CDTDOCUMENT_REVISION_LOG_CONTEXT, @"When creating %@, data was nil, init failed.",
-                name);
+        os_log_info(CDTOSLog, "When creating %{public}@, data was nil, init failed.", name);
         return nil;
     }
 
@@ -136,8 +133,7 @@
 {
     NSFileManager *fm = [NSFileManager defaultManager];
     if (![fm fileExistsAtPath:filePath]) {
-        CDTLogInfo(CDTDOCUMENT_REVISION_LOG_CONTEXT, @"When creating %@, no file at %@, init failed.",
-                name, filePath);
+        os_log_info(CDTOSLog, "When creating %{public}@, no file at %{public}@, init failed.", name, filePath);
         return nil;
     }
 
@@ -152,9 +148,7 @@
 {
     NSFileManager *fm = [NSFileManager defaultManager];
     if (![fm fileExistsAtPath:self.filePath]) {
-        CDTLogInfo(CDTDOCUMENT_REVISION_LOG_CONTEXT,
-                @"When creating stream for %@, no file at %@, -getInputStream failed.", self.name,
-                self.filePath);
+        os_log_info(CDTOSLog, "When creating stream for %{public}@, no file at %{public}@, -getInputStream failed.", self.name, self.filePath);
         return nil;
     }
 

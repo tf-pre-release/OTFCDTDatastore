@@ -161,8 +161,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
 - (void)setLastSequence:(NSObject*)lastSequence
 {
     if (!$equal(lastSequence, _lastSequence)) {
-        CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"%@: Setting lastSequence to %@ (from %@)", self,
-                lastSequence, _lastSequence);
+        os_log_debug(CDTOSLog, "%{public}@: Setting lastSequence to %{public}@ (from %{public}@)", self, lastSequence, _lastSequence);
         _lastSequence = [lastSequence copy];
         if (!_lastSequenceChanged) {
             _lastSequenceChanged = YES;
@@ -173,10 +172,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
 
 - (void)postProgressChanged
 {
-    CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-            @"%@: postProgressChanged (%u/%u, active=%d (batch=%u, net=%u), online=%d)", self,
-            (unsigned)_changesProcessed, (unsigned)_changesTotal, _active, (unsigned)_batcher.count,
-            _asyncTaskCount, _online);
+    os_log_debug(CDTOSLog, "%{public}@: postProgressChanged (%{public}u/%{public}u, active=%{public}d (batch=%{public}u, net=%{public}u), online=%{public}d)", self, (unsigned)_changesProcessed, (unsigned)_changesTotal, _active, (unsigned)_batcher.count, _asyncTaskCount, _online);
     NSNotification* n =
         [NSNotification notificationWithName:TDReplicatorProgressChangedNotification object:self];
     [[NSNotificationQueue defaultQueue]
@@ -242,7 +238,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
     _replicatorThread = [[NSThread alloc] initWithTarget: self
                                                 selector: @selector(runReplicatorThread:)
                                                   object: taskGroup];
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"Starting TDReplicator thread %@ ...", _replicatorThread);
+    os_log_info(CDTOSLog, "Starting TDReplicator thread %{public}@ ...", _replicatorThread);
     [_replicatorThread start];
 
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(databaseWasDeleted:)
@@ -283,7 +279,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
                                              requestInterceptors:self.interceptors
                                            sessionConfigDelegate:self.sessionConfigDelegate];
     @autoreleasepool {
-        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"TDReplicator thread starting...");
+        os_log_info(CDTOSLog, "TDReplicator thread starting...");
         
         [[NSThread currentThread]
          setName:[NSString stringWithFormat:@"TDReplicator: %@", self.sessionID]];
@@ -302,7 +298,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
                                         beforeDate: [NSDate dateWithTimeIntervalSinceNow:0.1]])
         ;
         
-        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"TDReplicator thread exiting");
+        os_log_info(CDTOSLog, "TDReplicator thread exiting");
 
         if (taskGroup) {
             dispatch_group_leave(taskGroup);
@@ -335,8 +331,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
     self.error = [NSError errorWithDomain:TDInternalErrorDomain
                                      code:TDReplicatorErrorLocalDatabaseDeleted
                                  userInfo:userInfo];
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"During replication %@. databaseWasDeleted block. "
-               @"setting error: %@", self, self.error);
+    os_log_info(CDTOSLog, "During replication %{public}@. databaseWasDeleted block. setting error: %{public}@", self, self.error);
     [self stop];
 
 }
@@ -344,7 +339,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
 - (void) startReplicatorTasks {
 
     Assert(_db, @"Can't restart an already stopped TDReplicator");
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@ STARTING ...", self);
+    os_log_info(CDTOSLog, "%{public}@ STARTING ...", self);
 
     [_db addActiveReplicator:self];
 
@@ -354,23 +349,18 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
     _batcher = [[TDBatcher alloc] initWithCapacity:kInboxCapacity
                                              delay:kProcessDelay
                                          processor:^(NSArray* inbox) {
-                                             CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                                                     @"*** %@: BEGIN processInbox (%u sequences)",
-                                                     self, (unsigned)inbox.count);
-                                             TD_RevisionList* revs =
-                                                 [[TD_RevisionList alloc] initWithArray:inbox];
-                                             [self processInbox:revs];
-                                             CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                                                     @"*** %@: END processInbox (lastSequence=%@)",
-                                                     self, _lastSequence);
-                                             [self updateActive];
-                                         }];
+        os_log_debug(CDTOSLog, "*** %{public}@: BEGIN processInbox (%{public}u sequences)", self, (unsigned)inbox.count);
+        TD_RevisionList* revs = [[TD_RevisionList alloc] initWithArray:inbox];
+        [self processInbox:revs];
+        os_log_debug(CDTOSLog, "*** %{public}@: END processInbox (lastSequence=%{public}@)", self, _lastSequence);
+        [self updateActive];
+    }];
 
     // If client didn't set an authorizer, use basic auth if credential is available:
     if (!_authorizer) {
         _authorizer = [[TDBasicAuthorizer alloc] initWithURL:_remote];
         if (_authorizer)
-            CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"%@: Found credential, using %@", self, _authorizer);
+            os_log_debug(CDTOSLog, "%{public}@: Found credential, using %{public}@", self, _authorizer);
     }
 
     _startTime = CFAbsoluteTimeGetCurrent();
@@ -402,7 +392,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
 {
     @synchronized(self) {
         if (!_running) return;
-        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@ STOPPING...", self);
+        os_log_info(CDTOSLog, "%{public}@ STOPPING...", self);
         [_batcher flushAll];
         _continuous = NO;
         [self stopRemoteRequests];
@@ -428,9 +418,9 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
         if (!_running) {
             return;
         }
-        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@ STOPPED", self);
-        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"Replication: %@ took %.3f sec; error=%@", self,
-                CFAbsoluteTimeGetCurrent() - _startTime, _error);
+        os_log_info(CDTOSLog, "%{public}@ STOPPED", self);
+        os_log_info(CDTOSLog, "Replication: %{public}@ took %{public}.3f sec; error=%{public}@", self,
+                    CFAbsoluteTimeGetCurrent() - _startTime, _error);
         self.running = NO;
 
         [self saveLastSequence];
@@ -451,7 +441,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
         [_host stop];
         _host = nil;
 
-        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"STOP %@", self);
+        os_log_info(CDTOSLog, "STOP %{public}@", self);
         [[NSNotificationCenter defaultCenter] removeObserver: self];
         _replicatorStopped = YES;
     }
@@ -479,7 +469,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
     if (!_running) return;
 
     if (_online) {
-        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@ RETRYING, to transfer missed revisions...", self);
+        os_log_info(CDTOSLog, "%{public}@ RETRYING, to transfer missed revisions...", self);
         _revisionsFailed = 0;
         [NSObject cancelPreviousPerformRequestsWithTarget:self
                                                  selector:@selector(retryIfReady)
@@ -493,7 +483,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
 - (BOOL)goOffline
 {
     if (!_online) return NO;
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Going offline", self);
+    os_log_info(CDTOSLog, "%{public}@: Going offline", self);
     _online = NO;
     NSString *msg = @"Replication stopped because the reachability tracker determined the device was offline.";
     NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(msg, nil)};
@@ -508,7 +498,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
 - (BOOL)goOnline
 {
     if (_online) return NO;
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Going online", self);
+    os_log_info(CDTOSLog, "%{public}@: Going online", self);
     _online = YES;
 
     if (_running) {
@@ -523,8 +513,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
 
 - (void)reachabilityChanged:(TDReachability*)host
 {
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Reachability state = %@ (%02X)", self, host,
-            host.reachabilityFlags);
+    os_log_info(CDTOSLog, "%{public}@: Reachability state = %{public}@ (%{public}02X)", self, host, host.reachabilityFlags);
 
     if (host.reachable)
         [self goOnline];
@@ -543,9 +532,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
             if (!_continuous) {
                 [self stopped];
             } else if (_revisionsFailed > 0) {
-                CDTLogInfo(CDTREPLICATION_LOG_CONTEXT,
-                        @"%@: Failed to xfer %u revisions; will retry in %g sec", self,
-                        _revisionsFailed, kRetryDelay);
+                os_log_info(CDTOSLog, "%{public}@: Failed to xfer %{public}u revisions; will retry in %{public}g sec", self, _revisionsFailed, kRetryDelay);
                 [NSObject cancelPreviousPerformRequestsWithTarget:self
                                                          selector:@selector(retryIfReady)
                                                            object:nil];
@@ -581,7 +568,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
 - (void)addRevsToInbox:(TD_RevisionList*)revs
 {
     Assert(_running);
-    CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"%@: Received %llu revs", self, (UInt64)revs.count);
+    os_log_debug(CDTOSLog, "%{public}@: Received %{public}llu revs", self, (UInt64)revs.count);
     [_batcher queueObjects:revs.allRevisions];
     [self updateActive];
 }
@@ -609,15 +596,13 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
                       body:nil
               onCompletion:^(id result, NSError* error) {
                   if (error) {
-                      CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Session check failed: %@", self,
-                              error);
+                      os_log_info(CDTOSLog, "%{public}@: Session check failed: %{public}@", self, error);
                       self.error = error;
                   } else {
                       NSString* username = $castIf(
                           NSString, [[result objectForKey:@"userCtx"] objectForKey:@"name"]);
                       if (username) {
-                          CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Active session, logged in as '%@'",
-                                  self, username);
+                          os_log_info(CDTOSLog, "%{public}@: Active session, logged in as '%{public}@'", self, username);
                           [self fetchRemoteCheckpointDoc];
                       } else {
                           [self login];
@@ -632,25 +617,23 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
 {
     NSDictionary* loginParameters = [_authorizer loginParametersForSite:_remote];
     if (loginParameters == nil) {
-        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT,
-                @"%@: Authorizer has no login parameters, so skipping login", self);
+        os_log_info(CDTOSLog, "%{public}@: Authorizer has no login parameters, so skipping login", self);
         [self fetchRemoteCheckpointDoc];
         return;
     }
 
     NSString* loginPath = [_authorizer loginPathForSite:_remote];
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Logging in with %@ at %@ ...", self, _authorizer.class,
-            loginPath);
+    os_log_info(CDTOSLog, "%{public}@: Logging in with %{public}@ at %{public}@ ...", self, _authorizer.class, loginPath);
     [self asyncTaskStarted];
     [self sendAsyncRequest:@"POST"
                       path:loginPath
                       body:loginParameters
               onCompletion:^(id result, NSError* error) {
                   if (error) {
-                      CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Login failed!", self);
+                      os_log_info(CDTOSLog, "%{public}@: Login failed!", self);
                       self.error = error;
                   } else {
-                      CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Successfully logged in!", self);
+                      os_log_info(CDTOSLog, "%{public}@: Successfully logged in!", self);
                       [self fetchRemoteCheckpointDoc];
                   }
                   [self asyncTasksFinished:1];
@@ -664,7 +647,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
                                     body:(id)body
                             onCompletion:(TDRemoteRequestCompletionBlock)onCompletion
 {
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: %@ %@", self, method, path);
+    os_log_info(CDTOSLog, "%{public}@: %{public}@ %{public}@", self, method, path);
     NSURL* url;
     if ([path hasPrefix:@"/"]) {
         url = [[NSURL URLWithString:path relativeToURL:_remote] absoluteURL];
@@ -691,8 +674,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
                                              [strongSelf removeRemoteRequest:req];
                                              id<TDAuthorizer> auth = req.authorizer;
                                              if (auth && auth != _authorizer && error.code != 401) {
-                                                 CDTLogInfo(CDTREPLICATION_LOG_CONTEXT,
-                                                         @"%@: Updated to %@", self, auth);
+                                                 os_log_info(CDTOSLog, "%{public}@: Updated to %{public}@", self, auth);
                                                  _authorizer = auth;
                                              }
                                              onCompletion(result, error);
@@ -717,8 +699,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
 - (void)stopRemoteRequests
 {
     if (!_remoteRequests) return;
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"Stopping %u remote requests",
-            (unsigned)_remoteRequests.count);
+    os_log_info(CDTOSLog, "Stopping %{public}u remote requests", (unsigned)_remoteRequests.count);
     // Clear _remoteRequests before iterating, to ensure that re-entrant calls to this won't
     // try to re-stop any of the requests. (Re-entrant calls are possible due to replicator
     // error handling when it receives the 'canceled' errors from the requests I'm stopping.)
@@ -782,8 +763,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
             onCompletion:^(id response, NSError* error) {
                 // Got the response:
                 if (error && error.code != kTDStatusNotFound) {
-                    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Error fetching last sequence: %@", self,
-                            error.localizedDescription);
+                    os_log_info(CDTOSLog, "%{public}@: Error fetching last sequence: %{public}@", self, error.localizedDescription);
                     self.error = error;
                 } else {
                     if (error.code == kTDStatusNotFound) [self maybeCreateRemoteDB];
@@ -799,8 +779,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
 
                     if ($equal(remoteLastSequence, localLastSequence)) {
                         _lastSequence = localLastSequence;
-                        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Replicating from lastSequence=%@",
-                                self, _lastSequence);
+                        os_log_info(CDTOSLog, "%{public}@: Replicating from lastSequence=%{public}@", self, _lastSequence);
                     } else {
                         // traverse the history object looking for the last session where the
                         // session ids match.
@@ -811,10 +790,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
                                 localCheckpoint[@"history"];
 
                             if (!localHistory) {
-                                CDTLogInfo(CDTREPLICATION_LOG_CONTEXT,
-                                           @"%@: Local checkpoint doc does not contain history,"
-                                           @" falling back to full replication",
-                                           self);
+                                os_log_info(CDTOSLog, "%{public}@: Local checkpoint doc does not contain history, falling back to full replication", self);
                             }
 
                             // This assumes the  history array is ordered (most recent -> least
@@ -835,16 +811,10 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
                                 }
                             }
                         } else {
-                            CDTLogInfo(CDTREPLICATION_LOG_CONTEXT,
-                                       @"%@: Remote checkpoint doc does not contain history,"
-                                       @" falling back to full replication",
-                                       self);
+                            os_log_info(CDTOSLog, "%{public}@: Remote checkpoint doc does not contain history, falling back to full replication", self);
                         }
 
-                        CDTLogInfo(
-                            CDTREPLICATION_LOG_CONTEXT,
-                            @"%@: lastSequence mismatch: I had %@, remote had %@ (response = %@)",
-                            self, localLastSequence, remoteLastSequence, response);
+                        os_log_info(CDTOSLog, "%{public}@: lastSequence mismatch: I had %{public}@, remote had %{public}@ (response = %{public}@)", self, localLastSequence, remoteLastSequence, response);
                     }
                     [self beginReplicating];
                 }
@@ -889,13 +859,12 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
     }
     _lastSequenceChanged = _overdueForSave = NO;
 
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@ checkpointing sequence=%@", self, _lastSequence);
+    os_log_info(CDTOSLog, "%{public}@ checkpointing sequence=%{public}@", self, _lastSequence);
     NSMutableDictionary* body = [self.remoteCheckpoint mutableCopy];
 
     if (body) {
         if (body[@"error"]) {
-            CDTLogError(CDTREPLICATION_LOG_CONTEXT, @"%@ error found when checkpointing sequence %@",
-                        self, body[@"error"]);
+            os_log_error(CDTOSLog, "%{public}@ error found when checkpointing sequence %{public}@", self, body[@"error"]);
             // clear body to force a new one to be created lower down
             body = nil;
         } else if (!body[@"history"]) {
@@ -934,38 +903,30 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
                       body:body
               onCompletion:^(id response, NSError* error) {
                   if (error) {
-                      CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"%@: Unable to save remote checkpoint: %@",
-                              self, error);
+                      os_log_debug(CDTOSLog, "%{public}@: Unable to save remote checkpoint: %{public}@", self, error);
                       // TODO: If error is 401 or 403, and this is a pull, remember that remote is
                       // read-only and don't attempt to read its checkpoint next time.
                   } else if (_db) {
-                      CDTLogDebug(CDTREPLICATION_LOG_CONTEXT,
-                                    @"%@: Saving checkpoint to local database", self);
+                      os_log_debug(CDTOSLog, "%{public}@: Saving checkpoint to local database", self);
                       id rev = response[@"rev"];
                       id ID = response[@"id"];
                       if (rev) body[@"_rev"] = rev;
                       if (ID) body[@"_id"] = ID;
                       if (!ID) {
-                          CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                                     @"%@: Can't save checkpoint to local database because response doesn't contain id: %@",
-                                     self, response);
+                          os_log_debug(CDTOSLog, "%{public}@: Can't save checkpoint to local database because response doesn't contain id: %{public}@", self, response);
                       }
                       self.remoteCheckpoint = body;
                       NSError *err;
                       if (ID && ![self.db saveCheckpointDocument:body error:&err]) {
-                          CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                                     @"Failed to save checkpoint to local database. Error was %@", err);
+                          os_log_debug(CDTOSLog, "Failed to save checkpoint to local database. Error was %{public}@", err);
                       }
                   }
 
-                  CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT,
-                                @"PUT last sequence %@ to checkpoint doc response: %@",
-                                _lastSequence, response);
+        os_log_debug(CDTOSLog, "PUT last sequence %{public}@ to checkpoint doc response: %{public}@", _lastSequence, response);
                   _savingCheckpoint = NO;
                   [self asyncTasksFinished:1];
                   if (_replicatorStopped) {
-                      CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT,
-                                    @"%@ Final PUT checkpoint. Run loop will be stopped.", self);
+                      os_log_debug(CDTOSLog, "%{public}@ Final PUT checkpoint. Run loop will be stopped.", self);
                   }
 
                   if (_db && _overdueForSave)

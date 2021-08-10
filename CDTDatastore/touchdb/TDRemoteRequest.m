@@ -103,7 +103,7 @@
 - (void)start
 {
     if (!_request) return;  // -clearConnection already called
-    CDTLogVerbose(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@: Starting...", self);
+    os_log_debug(CDTOSLog, "%{public}@: Starting...", self);
 
     self.task = [self.session dataTaskWithRequest:_request taskDelegate:self];
     [self.task resume];
@@ -156,7 +156,7 @@
 - (void)stop
 {
     if (self.task) {
-        CDTLogVerbose(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@: Stopped", self);
+        os_log_debug(CDTOSLog, "%{public}@: Stopped", self);
         [self.task cancel];
     }
     [self clearSession];
@@ -180,7 +180,7 @@
     if (_retryCount >= kMaxRetries) return NO;
     NSTimeInterval delay = RetryDelay(_retryCount);
     ++_retryCount;
-    CDTLogVerbose(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@: Will retry in %g sec", self, delay);
+    os_log_debug(CDTOSLog, "%{public}@: Will retry in %{public}g sec", self, delay);
     [self startAfterDelay:delay];
     return YES;
 }
@@ -198,15 +198,12 @@
         (trustResult == kSecTrustResultProceed || trustResult == kSecTrustResultUnspecified)) {
         return YES;
     } else {
-        CDTLogWarn(
-            CDTTD_REMOTE_REQUEST_CONTEXT,
-            @"TouchDB: SSL server <%@> not trusted (err=%d, trustResult=%u); cert chain follows:",
-            host, (int)err, (unsigned)trustResult);
+        os_log_debug(CDTOSLog, "TouchDB: SSL server <%{public}@> not trusted (err=%{public}d, trustResult=%{public}u); cert chain follows:", host, (int)err, (unsigned)trustResult);
 #if TARGET_OS_IPHONE
         for (CFIndex i = 0; i < SecTrustGetCertificateCount(trust); ++i) {
             SecCertificateRef cert = SecTrustGetCertificateAtIndex(trust, i);
             CFStringRef subject = SecCertificateCopySubjectSummary(cert);
-            CDTLogWarn(CDTTD_REMOTE_REQUEST_CONTEXT, @"    %@", subject);
+            os_log_debug(CDTOSLog, "    %{public}@", subject);
             CFRelease(subject);
         }
 #else
@@ -216,9 +213,9 @@
         NSArray *trustProperties = (__bridge_transfer NSArray *)SecTrustCopyProperties(trust);
 #endif
         for (NSDictionary *property in trustProperties) {
-            CDTLogWarn(CDTTD_REMOTE_REQUEST_CONTEXT, @"    %@: error = %@",
-                    property[(__bridge id)kSecPropertyTypeTitle],
-                    property[(__bridge id)kSecPropertyTypeError]);
+            os_log_debug(CDTOSLog, "    %{public}@: error = %{public}@",
+                         property[(__bridge id)kSecPropertyTypeTitle],
+                         property[(__bridge id)kSecPropertyTypeError]);
         }
 #endif
         return NO;
@@ -228,21 +225,21 @@
 {
     //if we hit an error we shouldn't retry, the Http interceptors should deal with retries.
     _status = (int)((NSHTTPURLResponse *)response).statusCode;
-    CDTLogVerbose(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@: Got response, status %d", self, _status);
+    os_log_debug(CDTOSLog, "%{public}@: Got response, status %{public}d", self, _status);
 
     if (TDStatusIsError(_status)) [self cancelWithStatus:_status];
 }
 
 - (void)receivedData:(NSData *)data
 {
-    CDTLogVerbose(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@: Got %lu bytes", self, (unsigned long)data.length);
+    os_log_debug(CDTOSLog, "%{public}@: Got %{public}lu bytes", self, (unsigned long)data.length);
 }
 
 - (void)requestDidError:(NSError *)error
 {
     if (!(_dontLog404 && error.code == kTDStatusNotFound &&
           $equal(error.domain, TDHTTPErrorDomain)))
-        CDTLogVerbose(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@: Got error. domain %@, code %@", self, error.domain, @(error.code));
+        os_log_debug(CDTOSLog, "%{public}@: Got error. domain %{public}@, code %{public}@", self, error.domain, @(error.code));
 
     // If the error is likely transient, retry:
     if (TDMayBeTransientError(error) && [self retry]) return;
@@ -253,7 +250,7 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    CDTLogVerbose(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@: Finished loading", self);
+    os_log_debug(CDTOSLog, "%{public}@: Finished loading", self);
     [self clearSession];
     [self respondWithResult:self error:nil];
 }
@@ -297,8 +294,7 @@
     if (_jsonBuffer.length > 0) {
         result = [TDJSON JSONObjectWithData:_jsonBuffer options:0 error:NULL];
         if (!result) {
-            CDTLogWarn(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@: %@ %@ returned unparseable data '%@'", self,
-                    _request.HTTPMethod, TDCleanURLtoString(_request.URL), [_jsonBuffer my_UTF8ToString]);
+            os_log_debug(CDTOSLog, "%{public}@: %{public}@ %{public}@ returned unparseable data '%{public}@'", self, _request.HTTPMethod, TDCleanURLtoString(_request.URL), [_jsonBuffer my_UTF8ToString]);
             error = TDStatusToNSError(kTDStatusUpstreamError, _request.URL);
         }
     } else {

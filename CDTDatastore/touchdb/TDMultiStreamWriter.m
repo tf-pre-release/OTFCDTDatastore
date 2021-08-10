@@ -65,7 +65,7 @@
 
 - (void)addStream:(NSInputStream*)stream
 {
-    CDTLogInfo(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@: adding stream of unknown length: %@", self, stream);
+    os_log_info(CDTOSLog, "%{public}@: adding stream of unknown length: %{public}@", self, stream);
     [_inputs addObject:stream];
     _length = -1;  // length is now unknown
 }
@@ -112,7 +112,7 @@
     _input = CFBridgingRelease(cfInput);
     _output = CFBridgingRelease(cfOutput);
 #endif
-    CDTLogInfo(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@: Opened input=%p, output=%p", self, _input, _output);
+    os_log_info(CDTOSLog, "%{public}@: Opened input=%{public}p, output=%{public}p", self, _input, _output);
     [self opened];
     return _input;
 }
@@ -128,7 +128,7 @@
 
 - (void)close
 {
-    CDTLogInfo(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@: Closed", self);
+    os_log_info(CDTOSLog, "%{public}@: Closed", self);
     [_output close];
     _output.delegate = nil;
     _output = nil;
@@ -175,7 +175,7 @@
 - (void)setErrorFrom:(NSStream*)stream
 {
     NSError* error = stream.streamError;
-    CDTLogWarn(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@: Error on %@: %@", self, stream, error);
+    os_log_debug(CDTOSLog, "%{public}@: Error on %{public}@: %{public}@", self, stream, error);
     if (error && !_error) self.error = error;
 }
 
@@ -185,8 +185,7 @@
     NSInteger totalBytesRead = 0;
     while (len > 0 && _currentInput) {
         NSInteger bytesRead = [_currentInput read:buffer maxLength:len];
-        CDTLogInfo(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@:     read %d bytes from %@", self, (int)bytesRead,
-                _currentInput);
+        os_log_info(CDTOSLog, "%{public}@:     read %{public}d bytes from %{public}@", self, (int)bytesRead, _currentInput);
         if (bytesRead > 0) {
             // Got some data from the stream:
             totalBytesRead += bytesRead;
@@ -207,15 +206,14 @@
 // Read enough bytes from the aggregated input to refill my _buffer. Returns success/failure.
 - (BOOL)refillBuffer
 {
-    CDTLogInfo(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@:   Refilling buffer", self);
+    os_log_info(CDTOSLog, "%{public}@:   Refilling buffer", self);
     NSInteger bytesRead = [self read:_buffer + _bufferLength maxLength:_bufferSize - _bufferLength];
     if (bytesRead <= 0) {
-        CDTLogInfo(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@:     at end of input, can't refill", self);
+        os_log_info(CDTOSLog, "%{public}@:     at end of input, can't refill", self);
         return NO;
     }
     _bufferLength += bytesRead;
-    CDTLogInfo(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@:   refilled buffer to %u bytes", self,
-            (unsigned)_bufferLength);
+    os_log_info(CDTOSLog, "%{public}@:   refilled buffer to %{public}u bytes", self, (unsigned)_bufferLength);
     // LogTo(TDMultiStreamWriter, @"%@:   buffer is now \"%.*s\"", self, _bufferLength, _buffer);
     return YES;
 }
@@ -225,9 +223,7 @@
 {
     Assert(_bufferLength > 0);
     NSInteger bytesWritten = [_output write:_buffer maxLength:_bufferLength];
-    CDTLogInfo(CDTTD_REMOTE_REQUEST_CONTEXT,
-            @"%@:   Wrote %d (of %u) bytes to _output (total %lld of %lld)", self,
-            (int)bytesWritten, (unsigned)_bufferLength, _totalBytesWritten + bytesWritten, _length);
+    os_log_info(CDTOSLog, "%{public}@:   Wrote %{public}d (of %{public}u) bytes to _output (total %{public}lld of %{public}lld)", self, (int)bytesWritten, (unsigned)_bufferLength, _totalBytesWritten + bytesWritten, _length);
     if (bytesWritten <= 0) {
         [self setErrorFrom:_output];
         return NO;
@@ -245,7 +241,7 @@
 - (void)stream:(NSStream*)stream handleEvent:(NSStreamEvent)event
 {
     if (stream != _output) return;
-    CDTLogInfo(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@: Received event 0x%x", self, (unsigned)event);
+    os_log_info(CDTOSLog, "%{public}@: Received event 0x%{public}x", self, (unsigned)event);
     switch (event) {
         case NSStreamEventOpenCompleted:
             if ([self openNextInput]) [self refillBuffer];
@@ -254,14 +250,12 @@
         case NSStreamEventHasSpaceAvailable:
             if (_input && _input.streamStatus < NSStreamStatusOpen) {
                 // CFNetwork workaround; see https://github.com/couchbaselabs/TouchDB-iOS/issues/99
-                CDTLogInfo(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@:   Input isn't open; waiting...", self);
+                os_log_info(CDTOSLog, "%{public}@:   Input isn't open; waiting...", self);
                 [self performSelector:@selector(retryWrite:) withObject:stream afterDelay:0.1];
             } else if (![self writeToOutput]) {
-                CDTLogInfo(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@:   At end -- closing _output!", self);
+                os_log_info(CDTOSLog, "%{public}@:   At end -- closing _output!", self);
                 if (_totalBytesWritten != _length && !_error)
-                    CDTLogWarn(CDTTD_REMOTE_REQUEST_CONTEXT,
-                            @"%@ wrote %lld bytes, but expected length was %lld!", self,
-                            _totalBytesWritten, _length);
+                    os_log_debug(CDTOSLog, "%{public}@ wrote %{public}lld bytes, but expected length was %{public}lld!", self, _totalBytesWritten, _length);
                 [self close];
             }
             break;

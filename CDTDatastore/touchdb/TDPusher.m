@@ -41,7 +41,7 @@
 - (void)maybeCreateRemoteDB
 {
     if (!_createTarget) return;
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"Remote db might not exist; creating it...");
+    os_log_info(CDTOSLog, "Remote db might not exist; creating it...");
     _creatingTarget = YES;
     [self asyncTaskStarted];
     [self sendAsyncRequest:@"PUT"
@@ -50,11 +50,11 @@
               onCompletion:^(id result, NSError* error) {
                   _creatingTarget = NO;
                   if (error && error.code != kTDStatusDuplicate) {
-                      CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"Failed to create remote db: %@", error);
+                      os_log_info(CDTOSLog, "Failed to create remote db: %{public}@", error);
                       self.error = error;
                       [self stop];
                   } else {
-                      CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"Created remote db");
+                      os_log_info(CDTOSLog, "Created remote db");
                       _createTarget = NO;  // remember that I created the target
                       [self beginReplicating];
                   }
@@ -144,8 +144,7 @@
     SequenceNumber seq = rev.sequence;
     bool wasFirst = (seq == (SequenceNumber)_pendingSequences.firstIndex);
     if (![_pendingSequences containsIndex:(NSUInteger)seq])
-        CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"%@ removePending: sequence %lld not in set, for rev %@",
-                self, seq, rev);
+        os_log_debug(CDTOSLog, "%{public}@ removePending: sequence %{public}lld not in set, for rev %{public}@", self, seq, rev);
     [_pendingSequences removeIndex:(NSUInteger)seq];
 
     if (wasFirst) {
@@ -168,7 +167,7 @@
 
     if (!self.filter || !self.filter(rev, _filterParameters)) return;
 
-    CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@: Queuing #%lld %@", self, rev.sequence, rev);
+    os_log_debug(CDTOSLog, "%{public}@: Queuing #%{public}lld %{public}@", self, rev.sequence, rev);
     [self addToInbox:rev];
 }
 
@@ -219,8 +218,7 @@
                               TDContentOptions options = kTDIncludeAttachments | kTDIncludeRevs;
                               if (!_dontSendMultipart) options |= kTDBigAttachmentsFollow;
                               if ([_db loadRevisionBody:rev options:options] >= 300) {
-                                  CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                                          @"%@: Couldn't get local contents of %@", self, rev);
+                                  os_log_debug(CDTOSLog, "%{public}@: Couldn't get local contents of %{public}@", self, rev);
                                   [self revisionFailed];
                                   return nil;
                               }
@@ -312,8 +310,8 @@
 {
     NSUInteger numDocsToSend = docsToSend.count;
     if (numDocsToSend == 0) return;
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Sending %u revisions", self, (unsigned)numDocsToSend);
-    CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@: Sending %@", self, changes.allRevisions);
+    os_log_info(CDTOSLog, "%{public}@: Sending %{public}u revisions", self, (unsigned)numDocsToSend);
+    os_log_debug(CDTOSLog, "%{public}@: Sending %{public}@", self, changes.allRevisions);
     self.changesTotal += numDocsToSend;
     [self asyncTaskStarted];
     [self sendAsyncRequest:@"POST"
@@ -335,8 +333,7 @@
                           }
 
                           // This item (doc) failed to save correctly
-                          CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"%@: _bulk_docs got an error: %@", self,
-                                  item);
+                          os_log_debug(CDTOSLog, "%{public}@: _bulk_docs got an error: %{public}@", self, item);
 
                           NSString* docID;
                           NSURL* url;
@@ -384,8 +381,7 @@
                           }
                       }
 
-                      CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@: Sent %@", self,
-                                 changes.allRevisions);
+                      os_log_debug(CDTOSLog, "%{public}@: Sent %{public}@", self, changes.allRevisions);
 
                   } else if (error && error.code == kTDStatusDuplicate) {
                       // A 412 for the whole batch means we don't know what caused the
@@ -487,8 +483,7 @@ static TDStatus statusFromBulkDocsResponseItem(NSDictionary* item)
                                                 [self revisionFailed];
                                             }
                                         } else {
-                                            CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT,
-                                                       @"%@: Sent multipart %@", self, rev);
+                                            os_log_debug(CDTOSLog, "%{public}@: Sent multipart %{public}@", self, rev);
                                             [self removePending:rev];
                                         }
                                         self.changesProcessed++;
@@ -500,8 +495,8 @@ static TDStatus statusFromBulkDocsResponseItem(NSDictionary* item)
                                     }];
     uploader.authorizer = _authorizer;
     [self addRemoteRequest:uploader];
-    CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@: Queuing %@ (multipart, %lldkb)", self, uploader,
-               bodyStream.length / 1024);
+    os_log_debug(CDTOSLog, "%{public}@: Queuing %{public}@ (multipart, %{public}lldkb)", self, uploader, bodyStream.length / 1024);
+    
     if (!_uploaderQueue) _uploaderQueue = [[NSMutableArray alloc] init];
     [_uploaderQueue addObject:uploader];
     [self startNextUpload];
@@ -530,8 +525,7 @@ static TDStatus statusFromBulkDocsResponseItem(NSDictionary* item)
                       self.error = error;
                       [self revisionFailed];
                   } else {
-                      CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@: Sent %@ (JSON), response=%@", self,
-                                 rev, response);
+                      os_log_debug(CDTOSLog, "%{public}@: Sent %{public}@ (JSON), response=%{public}@", self, rev, response);
                       [self removePending:rev];
                   }
                   [self asyncTasksFinished:1];
@@ -543,7 +537,7 @@ static TDStatus statusFromBulkDocsResponseItem(NSDictionary* item)
     if (!_uploading && _uploaderQueue.count > 0) {
         _uploading = YES;
         TDMultipartUploader* uploader = _uploaderQueue[0];
-        CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@: Starting %@", self, uploader);
+        os_log_debug(CDTOSLog, "%{public}@: Starting %{public}@", self, uploader);
         [uploader start];
         [_uploaderQueue removeObjectAtIndex:0];
     }

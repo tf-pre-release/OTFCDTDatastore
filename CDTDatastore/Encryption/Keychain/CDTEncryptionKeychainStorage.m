@@ -49,7 +49,7 @@
         } else {
             self = nil;
             
-            CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"identifier is mandatory");
+            os_log_error(CDTOSLog, "identifier is mandatory");
         }
     }
     
@@ -118,10 +118,9 @@
                                                                              status:&err];
     if (err != errSecSuccess) {
         if (err == errSecItemNotFound) {
-            CDTLogWarn(CDTDATASTORE_LOG_CONTEXT, @"DPK doc not found in keychain");
+            os_log_debug(CDTOSLog, "DPK doc not found in keychain");
         } else {
-            CDTLogWarn(CDTDATASTORE_LOG_CONTEXT,
-                       @"Error getting DPK doc from keychain, value returned: %d", (int)err);
+            os_log_debug(CDTOSLog, "Error getting DPK doc from keychain, value returned: %{public}d", (int)err);
         }
 
         data = nil;
@@ -137,8 +136,7 @@
                                                                        account:account];
     BOOL success = ((status == errSecSuccess) || (status == errSecItemNotFound));
     if (!success) {
-        CDTLogWarn(CDTDATASTORE_LOG_CONTEXT,
-                   @"Error getting DPK doc from keychain, value returned: %d", (int)status);
+        os_log_debug(CDTOSLog, "Error getting DPK doc from keychain, value returned: %{public}d", (int)status);
     }
 
     return success;
@@ -154,10 +152,9 @@
     BOOL success = (err == errSecSuccess);
     if (!success) {
         if (err == errSecDuplicateItem) {
-            CDTLogWarn(CDTDATASTORE_LOG_CONTEXT, @"Doc already exists in keychain");
+            os_log_debug(CDTOSLog, "Doc already exists in keychain");
         } else {
-            CDTLogWarn(CDTDATASTORE_LOG_CONTEXT,
-                       @"Unable to store Doc in keychain, value returned: %d", (int)err);
+            os_log_debug(CDTOSLog, "Unable to store Doc in keychain, value returned: %{public}d", (int)err);
         }
     }
     

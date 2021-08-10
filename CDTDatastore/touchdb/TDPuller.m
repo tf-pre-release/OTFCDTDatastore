@@ -100,16 +100,16 @@ static NSString* joinQuotedEscaped(NSArray* strings);
                       case 404:
                           // not found: _bulk_get not supported
                           [strongSelf setBulkGetSupported:false];
-                          CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@ Remote database does not support _bulk_get", self);
+                          os_log_info(CDTOSLog, "%{public}@ Remote database does not support _bulk_get", self);
                           break;
                       case 405:
                           // method not allowed: this endpoint exists, we called with the wrong method
                           [strongSelf setBulkGetSupported:true];
-                          CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@ Remote database supports _bulk_get", self);
+                          os_log_info(CDTOSLog, "%{public}@ Remote database supports _bulk_get", self);
                           break;
                       default:
                           [strongSelf setBulkGetSupported:false];
-                          CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"%@ Remote database returned unexpected status code %ld when trying to determine whether database supports _bulk_get. Defaulting to _bulk_get not supported.", self, error.code);
+                          os_log_debug(CDTOSLog, "%{public}@ Remote database returned unexpected status code %ld when trying to determine whether database supports _bulk_get. Defaulting to _bulk_get not supported.", self, error.code);
                   }
                   done = YES;
               }];
@@ -152,8 +152,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
     //to the _changes feed. 
     TDChangeTrackerMode mode = kOneShot;
 
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@ starting ChangeTracker: mode=%d, since=%@", self, mode,
-            _lastSequence);
+    os_log_info(CDTOSLog, "%{public}@ starting ChangeTracker: mode=%{public}d, since=%{public}@", self, mode, _lastSequence);
     _changeTracker = [[TDChangeTracker alloc] initWithDatabaseURL:_remote
                                                              mode:mode
                                                         conflicts:YES
@@ -254,7 +253,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
 // Got a _changes feed response from the TDChangeTracker.
 - (void)changeTrackerReceivedChanges:(NSArray*)changes
 {
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Received %u changes", self, (unsigned)changes.count);
+    os_log_info(CDTOSLog, "%{public}@: Received %{public}u changes", self, (unsigned)changes.count);
     NSUInteger changeCount = 0;
     for (NSDictionary* change in changes) {
         @autoreleasepool
@@ -278,8 +277,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
                     // based on the order in which it appeared in the _changes feed:
                     rev.remoteSequenceID = remoteSequenceID;
                     if (changes.count > 1) rev.conflicted = true;
-                    CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@: Received #%@ %@", self,
-                               remoteSequenceID, rev);
+                    os_log_debug(CDTOSLog, "%{public}@: Received #%{public}@ %{public}@", self, remoteSequenceID, rev);
                     [self addToInbox:rev];
 
                     changeCount++;
@@ -291,7 +289,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
 
     // We can tell we've caught up when the _changes feed returns less than we asked for:
     if (!_caughtUp && changes.count < kChangesFeedLimit) {
-        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Caught up with changes!", self);
+        os_log_info(CDTOSLog, "%{public}@: Caught up with changes!", self);
         _caughtUp = YES;
         if (_continuous) _changeTracker.mode = kLongPoll;
         [self asyncTasksFinished:1];  // balances -asyncTaskStarted in -beginReplicating
@@ -303,8 +301,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
 {
     if (tracker != _changeTracker) return;
     NSError* error = tracker.error;
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: ChangeTracker stopped; error=%@", self,
-            error.description);
+    os_log_info(CDTOSLog, "%{public}@: ChangeTracker stopped; error=%{public}@", self, error.description);
 
     _changeTracker = nil;
 
@@ -328,11 +325,11 @@ static NSString* joinQuotedEscaped(NSArray* strings);
 - (void)processInbox:(TD_RevisionList*)inbox
 {
     // Ask the local database which of the revs are not known to it:
-    CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@: Looking up %@", self, inbox);
+    os_log_debug(CDTOSLog, "%{public}@: Looking up %{public}@", self, inbox);
     id lastInboxSequence = [inbox.allRevisions.lastObject remoteSequenceID];
     NSUInteger total = _changesTotal - inbox.count;
     if (![_db findMissingRevisions:inbox]) {
-        CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"%@ failed to look up local revs", self);
+        os_log_debug(CDTOSLog, "%{public}@ failed to look up local revs", self);
         inbox = nil;
     }
     if (_changesTotal != total + inbox.count) self.changesTotal = total + inbox.count;
@@ -341,15 +338,14 @@ static NSString* joinQuotedEscaped(NSArray* strings);
         // Nothing to do; just count all the revisions as processed.
         // Instead of adding and immediately removing the revs to _pendingSequences,
         // just do the latest one (equivalent but faster):
-        CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@: no new remote revisions to fetch", self);
+        os_log_debug(CDTOSLog, "%{public}@: no new remote revisions to fetch", self);
         SequenceNumber seq = [_pendingSequences addValue:lastInboxSequence];
         [_pendingSequences removeSequence:seq];
         self.lastSequence = _pendingSequences.checkpointedValue;
         return;
     }
 
-    CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@ queuing remote revisions %@", self,
-               inbox.allRevisions);
+    os_log_debug(CDTOSLog, "%{public}@ queuing remote revisions %{public}@", self, inbox.allRevisions);
 
     // Dump the revs into the queues of revs to pull from the remote db:
     unsigned numBulked = 0;
@@ -363,10 +359,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
         }
         rev.sequence = [_pendingSequences addValue:rev.remoteSequenceID];
     }
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT,
-            @"%@ queued %u remote revisions from seq=%@ (%u in bulk, %u individually)", self,
-            (unsigned)inbox.count, ((TDPulledRevision*)inbox[0]).remoteSequenceID, numBulked,
-            (unsigned)(inbox.count - numBulked));
+    os_log_info(CDTOSLog, "%{public}@ queued %{public}u remote revisions from seq=%{public}@ (%{public}u in bulk, %{public}u individually)", self, (unsigned)inbox.count, ((TDPulledRevision*)inbox[0]).remoteSequenceID, numBulked, (unsigned)(inbox.count - numBulked));
 
     [self pullRemoteRevisions];
 }
@@ -444,7 +437,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
     NSArray* knownRevs = [_db getPossibleAncestorRevisionIDs:rev limit:kMaxNumberOfAttsSince];
     if (knownRevs.count > 0)
         path = [path stringByAppendingFormat:@"&atts_since=%@", joinQuotedEscaped(knownRevs)];
-    CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@: GET %@", self, path);
+    os_log_debug(CDTOSLog, "%{public}@: GET %{public}@", self, path);
 
     // Under ARC, using variable dl directly in the block given as an argument to initWithURL:...
     // results in compiler error (could be undefined variable)
@@ -488,9 +481,8 @@ static NSString* joinQuotedEscaped(NSArray* strings);
     // http://wiki.apache.org/couchdb/HTTP_Bulk_Document_API
     NSUInteger nRevs = bulkRevs.count;
     if (nRevs == 0) return;
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@ bulk-fetching (via _bulk_get) %u remote revisions...", self,
-               (unsigned)nRevs);
-    CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@ bulk-fetching (via _bulk_get) remote revisions: %@", self, bulkRevs);
+    os_log_info(CDTOSLog, "%{public}@ bulk-fetching (via _bulk_get) %{public}u remote revisions...", self, (unsigned)nRevs);
+    os_log_debug(CDTOSLog, "%{public}@ bulk-fetching (via _bulk_get) remote revisions: %{public}@", self, bulkRevs);
     
     [self asyncTaskStarted];
     ++_httpConnectionCount;
@@ -542,11 +534,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
                                       [self asyncTaskStarted];
                                   }
                               } else {
-                                  CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                                             @"%@ no \"ok\" revision found in _bulk_get response for docid=%@, revid=%@",
-                                             self,
-                                             doc[@"_id"],
-                                             doc[@"_rev"]);
+                                  os_log_debug(CDTOSLog, "%{public}@ no \"ok\" revision found in _bulk_get response for docid=%{public}@, revid=%{public}@", self, doc[@"_id"], doc[@"_rev"]);
                               }
                           }
                       }
@@ -565,9 +553,8 @@ static NSString* joinQuotedEscaped(NSArray* strings);
     // http://wiki.apache.org/couchdb/HTTP_Bulk_Document_API
     NSUInteger nRevs = bulkRevs.count;
     if (nRevs == 0) return;
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@ bulk-fetching (via _all_docs) %u remote revisions...", self,
-            (unsigned)nRevs);
-    CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@ bulk-fetching (via _all_docs) remote revisions: %@", self, bulkRevs);
+    os_log_info(CDTOSLog, "%{public}@ bulk-fetching (via _all_docs) %{public}u remote revisions...", self, (unsigned)nRevs);
+    os_log_debug(CDTOSLog, "%{public}@ bulk-fetching (via _all_docs) remote revisions: %{public}@", self, bulkRevs);
 
     [self asyncTaskStarted];
     ++_httpConnectionCount;
@@ -586,9 +573,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
                       // We only add a document if it doesn't have attachments, and if its
                       // revID matches the one we asked for.
                       NSArray* rows = $castIf(NSArray, result[@"rows"]);
-                      CDTLogInfo(CDTREPLICATION_LOG_CONTEXT,
-                              @"%@ checking %u bulk-fetched remote revisions", self,
-                              (unsigned)rows.count);
+                      os_log_info(CDTOSLog, "%{public}@ checking %{public}u bulk-fetched remote revisions", self, (unsigned)rows.count);
                       for (NSDictionary* row in rows) {
                           NSDictionary* doc = $castIf(NSDictionary, row[@"doc"]);
                           if (doc && !doc[@"_attachments"]) {
@@ -606,9 +591,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
 
                   // Any leftover revisions that didn't get matched will be fetched individually:
                   if (remainingRevs.count) {
-                      CDTLogInfo(CDTREPLICATION_LOG_CONTEXT,
-                              @"%@ bulk-fetch didn't work for %u of %u revs; getting individually",
-                              self, (unsigned)remainingRevs.count, (unsigned)nRevs);
+                      os_log_info(CDTOSLog, "%{public}@ bulk-fetch didn't work for %{public}u of %{public}u revs; getting individually", self, (unsigned)remainingRevs.count, (unsigned)nRevs);
                       for (TD_Revision* rev in remainingRevs) [self queueRemoteRevision:rev];
                       [self pullRemoteRevisions];
                   }
@@ -624,8 +607,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
 // This will be called when _downloadsToInsert fills up:
 - (void)insertDownloads:(NSArray*)downloads
 {
-    CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@ inserting %u revisions...", self,
-               (unsigned)downloads.count);
+    os_log_debug(CDTOSLog, "%{public}@ inserting %{public}u revisions...", self, (unsigned)downloads.count);
     CFAbsoluteTime time = CFAbsoluteTimeGetCurrent();
 
     //    [_db beginTransaction];
@@ -638,24 +620,20 @@ static NSString* joinQuotedEscaped(NSArray* strings);
                 SequenceNumber fakeSequence = rev.sequence;
                 NSArray* history = [TD_Database parseCouchDBRevisionHistory:rev.properties];
                 if (!history && rev.generation > 1) {
-                    CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                            @"%@: Missing revision history in response for %@", self, rev);
+                    os_log_debug(CDTOSLog, "%{public}@: Missing revision history in response for %{public}@", self, rev);
                     self.error = TDStatusToNSError(kTDStatusUpstreamError, nil);
                     [self revisionFailed];
                     continue;
                 }
-                CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@ inserting %@ %@", self, rev.docID,
-                           [history my_compactDescription]);
+                os_log_debug(CDTOSLog, "%{public}@ inserting %{public}@ %{public}@", self, rev.docID, [history my_compactDescription]);
 
                 // Insert the revision:
                 int status = [_db forceInsert:rev revisionHistory:history source:_remote];
                 if (TDStatusIsError(status)) {
                     if (status == kTDStatusForbidden)
-                        CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@: Remote rev failed validation: %@",
-                                self, rev);
+                    os_log_info(CDTOSLog, "%{public}@: Remote rev failed validation: %{public}@", self, rev);
                     else {
-                        CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"%@ failed to write %@: status=%d", self,
-                                rev, status);
+                        os_log_debug(CDTOSLog, "%{public}@ failed to write %{public}@: status=%{public}d", self, rev, status);
                         [self revisionFailed];
                         self.error = TDStatusToNSError(status, nil);
                         continue;
@@ -669,8 +647,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
 
         [_db clearPendingAttachments];
 
-        CDTLogVerbose(CDTREPLICATION_LOG_CONTEXT, @"%@ finished inserting %u revisions", self,
-                   (unsigned)downloads.count);
+        os_log_debug(CDTOSLog, "%{public}@ finished inserting %{public}u revisions", self, (unsigned)downloads.count);
 
         // Checkpoint:
         self.lastSequence = _pendingSequences.checkpointedValue;
@@ -683,8 +660,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
     //    }
 
     time = CFAbsoluteTimeGetCurrent() - time;
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"%@ inserted %u revs in %.3f sec (%.1f/sec)", self,
-            (unsigned)downloads.count, time, downloads.count / time);
+    os_log_info(CDTOSLog, "%{public}@ inserted %{public}u revs in %{public}.3f sec (%{public}.1f/sec)", self, (unsigned)downloads.count, time, downloads.count / time);
 
     self.changesProcessed += downloads.count;
     [self asyncTasksFinished:downloads.count];

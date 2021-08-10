@@ -18,6 +18,7 @@
 #import "TDMultipartUploader.h"
 #import "CDTLogging.h"
 #import "Test.h"
+#import <os/log.h>
 
 @implementation TDMultipartUploader
 
@@ -54,7 +55,8 @@
 - (NSInputStream *)connection:(NSURLConnection *)connection
             needNewBodyStream:(NSURLRequest *)request
 {
-    CDTLogInfo(CDTTD_REMOTE_REQUEST_CONTEXT, @"%@: Needs new body stream, resetting writer...", self);
+    os_log_info(CDTOSLog, "%{public}@: Needs new body stream, resetting writer...", self);
+    
     [_multipartWriter close];
     return [_multipartWriter openForInputStream];
 }

@@ -221,7 +221,7 @@
         return invertResult ? !passed : passed;
     } else {
         // We constructed the tree, so shouldn't end up here; error if we do.
-        CDTLogError(CDTQ_LOG_CONTEXT, @"Found unexpected selector execution tree: %@", node);
+        os_log_error(CDTOSLog, "Found unexpected selector execution tree: %{public}@", node);
         return NO;
     }
 }
@@ -259,7 +259,7 @@
         passed = (exists == expectedBool);
 
     } else {
-        CDTLogWarn(CDTQ_LOG_CONTEXT, @"Found unexpected operator in selector: %@", operator);
+        os_log_debug(CDTOSLog, "Found unexpected operator in selector: %{public}@", operator);
         passed = NO;  // didn't understand
     }
 
@@ -282,7 +282,7 @@
         return NO;  // NSNull fails all lt/gt/lte/gte tests
 
     } else if (!([l isKindOfClass:[NSString class]] || [l isKindOfClass:[NSNumber class]])) {
-        CDTLogWarn(CDTQ_LOG_CONTEXT, @"Value in document not NSNumber or NSString: %@", l);
+        os_log_debug(CDTOSLog, "Value in document not NSNumber or NSString: %{public}@", l);
         return NO;  // Not sure how to compare values that are not numbers or strings
 
     } else if ([l isKindOfClass:[NSString class]]) {
@@ -319,7 +319,7 @@
     }
 
     if (!([l isKindOfClass:[NSString class]] || [l isKindOfClass:[NSNumber class]])) {
-        CDTLogWarn(CDTQ_LOG_CONTEXT, @"Value in document not NSNumber or NSString: %@", l);
+        os_log_debug(CDTOSLog, "Value in document not NSNumber or NSString: %{public}@", l);
         return NO;  // Not sure how to compare values that are not numbers or strings
     }
 
@@ -333,7 +333,7 @@
     }
 
     if (!([l isKindOfClass:[NSString class]] || [l isKindOfClass:[NSNumber class]])) {
-        CDTLogWarn(CDTQ_LOG_CONTEXT, @"Value in document not NSNumber or NSString: %@", l);
+        os_log_debug(CDTOSLog, "Value in document not NSNumber or NSString: %{public}@", l);
         return NO;  // Not sure how to compare values that are not numbers or strings
     }
 
@@ -347,7 +347,7 @@
     }
 
     if (!([l isKindOfClass:[NSString class]] || [l isKindOfClass:[NSNumber class]])) {
-        CDTLogWarn(CDTQ_LOG_CONTEXT, @"Value in document not NSNumber or NSString: %@", l);
+        os_log_debug(CDTOSLog, "Value in document not NSNumber or NSString: %{public}@", l);
         return NO;  // Not sure how to compare values that are not numbers or strings
     }
 

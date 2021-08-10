@@ -123,7 +123,7 @@
     NSData *json = [[TDJSON dataWithJSONObject:self.body options:0 error:&innerError] copy];
 
     if (!json) {
-        CDTLogWarn(CDTDOCUMENT_REVISION_LOG_CONTEXT, @"CDTDocumentRevision: couldn't convert to JSON");
+        os_log_debug(CDTOSLog, "CDTDocumentRevision: couldn't convert to JSON");
         *error = innerError;
         return nil;
     }

@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "CDTPushReplication.h"
+#import <CDTDatastore/CDTPushReplication.h>
 
 
 

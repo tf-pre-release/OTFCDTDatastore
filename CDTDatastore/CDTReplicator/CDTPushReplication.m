@@ -59,7 +59,7 @@
         NSURLComponents * targetComponents = [NSURLComponents componentsWithURL:target resolvingAgainstBaseURL:NO];
         if(targetComponents.user && targetComponents.password){
             if (username && password) {
-                CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"Credentials provided via the URL and username and password parameters, discarding URL credentials.");
+                os_log_debug(CDTOSLog, "Credentials provided via the URL and username and password parameters, discarding URL credentials.");
             } else {
                 CDTSessionCookieInterceptor * cookieInterceptor = [[CDTSessionCookieInterceptor alloc] initWithUsername:targetComponents.user password:targetComponents.password];
                 [self addInterceptor:cookieInterceptor];
@@ -80,8 +80,8 @@
 {
     if (self = [super initWithIAMAPIKey:IAMAPIKey]) {
         NSURLComponents * targetComponents = [NSURLComponents componentsWithURL:target resolvingAgainstBaseURL:NO];
-        if(targetComponents.user && targetComponents.password){
-            CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"Credentials provided via the URL but IAM API key was provided, discarding URL credentials.");
+        if (targetComponents.user && targetComponents.password) {
+            os_log_debug(CDTOSLog, "Credentials provided via the URL but IAM API key was provided, discarding URL credentials.");
         }
         CDTIAMSessionCookieInterceptor * cookieInterceptor = [[CDTIAMSessionCookieInterceptor alloc] initWithAPIKey:IAMAPIKey];
         [self addInterceptor:cookieInterceptor];
@@ -121,8 +121,7 @@
 - (BOOL)validateRemoteDatastoreURL:(NSURL *)url error:(NSError *__autoreleasing *)error
 {
     if (url == nil) {
-        CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                @"CDTPullReplication -dictionaryForReplicatorDocument Error: target is nil.");
+        os_log_debug(CDTOSLog, "CDTPullReplication -dictionaryForReplicatorDocument Error: target is nil.");
 
         if (error) {
             NSString *msg = @"Cannot sync data. Remote server not specified.";

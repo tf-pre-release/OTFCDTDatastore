@@ -16,6 +16,8 @@
 
 #import "CDTLogging.h"
 
+#import <os/log.h>
+
 NSString *const kCDTQJsonType = @"json";
 NSString *const kCDTQTextType = @"text";
 
@@ -109,29 +111,27 @@ static NSString *const kCDTQTextDefaultTokenizer = @"simple";
          withSettings:(NSDictionary *)indexSettings
 {
     if (fieldNames.count == 0) {
-        CDTLogError(CDTQ_LOG_CONTEXT, @"No field names provided.");
+        os_log_error(CDTOSLog, "No field names provided.");
         return nil;
     }
     
     if (indexName.length == 0) {
-        CDTLogError(CDTQ_LOG_CONTEXT, @"No index name provided.");
+        os_log_error(CDTOSLog, "No index name provided.");
         return nil;
     }
 
     if (indexType == CDTQIndexTypeJSON && indexSettings) {
-        CDTLogWarn(CDTQ_LOG_CONTEXT, @"Index type is JSON, index settings %@ ignored.",
-                   indexSettings);
+        os_log_debug(CDTOSLog, "Index type is JSON, index settings %{public}@ ignored.", indexSettings);
         indexSettings = nil;
     } else if (indexType == CDTQIndexTypeText) {
         if (!indexSettings) {
             indexSettings = @{ kCDTQTextTokenize: kCDTQTextDefaultTokenizer };
-            CDTLogDebug(CDTQ_LOG_CONTEXT, @"Index type is text, defaulting settings to %@.",
-                        indexSettings);
+            os_log_debug(CDTOSLog, "Index type is text, defaulting settings to %{public}@.", indexSettings);
         } else {
             for (NSString *parameter in [indexSettings allKeys]) {
                 if (![[CDTQIndex validSettings] containsObject:parameter.lowercaseString]) {
-                    CDTLogError(CDTQ_LOG_CONTEXT, @"Invalid parameter %@ in index settings %@.",
-                                parameter, indexSettings);
+                    os_log_error(CDTOSLog, "Invalid parameter %{public}@ in index settings %{public}@.",
+                                 parameter, indexSettings);
                     return nil;
                 }
             }
@@ -168,7 +168,7 @@ static NSString *const kCDTQTextDefaultTokenizer = @"simple";
                                                                  options:kNilOptions
                                                                    error:&error];
     if (!settingsDict) {
-        CDTLogError(CDTQ_LOG_CONTEXT, @"Error processing index settings %@", indexSettings);
+        os_log_error(CDTOSLog, "Error processing index settings %{public}@", indexSettings);
         return NO;
     }
     
@@ -177,7 +177,7 @@ static NSString *const kCDTQTextDefaultTokenizer = @"simple";
 
 -(nullable NSString *) settingsAsJSON {
     if (!self.indexSettings) {
-        CDTLogWarn(CDTQ_LOG_CONTEXT, @"Index settings are nil.  Nothing to return.");
+        os_log_debug(CDTOSLog, "Index settings are nil.  Nothing to return.");
         return nil;
     }
     NSError *error;
@@ -185,7 +185,7 @@ static NSString *const kCDTQTextDefaultTokenizer = @"simple";
                                                            options:kNilOptions
                                                              error:&error];
     if (!settingsData) {
-        CDTLogError(CDTQ_LOG_CONTEXT, @"Error processing index settings %@", self.indexSettings);
+        os_log_error(CDTOSLog, "Error processing index settings %{public}@", self.indexSettings);
         return nil;
     }
     

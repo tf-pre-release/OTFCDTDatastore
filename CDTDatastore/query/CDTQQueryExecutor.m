@@ -116,10 +116,7 @@ const NSUInteger kSmallResultSetSizeThreshold = 500;
     CDTQUnindexedMatcher *matcher = [self matcherForIndexCoverage:indexesCoverQuery selector:query];
 
     if (matcher) {
-        CDTLogWarn(CDTQ_LOG_CONTEXT,
-                   @"Query could not be executed using indexes alone; falling back to filtering "
-                   @"documents themselves. This will be VERY SLOW as each candidate document is "
-                   @"loaded from the datastore and matched against the query selector.");
+        os_log_debug(CDTOSLog, "Query could not be executed using indexes alone; falling back to filtering documents themselves. This will be VERY SLOW as each candidate document is loaded from the datastore and matched against the query selector.");
     }
 
     CDTDatastore *ds = self.datastore;
@@ -162,15 +159,12 @@ const NSUInteger kSmallResultSetSizeThreshold = 500;
 
     for (NSDictionary *clause in sortDocument) {
         if (![clause isKindOfClass:[NSDictionary class]]) {
-            CDTLogError(
-                CDTQ_LOG_CONTEXT,
-                @"Sort clauses must be dict, e.g., {name: asc}. Did you just use a string?");
+            os_log_error(CDTOSLog, "Sort clauses must be dict, e.g., {name: asc}. Did you just use a string?");
             return NO;
         }
 
         if (clause.count > 1) {
-            CDTLogError(CDTQ_LOG_CONTEXT, @"Each order clause can only be a single field, %@",
-                        clause);
+            os_log_error(CDTOSLog, "Each order clause can only be a single field, %{public}@", clause);
             return NO;
         }
 
@@ -178,14 +172,12 @@ const NSUInteger kSmallResultSetSizeThreshold = 500;
         NSString *direction = clause[fieldName];
 
         if (![fieldName isKindOfClass:[NSString class]]) {
-            CDTLogError(CDTQ_LOG_CONTEXT, @"Field names in sort clause must be strings, %@",
-                        fieldName);
+            os_log_error(CDTOSLog, "Field names in sort clause must be strings, %{public}@", fieldName);
             return NO;
         }
 
         if (![@[ @"ASC", @"DESC" ] containsObject:[direction uppercaseString]]) {
-            CDTLogError(CDTQ_LOG_CONTEXT, @"Order direction %@ not valid, use `asc` or `desc`",
-                        direction);
+            os_log_error(CDTOSLog, "Order direction %{public}@ not valid, use `asc` or `desc`", direction);
             return NO;
         }
     }
@@ -200,14 +192,12 @@ const NSUInteger kSmallResultSetSizeThreshold = 500;
 {
     for (NSString *field in fields) {
         if (![field isKindOfClass:[NSString class]]) {
-            CDTLogError(CDTQ_LOG_CONTEXT, @"Projection field should be string object: %@",
-                        [field description]);
+            os_log_error(CDTOSLog, "Projection field should be string object: %{public}@", [field description]);
             return NO;
         }
 
         if ([field rangeOfString:@"."].location != NSNotFound) {
-            CDTLogError(CDTQ_LOG_CONTEXT, @"Projection field cannot use dotted notation: %@",
-                        [field description]);
+            os_log_error(CDTOSLog, "Projection field cannot use dotted notation: %{public}@", [field description]);
             return NO;
         }
     };
@@ -218,8 +208,7 @@ const NSUInteger kSmallResultSetSizeThreshold = 500;
 + (NSArray *)normaliseFields:(NSArray *)fields
 {
     if (fields.count == 0) {
-        CDTLogWarn(CDTQ_LOG_CONTEXT,
-                   @"Projection fields array is empty, disabling project for this query");
+        os_log_debug(CDTOSLog, "Projection fields array is empty, disabling project for this query");
         return nil;
     }
 
@@ -359,7 +348,7 @@ const NSUInteger kSmallResultSetSizeThreshold = 500;
 {
     NSString *chosenIndex = [CDTQQueryExecutor chooseIndexForSort:sortDocument fromIndexes:indexes];
     if (chosenIndex == nil) {
-        CDTLogError(CDTQ_LOG_CONTEXT, @"No single index can satisfy order %@", sortDocument);
+        os_log_error(CDTOSLog, "No single index can satisfy order %{public}@", sortDocument);
         return nil;
     }
 

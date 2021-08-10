@@ -130,7 +130,7 @@ static const int VERSION = 2;
 - (void)dealloc
 {
     // close the database.
-    CDTLogDebug(CDTQ_LOGGING_CONTEXT, @"-dealloc CDTQIndexManager %@", self);
+    os_log_debug(CDTOSLog, "-dealloc CDTQIndexManager %{public}@", self);
     [self.database close];
 }
 
@@ -361,7 +361,7 @@ static const int VERSION = 2;
         success = success && [db executeUpdate:sql withArgumentsInArray:@[ indexName ]];
 
         if (!success) {
-            CDTLogError(CDTQ_LOG_CONTEXT, @"Failed to delete index: %@", indexName);
+            os_log_error(CDTOSLog, "Failed to delete index: %{public}@", indexName);
             *rollback = YES;
         }
     }];
@@ -396,7 +396,7 @@ static const int VERSION = 2;
                    sort:(NSArray *)sortDocument
 {
     if (!query) {
-        CDTLogError(CDTQ_LOG_CONTEXT, @"-find called with nil selector; bailing.");
+        os_log_error(CDTOSLog, "-find called with nil selector; bailing.");
         return nil;
     }
 
@@ -445,10 +445,8 @@ static const int VERSION = 2;
 - (BOOL)isTextSearchEnabled
 {
     if (!_textSearchEnabled) {
-        CDTLogInfo(CDTQ_LOG_CONTEXT, @"Based on SQLite compile options, "
-                                     @"text search is currently not supported.  "
-                                     @"To enable text search recompile SQLite with "
-                                     @"the full text saerch compile options turned on.");
+        os_log_info(CDTOSLog, "Based on SQLite compile options, text search is currently not supported.  "
+                    "To enable text search recompile SQLite with the full text saerch compile options turned on.");
     }
     return _textSearchEnabled;
 }
@@ -528,8 +526,7 @@ static const int VERSION = 2;
       NSError *thisError = nil;
       success = [db setKeyWithProvider:provider error:&thisError];
       if (!success) {
-          CDTLogError(CDTQ_LOG_CONTEXT, @"Problem configuring database with encryption key: %@",
-                      thisError);
+          os_log_error(CDTOSLog, "Problem configuring database with encryption key: %{public}@", thisError);
       }
     }];
 
@@ -575,7 +572,7 @@ static const int VERSION = 2;
         success = success && [db executeUpdate:sql];
 
         if (!success) {
-            CDTLogError(CDTQ_LOG_CONTEXT, @"Failed to update schema");
+            os_log_error(CDTOSLog, "Failed to update schema");
             *rollback = YES;
         }
     }];

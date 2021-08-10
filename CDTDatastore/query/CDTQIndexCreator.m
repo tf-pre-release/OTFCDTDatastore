@@ -72,8 +72,7 @@
     if ([index.indexType.lowercaseString isEqualToString:@"text"]) {
 #pragma clang diagnostic pop
         if (![CDTQIndexManager ftsAvailableInDatabase:self.database]) {
-            CDTLogError(CDTQ_LOG_CONTEXT, @"Text search not supported.  To add support for text "
-                                          @"search, enable FTS compile options in SQLite.");
+            os_log_error(CDTOSLog, "Text search not supported.  To add support for text search, enable FTS compile options in SQLite.");
             return nil;
         }
     }
@@ -89,8 +88,7 @@
     // Check there are no duplicate field names in the array
     NSSet *uniqueNames = [NSSet setWithArray:fieldNames];
     if (uniqueNames.count != fieldNames.count) {
-        CDTLogError(CDTQ_LOG_CONTEXT, @"Cannot create index with duplicated field names %@",
-                    fieldNames);
+        os_log_error(CDTOSLog, "Cannot create index with duplicated field names %{public}@", fieldNames);
         return nil;
     }
 
@@ -112,8 +110,7 @@
     // else fail.
     NSDictionary *existingIndexes = [CDTQIndexManager listIndexesInDatabaseQueue:self.database];
     if ([CDTQIndexCreator indexLimitReached:index basedOnIndexes:existingIndexes]) {
-        CDTLogError(CDTQ_LOG_CONTEXT, @"Index limit reached.  Cannot create index %@.",
-                    index.indexName);
+        os_log_error(CDTOSLog, "Index limit reached.  Cannot create index %{public}@.", index.indexName);
         return nil;
     }
     if (existingIndexes[index.indexName] != nil) {
@@ -216,8 +213,7 @@
     NSArray *parts = [fieldName componentsSeparatedByString:@"."];
     for (NSString *part in parts) {
         if ([part hasPrefix:@"$"]) {
-            CDTLogError(CDTQ_LOG_CONTEXT, @"Field names cannot start with a $ in field %@",
-                        fieldName);
+            os_log_error(CDTOSLog, "Field names cannot start with a $ in field %{public}@", fieldName);
             return NO;
         }
     }
@@ -270,10 +266,8 @@
             if ([type.lowercaseString isEqualToString:kCDTQTextType] &&
                 ![name.lowercaseString isEqualToString:index.indexName.lowercaseString]) {
 #pragma clang diagnostic pop
-                CDTLogError(CDTQ_LOG_CONTEXT, @"The text index %@ already exists.  "
-                                               "One text index per datastore permitted.  "
-                                               "Delete %@ and recreate %@",
-                            name, name, index.indexName);
+                os_log_error(CDTOSLog, "The text index %{public}@ already exists.  One text index per datastore permitted.  Delete %{public}@ and recreate %{public}@",
+                             name, name, index.indexName);
                 return YES;
             }
         }

@@ -47,9 +47,7 @@
             _privateData = [data copy];
         } else {
             NSNumber *length = (data ? @(data.length) : nil);
-            CDTLogError(CDTDATASTORE_LOG_CONTEXT,
-                        @"No data provided or it does no have the right size: %@ (instead of %i)",
-                        length, CDTENCRYPTIONKEY_KEYSIZE);
+            os_log_error(CDTOSLog, "No data provided or it does no have the right size: %{public}@ (instead of %{public}i)", length, CDTENCRYPTIONKEY_KEYSIZE);
 
             self = nil;
         }

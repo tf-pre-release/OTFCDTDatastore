@@ -74,10 +74,9 @@ NSString *const TDDatabaseBlobFilenamesFileExtension = @"blob";
                                         withHexKey:hexKey
                   intoBlobFilenamesTableInDatabase:db];
         if (success) {
-            CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"Use filename %@", filename);
+            os_log_debug(CDTOSLog, "Use filename %{public}@", filename);
         } else {
-            CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"Filename %@ already in use (iter %li)",
-                        filename, (long)i);
+            os_log_debug(CDTOSLog, "Filename %{public}@ already in use (iter %{public}li)", filename, (long)i);
 
             filename = nil;
         }
@@ -246,7 +245,7 @@ NSString *const TDDatabaseBlobFilenamesFileExtension = @"blob";
             _key = key;
             _blobFilename = blobFilename;
         } else {
-            CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"Filename is mandatory");
+            os_log_error(CDTOSLog, "Filename is mandatory");
             
             self = nil;
         }

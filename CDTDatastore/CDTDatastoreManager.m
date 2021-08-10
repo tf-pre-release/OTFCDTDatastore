@@ -62,10 +62,10 @@ NSString *const CDTExtensionsDirName = @"_extensions";
     @synchronized (self) {
         CDTDatastore *datastore = _openDatastores[name];
         if (datastore != nil) {
-            CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"returning already open CDTDatastore %@", name);
+            os_log_debug(CDTOSLog, "returning already open CDTDatastore %{public}@", name);
             return datastore;
         }
-        CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"opening new CDTDatastore %@", name);
+        os_log_debug(CDTOSLog, "opening new CDTDatastore %{public}@", name);
 
         
         NSString *errorReason = nil;
@@ -98,11 +98,11 @@ NSString *const CDTExtensionsDirName = @"_extensions";
 
 - (void)closeDatastoreNamed:(NSString *)name {
     @synchronized (self) {
-        CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"closing CDTDatastore %@", name);
+        os_log_debug(CDTOSLog, "closing CDTDatastore %{public}@", name);
         CDTDatastore *ds = _openDatastores[name];
         if (ds == nil) {
             // this may not be an issue if delete was already called and it was removed there
-            CDTLogWarn(CDTDATASTORE_LOG_CONTEXT, @"can't find CDTDatastore to close %@", name);
+            os_log_debug(CDTOSLog, "can't find CDTDatastore to close %{public}@", name);
             return;
         }
         [[ds database] close];
@@ -111,7 +111,7 @@ NSString *const CDTExtensionsDirName = @"_extensions";
 }
 
 - (void)dealloc {
-    CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"-dealloc CDTDatastoreManager %@", self);
+    os_log_debug(CDTOSLog, "-dealloc CDTDatastoreManager %{public}@", self);
     [_openDatastores removeAllObjects];
     _manager = nil;
 }
@@ -137,7 +137,7 @@ NSString *const CDTExtensionsDirName = @"_extensions";
             // delete any cloudant extensions
             // remove the open datastore: this ensures that any associated index manager has -dealloc
             // called on it _before_ we attempt to delete its underlying database
-            CDTLogDebug(CDTDATASTORE_LOG_CONTEXT, @"calling close from delete %@", name);
+            os_log_debug(CDTOSLog, "calling close from delete %{public}@", name);
             [_openDatastores removeObjectForKey:name];
             NSString *dbPath = [self.manager pathForName:name];
             NSString *extPath = [dbPath stringByDeletingLastPathComponent];

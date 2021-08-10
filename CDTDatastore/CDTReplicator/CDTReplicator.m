@@ -184,11 +184,7 @@ static NSString *const CDTReplicatorErrorDomain = @"CDTReplicatorErrorDomain";
         // instance, the resulting state will be 'stopped' and the object can no longer be started
         // at that point.
         if (self.started || self.state != CDTReplicatorStatePending) {
-            CDTLogInfo(CDTREPLICATION_LOG_CONTEXT,
-                       @"-startWithTaskGroup:error: CDTReplicator can only be started "
-                       @"once and only from its initial state, CDTReplicatorStatePending. "
-                       @"Current State: %@",
-                       [CDTReplicator stringForReplicatorState:self.state]);
+            os_log_info(CDTOSLog, "-startWithTaskGroup:error: CDTReplicator can only be started once and only from its initial state, CDTReplicatorStatePending. Current State: %{public}@", [CDTReplicator stringForReplicatorState:self.state]);
 
             if (error) {
                 NSDictionary *userInfo = @{
@@ -226,9 +222,7 @@ static NSString *const CDTReplicatorErrorDomain = @"CDTReplicatorErrorDomain";
             self.state = CDTReplicatorStateError;
 
             // report the error to the Log
-            CDTLogWarn(CDTREPLICATION_LOG_CONTEXT, @"CDTReplicator -start: Unable to instantiate "
-                       @"TDReplicator. TD Error: %@ Current State: %@",
-                       localError, [CDTReplicator stringForReplicatorState:self.state]);
+            os_log_debug(CDTOSLog, "CDTReplicator -start: Unable to instantiate TDReplicator. TD Error: %{public}@ Current State: %{public}@", localError, [CDTReplicator stringForReplicatorState:self.state]);
 
             if (error) {
                 // build a CDT error
@@ -281,8 +275,7 @@ static NSString *const CDTReplicatorErrorDomain = @"CDTReplicatorErrorDomain";
 
     [self.tdReplicator startWithTaskGroup:taskGroup];
     
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"start: Replicator starting %@, sessionID %@",
-          [self.tdReplicator class], self.tdReplicator.sessionID);
+    os_log_info(CDTOSLog, "start: Replicator starting %{public}@, sessionID %{public}@", [self.tdReplicator class], self.tdReplicator.sessionID);
 
     return YES;
 }
@@ -520,9 +513,7 @@ static NSString *const CDTReplicatorErrorDomain = @"CDTReplicatorErrorDomain";
 
     TDReplicator *repl = n.object;
 
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT,
-               @"replicatorStopped: %@. type: %@ sessionId: %@ CDTstate: %@", n.name, [repl class],
-               repl.sessionID, [CDTReplicator stringForReplicatorState:self.state]);
+    os_log_info(CDTOSLog, "replicatorStopped: %{public}@. type: %{public}@ sessionId: %{public}@ CDTstate: %{public}@", n.name, [repl class], repl.sessionID, [CDTReplicator stringForReplicatorState:self.state]);
 
     CDTReplicatorState oldState = strongSelf.state;
 
@@ -587,8 +578,7 @@ static NSString *const CDTReplicatorErrorDomain = @"CDTReplicatorErrorDomain";
 
     TDReplicator *repl = n.object;
 
-    CDTLogInfo(CDTREPLICATION_LOG_CONTEXT, @"replicatorStarted: %@ type: %@ sessionId: %@", n.name,
-               [repl class], repl.sessionID);
+    os_log_info(CDTOSLog, "replicatorStarted: %{public}@ type: %{public}@ sessionId: %{public}@", n.name, [repl class], repl.sessionID);
 
     CDTReplicatorState oldState = strongSelf.state;
     @synchronized(strongSelf) {  // lock out other processes from changing state. strongSelf.state = CDTReplicatorStateStarted; }

@@ -37,7 +37,7 @@
         CCKeyDerivationPBKDF(kCCPBKDF2, passData.bytes, passData.length, salt.bytes, salt.length,
                              kCCPRFHmacAlgSHA1, (uint)iterations, derivedKey.mutableBytes, length);
     if (retVal != kCCSuccess) {
-        CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"Password not derived. Return: %i", retVal);
+        os_log_error(CDTOSLog, "Password not derived. Return: %{public}i", retVal);
 
         derivedKey = nil;
     }

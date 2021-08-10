@@ -37,9 +37,7 @@ NSString *const FMDatabaseEncryptionKeyErrorDomain = @"FMDatabaseEncryptionKeyEr
     if (encryptionKey) {
         success = [self setEncryptionKey:encryptionKey];
         if (!success) {
-            CDTLogError(CDTDATASTORE_LOG_CONTEXT,
-                        @"Key to decrypt DB at %@ not set. DB can not be opened.",
-                        [self databasePath]);
+            os_log_error(CDTOSLog, "Key to decrypt DB at %{public}@ not set. DB can not be opened.", [self databasePath]);
 
             NSString *desc = NSLocalizedString(@"Key to decrypt DB not set", nil);
             thisError = [NSError errorWithDomain:FMDatabaseEncryptionKeyErrorDomain
@@ -54,10 +52,7 @@ NSString *const FMDatabaseEncryptionKeyErrorDomain = @"FMDatabaseEncryptionKeyEr
                                 NULL, NULL) == SQLITE_OK);
         if (!success) {
             if (encryptionKey) {
-                CDTLogError(CDTDATASTORE_LOG_CONTEXT,
-                            @"DB at %@ is not encrypted or it can not be deciphered with provided "
-                            @"key. DB can not be opened.",
-                            [self databasePath]);
+                os_log_error(CDTOSLog, "DB at %@ is not encrypted or it can not be deciphered with provided key. DB can not be opened.", [self databasePath]);
 
                 NSString *desc = NSLocalizedString(
                     @"DB is not encrypted or it can not be deciphered with provided key", nil);
@@ -66,10 +61,7 @@ NSString *const FMDatabaseEncryptionKeyErrorDomain = @"FMDatabaseEncryptionKeyEr
                                         code:FMDatabaseEncryptionKeyErrorWrongKeyOrDBNotEncrypted
                                     userInfo:@{NSLocalizedDescriptionKey : desc}];
             } else {
-                CDTLogError(CDTDATASTORE_LOG_CONTEXT,
-                            @"DB at %@ is corrupted or it is encrypted but no key was provided. DB "
-                            @"can not be opened.",
-                            [self databasePath]);
+                os_log_error(CDTOSLog, "DB at %@ is corrupted or it is encrypted but no key was provided. DB can not be opened.", [self databasePath]);
 
                 NSString *desc = NSLocalizedString(
                     @"DB is corrupted or it is encrypted but no key was provided", nil);
@@ -99,8 +91,7 @@ NSString *const FMDatabaseEncryptionKeyErrorDomain = @"FMDatabaseEncryptionKeyEr
 
     return [self executeUpdate:pragmaSetKey];
 #else
-    CDTLogError(CDTDATASTORE_LOG_CONTEXT,
-                @"This option is not available in standard SQLite, use SQLCipher instead");
+    os_log_error(CDTOSLog, "This option is not available in standard SQLite, use SQLCipher instead");
 
     return NO;
 #endif

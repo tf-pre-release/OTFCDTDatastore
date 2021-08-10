@@ -43,7 +43,7 @@
         if (storage) {
             _storage = storage;
         } else {
-            CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"Storage is mandatory");
+            os_log_error(CDTOSLog, "Storage is mandatory");
 
             self = nil;
         }
@@ -97,8 +97,8 @@
 {
     // Ensure IV has the correct length
     if (data.iv.length != CDTENCRYPTIONKEYCHAINMANAGER_AES_IV_SIZE) {
-        CDTLogWarn(CDTDATASTORE_LOG_CONTEXT, @"IV does not have the expected size: %i bytes",
-                   CDTENCRYPTIONKEYCHAINMANAGER_AES_IV_SIZE);
+        os_log_debug(CDTOSLog, "IV does not have the expected size: %{public}i bytes",
+                     CDTENCRYPTIONKEYCHAINMANAGER_AES_IV_SIZE);
 
         return NO;
     }

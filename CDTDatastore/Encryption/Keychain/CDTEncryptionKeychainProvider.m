@@ -41,7 +41,7 @@
             _password = password;
             _manager = manager;
         } else {
-            CDTLogError(CDTDATASTORE_LOG_CONTEXT, @"All parameters are mandatory");
+            os_log_error(CDTOSLog, "All parameters are mandatory");
 
             self = nil;
         }

@@ -45,8 +45,7 @@ static NSString *const CDTReplicatorFactoryErrorDomain = @"CDTReplicatorFactoryE
             _dbManager = dsManager.manager;
         } else {
             self = nil;
-            CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                       @"Datastore manager is nil, there isn't a local datastore to replicate with.");
+            os_log_debug(CDTOSLog, "Datastore manager is nil, there isn't a local datastore to replicate with.");
         }
     }
     return self;
@@ -87,10 +86,7 @@ static NSString *const CDTReplicatorFactoryErrorDomain = @"CDTReplicatorFactoryE
                                                    error:&localError];
     
     if (replicator == nil) {
-        CDTLogWarn(CDTREPLICATION_LOG_CONTEXT,
-                @"CDTReplicatorFactory -oneWay:error: Error. Unable to create CDTReplicator. "
-                @"%@\n %@",
-                [replication class], replication);
+        os_log_debug(CDTOSLog, "CDTReplicatorFactory -oneWay:error: Error. Unable to create CDTReplicator. %{public}@\n %{public}@", [replication class], replication);
 
         if (error) {
             *error = localError;
