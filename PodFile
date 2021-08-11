@@ -16,11 +16,11 @@ abstract_target 'base' do
     pod 'SQLCipher/fts', '~> 3.1.0' if ENV["encrypted"]
     pod 'GoogleToolboxForMac/NSData+zlib', '~> 2.1.1'
 
-    target :CDTDatastore do
+    target :OTFCDTDatastore do
         platform :ios, '13.0'
         pod 'OTFToolBoxCore', '~> 0.0.1'
     end
-    target :CDTDatastoreOSX do
+    target :OTFCDTDatastoreOSX do
         platform :osx, '10.9'
     end
 
@@ -33,11 +33,11 @@ abstract_target 'base' do
         pod 'RSSwizzle'
         pod MRDatabaseContentChecker, :git => 'https://github.com/rhyshort/MRDatabaseContentChecker.git'
 
-        target :CDTDatastoreTests do
+        target :OTFCDTDatastoreTests do
             platform :ios, '13.0'
         end
 
-        target :CDTDatastoreTestsOSX do
+        target :OTFCDTDatastoreTestsOSX do
             platform :osx, '10.9'
         end
 
@@ -48,11 +48,11 @@ abstract_target 'base' do
         pod 'TRVSMonitor'
         pod 'NSData+Base64'
 
-        target :CDTDatastoreReplicationAcceptanceTestsOSX do
+        target :OTFCDTDatastoreReplicationAcceptanceTestsOSX do
             platform :osx, '10.9'
         end
 
-        target :CDTDatastoreReplicationAcceptanceTests do
+        target :OTFCDTDatastoreReplicationAcceptanceTests do
           platform :ios, '13.0'
         end
     end
