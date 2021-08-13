@@ -1,4 +1,4 @@
-# CDTDatastore
+# OTFCDTDatastore
 
 [![Version](http://cocoapod-badges.herokuapp.com/v/CDTDatastore/badge.png)](http://cocoadocs.org/docsets/CDTDatastore)
 [![Platform](http://cocoapod-badges.herokuapp.com/p/CDTDatastore/badge.png)](http://cocoadocs.org/docsets/CDTDatastore)
