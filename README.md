@@ -34,11 +34,11 @@ line.
 
 ## Using in your project
 
-CDTDatastore is available through [CocoaPods](http://cocoapods.org), to install
+OTFCDTDatastore is available through [CocoaPods](http://cocoapods.org), to install
 it add the following line to your Podfile:
 
 ```ruby
-pod "CDTDatastore"
+pod "OTFCDTDatastore"
 ```
 Note: We only support building on the latest stable release of Xcode
 
@@ -46,7 +46,7 @@ Note: We only support building on the latest stable release of Xcode
 
 ### Using in a Swift app
 
-CDTDatastore is useable from Swift out of the box with a few small quirks. Install as per the
+OTFCDTDatastore is useable from Swift out of the box with a few small quirks. Install as per the
 instructions above, and import CloudantSync.h into your [bridging header](https://developer.apple.com/library/ios/documentation/swift/conceptual/buildingcocoaapps/MixandMatch.html).
 
 The [Overview](#overview) section below has examples in both Objective-C and Swift.
@@ -77,7 +77,7 @@ See [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Tested Platforms
 
-CDTDatastore gets regularly tested on the following platforms:
+OTFCDTDatastore gets regularly tested on the following platforms:
 
 - OS X 10.11 (El Captain)
 - iPhone 4S (Simulator), iOS 9.2
@@ -140,14 +140,14 @@ If you are using a bridging header, include the `CloudantSync.h` and you
 should be good to go:
 
 ```objc
-#import <CDTDatastore/CloudantSync.h>
+#import <OTFCDTDatastore/CloudantSync.h>
 ```
 
 
 To add, and read documents in Swift, the basics are:
 
 ```swift
-import CDTDatastore
+import OTFCDTDatastore
 
 do {
     let fileManager = FileManager.default
@@ -227,7 +227,7 @@ CDTReplicator *replicator = [replicatorFactory oneWay:pushReplication error:&err
 [replicator start];
 ```
 ```swift
-import CDTDatastore
+import OTFCDTDatastore
 do {
 
     let datastore = try manager.datastoreNamed("my_datastore");
@@ -303,7 +303,7 @@ There are 4 types of File protections available in iOS categorised by the key "N
 By Default value for **NSFileProtectionType** is **NSFileProtectionCompleteUntilFirstUserAuthentication**, that user can change at any point of time.
 
 
-In CDTDatastore framework, we have given 3 types of OTFProtectionLevels that will help to set encryption with some different behaviours. Below are the available modes -
+In OTFCDTDatastore framework, we have given 3 types of OTFProtectionLevels that will help to set encryption with some different behaviours. Below are the available modes -
 
 ### **RunToCompletionWithin10Seconds** - User can use this mode in case Apps are guaranteed to complete syncing within 10 seconds, it will set NSFileProtectionType to CompleteUnlessOpen till 10 seconds finishes. After 10 seconds it will be change the NSFileProtectionType to Complete automatically and any running sycing  won't be able to access Files in background.
 
