@@ -1,32 +1,68 @@
-# CDTDatastore
+# OTFCDTDatastore
 
-CDTDatastore provides Cloudant Sync to store, index and query local JSON data on a device and to synchronise data between many devices. For more details about the CDTDatastore please refer to the [CDTDatastore docs](https://github.com/cloudant/CDTDatastore#cdtdatastore).
+OTFCDTDatastore provides Cloudant Sync to store, index and query local JSON data on a device and to synchronise data between many devices. For more details about the OTFCDTDatastore please refer to the [CDTDatastore docs](https://github.com/cloudant/CDTDatastore#cdtdatastore).
+
+Please refer to the top-level parent framework: [OTFToolBox](https://github.com/HippocratesTech/OTFToolBox)
 
 
 ## Table of contents
-* [Overview](#Overview)
-* [Installation](#Installation)
-* [File Protection](#File-Protection-Levels)
-* [Usage](#Usage)
-* [License](#License)
+* [Overview](#overview)
+* [Installation](#installation)
+* [File Protection](#file-protection-levels)
+* [Usage](#usage)
+* [License](#license)
 
-## Theraforge frameworks
-* [OTFToolBox](https://github.com/HippocratesTech/StarDust)
-* [OTFTemplateBox](https://github.com/HippocratesTech/MoonShine)
-* [OTFCareKit](https://github.com/HippocratesTech/OTFCareKit)
-* [OTFCloudantStore](https://github.com/HippocratesTech/OTFCloudantStore)
-* [OTFCloudClientAPI](https://github.com/HippocratesTech/OTFCloudClientAPI)
 
-## Overview
-**The Theraforge CDTDatastore provides File protection for your application along with the basic cloudant CDTDatastore functionalities. The different types of file protection levels that you can apply on your files before starting and after finishing operations on the files.**
+## Overview <a name="overview"></a>
+**The Theraforge OTFCDTDatastore provides File protection for your application along with the basic cloudant OTFCDTDatastore functionalities. The different types of file protection levels that you can apply on your files before starting and after finishing operations on the files.**
 
-## Installation
+## Installation <a name="installation"></a>
 
-Theraforge CDTDatastore is available through CocoaPods
+* [Prerequisites](#prerequisites)
+* [Project Setup](#project-setup)
 
-TODO:  pod installation command
+### Prerequisites <a name="prerequisites"></a>
 
-## File Protection Levels
+An Intel-based Mac running [macOS Catalina 10.15.4 or later](https://developer.apple.com/documentation/xcode-release-notes/xcode-12-release-notes).
+
+Install the following components:
+
+* Xcode 12 or later (SDK 14)
+
+* CocoaPods 1.10.0 or later
+
+For your projects make sure to target iOS 13 or later
+
+### Project Setup <a name="project-setup"></a>
+
+If you don't have Xcode, then follow this [Xcode article](https://medium.nextlevelswift.com/install-and-configure-xcode-7ed0c5592219) to install and configure Xcode.
+
+After successfully installing Xcode and creating a new project, you can build your first digital health application.
+
+The next step is to integrate OTFCDTDatastore with your application. OTFCDTDatastore can be installed via CocoaPods.
+
+If you are new to CocoaPods you can refer to the [CocoaPods Guides](https://guides.cocoapods.org/using/using-cocoapods.html) to learn more about it.
+
+CocoaPods is built with the Ruby language and can be installed with the default version of Ruby available with macOS.
+
+Integrating OTFCDTDatastore with an existing workspace requires the below extra line in your Podfile.
+
+Add pod 'OTFCDTDatastore' under target in Podfile.
+
+
+``` 
+$ pod 'OTFCDTDatastore'
+```
+
+Run pod install from the terminal root of your project directory, which will fetch all the external dependencies mentioned by you, and associate it with a .xcworkspace file of your project. This .xcworkspace file will be generated for you if you already do not have one.
+
+``` 
+$ pod install
+```
+
+Once you successfully install podspec, you can start importing OTFCDTDatastore.
+
+## File Protection Levels <a name="file-protection-levels"></a>
 
 There are different types of File protections available in iOS categorised by the key [NSFileProtectionType](https://developer.apple.com/documentation/foundation/nsfileprotectiontype). Using these file protections types in CDTDatastore framework Theraforge provides three types of Protection modes on the files that will help to set encryption with different behaviours. Setting any mode will ensure the file protection that you want to apply on your files before starting and after finishing any operation on the files. 
 
@@ -36,7 +72,7 @@ There are different types of File protections available in iOS categorised by th
 
 * background - In this mode application need to periodically run in the background. It will give 30 seconds time frame to finish any operation in the background. After 30 seconds application will not be able to access the files.
 
-## Usage
+## Usage <a name="usage"></a>
 To access OTF protection levels in your existing application install [Theraforge CDTDatastore](#Installation) and then use below functions with the help of CDTDatastore object.
 
 
@@ -55,5 +91,5 @@ To access OTF protection levels in your existing application install [Theraforge
 
 ```
 
-## License
+## License <a name="license"></a>
 TODO:  License
