@@ -124,6 +124,11 @@ int runningProcess;
     }
 }
 
+- (void)encryptFile:(NSFileProtectionType)type {
+    NSError *error;
+    [self encryptFile:type error:error];
+}
+
 -(void)encryptFile: (NSFileProtectionType)type error:(NSError*)error {
     NSDictionary *attributes = nil;
     if (@available(iOS 9.0, *)) {
