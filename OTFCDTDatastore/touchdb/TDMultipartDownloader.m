@@ -61,7 +61,7 @@
             contentType = nil;  // Workaround for CouchDB returning JSON docs with text/plain type
         if (![_reader setContentType:contentType]) {
             os_log_info(CDTOSLog, "%{public}@ got invalid Content-Type '%{public}@'", self, contentType);
-            [self cancelWithStatus:_reader.status];
+            [self cancelWithStatus:(int)_reader.status];
             return;
         }
     }
@@ -72,11 +72,11 @@
 - (void)receivedData:(NSData *)data
 {
     [super receivedData:data];
-    if (![_reader appendData:data]) [self cancelWithStatus:_reader.status];
+    if (![_reader appendData:data]) [self cancelWithStatus:(int)_reader.status];
 
     os_log_debug(CDTOSLog, "%{public}@: Finished loading (%{public}u attachments)", self, (unsigned)_reader.attachmentCount);
     if (![_reader finish]) {
-        [self cancelWithStatus:_reader.status];
+        [self cancelWithStatus:(int)_reader.status];
         return;
     }
 

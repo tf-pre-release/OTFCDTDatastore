@@ -52,7 +52,7 @@ NSData* TDSHA1Digest(NSData* input)
     unsigned char digest[CC_SHA1_DIGEST_LENGTH];
     CC_SHA1_CTX ctx;
     CC_SHA1_Init(&ctx);
-    CC_SHA1_Update(&ctx, input.bytes, input.length);
+    CC_SHA1_Update(&ctx, input.bytes, (CC_LONG)input.length);
     CC_SHA1_Final(digest, &ctx);
     return [NSData dataWithBytes:&digest length:sizeof(digest)];
 }
@@ -62,7 +62,7 @@ NSData* TDSHA256Digest(NSData* input)
     unsigned char digest[CC_SHA256_DIGEST_LENGTH];
     CC_SHA256_CTX ctx;
     CC_SHA256_Init(&ctx);
-    CC_SHA256_Update(&ctx, input.bytes, input.length);
+    CC_SHA256_Update(&ctx, input.bytes, (CC_LONG)input.length);
     CC_SHA256_Final(digest, &ctx);
     return [NSData dataWithBytes:&digest length:sizeof(digest)];
 }
@@ -72,7 +72,7 @@ NSString* TDHexSHA1Digest(NSData* input)
     unsigned char digest[CC_SHA1_DIGEST_LENGTH];
     CC_SHA1_CTX ctx;
     CC_SHA1_Init(&ctx);
-    CC_SHA1_Update(&ctx, input.bytes, input.length);
+    CC_SHA1_Update(&ctx, input.bytes, (CC_LONG)input.length);
     CC_SHA1_Final(digest, &ctx);
     return TDHexFromBytes(&digest, sizeof(digest));
 }

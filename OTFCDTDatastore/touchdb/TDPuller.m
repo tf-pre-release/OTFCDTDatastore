@@ -610,8 +610,6 @@ static NSString* joinQuotedEscaped(NSArray* strings);
     os_log_debug(CDTOSLog, "%{public}@ inserting %{public}u revisions...", self, (unsigned)downloads.count);
     CFAbsoluteTime time = CFAbsoluteTimeGetCurrent();
 
-    //    [_db beginTransaction];
-    //    BOOL success = NO;
     @try {
         downloads = [downloads sortedArrayUsingSelector:@selector(compareSequences:)];
         for (TD_Revision* rev in downloads) {
@@ -628,12 +626,12 @@ static NSString* joinQuotedEscaped(NSArray* strings);
                 os_log_debug(CDTOSLog, "%{public}@ inserting %{public}@ %{public}@", self, rev.docID, [history my_compactDescription]);
 
                 // Insert the revision:
-                int status = [_db forceInsert:rev revisionHistory:history source:_remote];
+                TDStatus status = [_db forceInsert:rev revisionHistory:history source:_remote];
                 if (TDStatusIsError(status)) {
                     if (status == kTDStatusForbidden)
                     os_log_info(CDTOSLog, "%{public}@: Remote rev failed validation: %{public}@", self, rev);
                     else {
-                        os_log_debug(CDTOSLog, "%{public}@ failed to write %{public}@: status=%{public}d", self, rev, status);
+                        os_log_debug(CDTOSLog, "%{public}@ failed to write %{public}@: status=%{public}d", self, rev, (int)status);
                         [self revisionFailed];
                         self.error = TDStatusToNSError(status, nil);
                         continue;
@@ -651,14 +649,9 @@ static NSString* joinQuotedEscaped(NSArray* strings);
 
         // Checkpoint:
         self.lastSequence = _pendingSequences.checkpointedValue;
-
-        //        success = YES;
     }
     @catch (NSException* x) { MYReportException(x, @"%@: Exception inserting revisions", self); }
-    //    @finally {
-    //        [_db endTransaction: success];
-    //    }
-
+    
     time = CFAbsoluteTimeGetCurrent() - time;
     os_log_info(CDTOSLog, "%{public}@ inserted %{public}u revs in %{public}.3f sec (%{public}.1f/sec)", self, (unsigned)downloads.count, time, downloads.count / time);
 

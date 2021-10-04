@@ -192,13 +192,13 @@
 
 + (BOOL)checkTrust:(SecTrustRef)trust forHost:(NSString *)host
 {
-    SecTrustResultType trustResult;
-    OSStatus err = SecTrustEvaluate(trust, &trustResult);
-    if (err == noErr &&
-        (trustResult == kSecTrustResultProceed || trustResult == kSecTrustResultUnspecified)) {
+    CFErrorRef errRef;
+    bool trusted = SecTrustEvaluateWithError(trust, &errRef);
+    if (trusted && errRef == NULL) {
         return YES;
     } else {
-        os_log_debug(CDTOSLog, "TouchDB: SSL server <%{public}@> not trusted (err=%{public}d, trustResult=%{public}u); cert chain follows:", host, (int)err, (unsigned)trustResult);
+        NSError *error = (__bridge NSError *)errRef;
+        os_log_debug(CDTOSLog, "TouchDB: SSL server <%{public}@> not trusted (err=%{public}d, trustResult=%{public}@); cert chain follows:", host, (int)trusted, error);
 #if TARGET_OS_IPHONE
         for (CFIndex i = 0; i < SecTrustGetCertificateCount(trust); ++i) {
             SecCertificateRef cert = SecTrustGetCertificateAtIndex(trust, i);

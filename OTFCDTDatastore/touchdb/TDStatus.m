@@ -61,7 +61,7 @@ int TDStatusToHTTPStatus(TDStatus status, NSString** outMessage)
         }
     }
     if (outMessage) *outMessage = [NSHTTPURLResponse localizedStringForStatusCode:status];
-    return status;
+    return (int)status;
 }
 
 NSError* TDStatusToNSErrorWithInfo(TDStatus status, NSURL* url, NSDictionary* extraInfo)

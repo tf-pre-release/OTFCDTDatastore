@@ -80,7 +80,8 @@
         data = [self.blob dataWithError:&error];
     } else if (self.encoding == kTDAttachmentEncodingGZIP) {
         NSData *gzippedData = [self.blob dataWithError:&error];
-        data = (gzippedData ? [NSData gtm_dataByInflatingData:gzippedData] : nil);
+        NSError *error;
+        data = (gzippedData ? [NSData gtm_dataByInflatingData:gzippedData error:&error] : nil);
     } else {
         os_log_debug(CDTOSLog, "Unknown attachment encoding %{public}i, returning nil", self.encoding);
     }

@@ -1365,9 +1365,9 @@
 			children = (
 				98F77CDF1C43FDA700515CC3 /* vendor */,
 				98F77B391C43FC9F00515CC3 /* CDTDatastore.h */,
+				98F77B5A1C43FCEE00515CC3 /* CDTDatastore.m */,
 				98F77B501C43FCEE00515CC3 /* Attachments */,
 				98F77B591C43FCEE00515CC3 /* CDTConflictResolver.h */,
-				98F77B5A1C43FCEE00515CC3 /* CDTDatastore.m */,
 				98F77B5B1C43FCEE00515CC3 /* CDTDatastore+Conflicts.h */,
 				98F77B5C1C43FCEE00515CC3 /* CDTDatastore+Conflicts.m */,
 				98F77B5D1C43FCEE00515CC3 /* CDTDatastore+Internal.h */,

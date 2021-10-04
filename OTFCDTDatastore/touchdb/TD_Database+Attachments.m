@@ -288,8 +288,10 @@
     switch (encoding) {
         case kTDAttachmentEncodingNone:
             break;
-        case kTDAttachmentEncodingGZIP:
-            attachment = [NSData gtm_dataByInflatingData:attachment];
+        case kTDAttachmentEncodingGZIP: {
+            NSError *error;
+            attachment = [NSData gtm_dataByInflatingData:attachment error:&error];
+        }
     }
     if (!attachment) os_log_debug(CDTOSLog, "Unable to decode attachment!");
     return attachment;

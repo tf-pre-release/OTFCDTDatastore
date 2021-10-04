@@ -744,6 +744,12 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
     }];
 }
 
+- (void)testBulkGet:(NSDictionary *)requestBody handler:(ReplicatorTestCompletionHandler)completionHandler {
+#warning @"impement bulk get logic"
+    // TODO: impement bulk get logic
+    NSAssert(false, @"Provide implementation of bulk get logic");
+}
+
 - (void)fetchRemoteCheckpointDoc {
     _lastSequenceChanged = NO;
     NSString* checkpointID = self.remoteCheckpointDocID;

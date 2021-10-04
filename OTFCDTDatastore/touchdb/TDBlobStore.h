@@ -124,7 +124,7 @@ typedef struct
     id<CDTBlobWriter> _blobWriter;
     UInt64 _length;
     CC_SHA1_CTX _shaCtx;
-    CC_MD5_CTX _md5Ctx;
+    CC_SHA256_CTX _sha256Ctx;
     TDBlobKey _blobKey;
     TDMD5Key _MD5Digest;
 }

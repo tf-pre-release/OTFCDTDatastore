@@ -64,7 +64,8 @@
     NSData *data =
         [CDTEncryptionKeychainStorage genericPwWithService:self.service account:self.account];
     if (data) {
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        NSError *error;
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:&error];
         [unarchiver setRequiresSecureCoding:YES];
 
         encryptionData = [unarchiver decodeObjectOfClass:[CDTEncryptionKeychainData class]
@@ -78,16 +79,15 @@
 
 - (BOOL)saveEncryptionKeyData:(CDTEncryptionKeychainData *)data
 {
-    NSMutableData *archivedData = [NSMutableData data];
     NSKeyedArchiver *archiver =
-        [[NSKeyedArchiver alloc] initForWritingWithMutableData:archivedData];
+        [[NSKeyedArchiver alloc] initRequiringSecureCoding:YES];
     [archiver setRequiresSecureCoding:YES];
     [archiver encodeObject:data forKey:CDTENCRYPTION_KEYCHAINSTORAGE_ARCHIVE_KEY];
     [archiver finishEncoding];
 
     BOOL success = [CDTEncryptionKeychainStorage storeGenericPwWithService:self.service
                                                                    account:self.account
-                                                                      data:archivedData];
+                                                                      data:data.encryptedDPK];
 
     return success;
 }

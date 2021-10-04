@@ -84,7 +84,7 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
     TDBlobKey key;
     CC_SHA1_CTX ctx;
     CC_SHA1_Init(&ctx);
-    CC_SHA1_Update(&ctx, blob.bytes, blob.length);
+    CC_SHA1_Update(&ctx, blob.bytes, (CC_LONG)blob.length);
     CC_SHA1_Final(key.bytes, &ctx);
 
     return key;
@@ -289,7 +289,7 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
     if (self) {
         _store = store;
         CC_SHA1_Init(&_shaCtx);
-        CC_MD5_Init(&_md5Ctx);
+        CC_SHA256_Init(&_sha256Ctx);
 
         // Open a temporary file in the store's temporary directory:
         NSString* filename = [TDCreateUUID() stringByAppendingPathExtension:@"blobtmp"];
@@ -311,8 +311,8 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
     [_blobWriter appendData:data];
     NSUInteger dataLen = data.length;
     _length += dataLen;
-    CC_SHA1_Update(&_shaCtx, data.bytes, dataLen);
-    CC_MD5_Update(&_md5Ctx, data.bytes, dataLen);
+    CC_SHA1_Update(&_shaCtx, data.bytes, (CC_LONG)dataLen);
+    CC_SHA256_Update(&_sha256Ctx, data.bytes, (CC_LONG)dataLen);
 }
 
 - (void)closeFile
@@ -326,7 +326,7 @@ NSString *const CDTBlobStoreErrorDomain = @"CDTBlobStoreErrorDomain";
     Assert(_blobWriter, @"Already finished");
     [self closeFile];
     CC_SHA1_Final(_blobKey.bytes, &_shaCtx);
-    CC_MD5_Final(_MD5Digest.bytes, &_md5Ctx);
+    CC_SHA256_Final(_blobKey.bytes, &_sha256Ctx);
 }
 
 - (NSString*)MD5DigestString
