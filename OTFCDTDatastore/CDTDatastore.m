@@ -118,7 +118,10 @@ int runningProcess;
         NSURL *dbURL = [NSURL URLWithString: dbPath];
         NSError *error;
         [[NSFileManager defaultManager] setAttributes:attributes ofItemAtPath: [dbURL path] error:&error];
-        @throw error;
+        
+        if (error != nil) {
+            @throw error;
+        }
     } else {
         @throw [CDTError errorWith: NoFileFoundAtPath];
     }
