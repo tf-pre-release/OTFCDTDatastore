@@ -250,6 +250,10 @@
 
 - (BOOL)parseJSONBuffer
 {
+    if (!_jsonBuffer) {
+        return NO;
+    }
+    
     id document =
         [TDJSON JSONObjectWithData:_jsonBuffer options:TDJSONReadingMutableContainers error:NULL];
     if (![document isKindOfClass:[NSDictionary class]]) {
