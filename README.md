@@ -51,7 +51,7 @@ Add pod 'OTFCDTDatastore' under target in Podfile.
 
 
 ``` 
-$ pod 'OTFCDTDatastore'
+pod 'OTFCDTDatastore'
 ```
 
 Run pod install from the terminal root of your project directory, which will fetch all the external dependencies mentioned by you, and associate it with a .xcworkspace file of your project. This .xcworkspace file will be generated for you if you already do not have one.
