@@ -2,7 +2,7 @@
 
 OTFCDTDatastore provides Cloudant Sync to store, index and query local JSON data on a device and to synchronise data between many devices. For more details about the OTFCDTDatastore please refer to the [CDTDatastore docs](https://github.com/cloudant/CDTDatastore#cdtdatastore).
 
-Please refer to the top-level parent framework: [OTFToolBox](https://github.com/HippocratesTech/OTFToolBox)
+Please refer to the top-level parent framework: [OTFToolBox](https://github.com/TheraForge/OTFToolBox)
 
 
 ## Table of contents
@@ -92,4 +92,5 @@ To access OTF protection levels in your existing application install [Theraforge
 ```
 
 ## License <a name="license"></a>
-TODO:  License
+
+This project is made available under the terms of an APACHE license. See the [LICENSE](LICENSE) file.
