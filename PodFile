@@ -1,5 +1,5 @@
 source 'https://cdn.cocoapods.org'
-source 'https://github.com/HippocratesTech/OTFCocoapodSpecs'
+source 'https://github.com/TheraForge/OTFCocoapodSpecs'
 
 use_frameworks!
 
