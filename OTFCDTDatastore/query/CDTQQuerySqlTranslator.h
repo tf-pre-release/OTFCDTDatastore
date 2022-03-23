@@ -142,7 +142,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  Here we're looking for the index which supports all the fields used in the query.
 
- @param query full query provided by user.
+ @param clause full query provided by user.
  @param indexes index list of the form @{indexName: @[fieldName1, fieldName2]}
  @return name of index from `indexes` to ues for `query`, or `nil` if none found.
  */
@@ -164,7 +164,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Returns the SQL statement to find document IDs matching query.
 
- @param query the query being executed.
+ @param clause the query being executed.
  @param indexName the index selected for use in this query
  */
 + (nullable CDTQSqlParts *)selectStatementForAndClause:(NSArray *)clause

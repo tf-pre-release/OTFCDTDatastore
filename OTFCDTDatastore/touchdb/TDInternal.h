@@ -19,6 +19,7 @@
 
 @class TD_Attachment;
 
+NS_ASSUME_NONNULL_BEGIN
 @interface TD_Database ()
 
 @property (readwrite, copy) NSString* name;  // make it settable
@@ -67,7 +68,7 @@
 
 @interface TD_Database (Insertion_Internal)
 - (NSData*)encodeDocumentJSON:(TD_Revision*)rev;
-- (TDStatus)validateRevision:(TD_Revision*)newRev previousRevision:(TD_Revision*)oldRev;
+- (TDStatus)validateRevision:(TD_Revision*)newRev previousRevision:(TD_Revision*_Nullable)oldRev;
 @end
 
 @interface TD_Database (Attachments_Internal)
@@ -102,14 +103,12 @@
 
 @interface TD_Database (Replication_Internal)
 - (void)stopAndForgetReplicator:(TDReplicator*)repl;
-NS_ASSUME_NONNULL_BEGIN
 - (nullable NSDictionary<NSString *, NSObject *> *)checkpointDocumentWithID:
     (nonnull NSString *)checkpointID;
 - (BOOL)saveCheckpointDocument:(nonnull NSDictionary<NSString *, NSObject *> *)checkpoint
                          error:(NSError *__autoreleasing *)error;
 - (BOOL)deleteCheckpointDocunemtWithID:(NSString *)checkpointID
                                  error:(NSError *__autoreleasing *)error;
-NS_ASSUME_NONNULL_END;
 + (NSString*)joinQuotedStrings:(NSArray*)strings;
 @end
 
@@ -138,7 +137,7 @@ NS_ASSUME_NONNULL_END;
 - (void)processInbox:(TD_RevisionList*)inbox;  // override this
 - (TDRemoteJSONRequest*)sendAsyncRequest:(NSString*)method
                                     path:(NSString*)relativePath
-                                    body:(id)body
+                                    body:(id _Nullable)body
                             onCompletion:(TDRemoteRequestCompletionBlock)onCompletion;
 - (void)addRemoteRequest:(TDRemoteRequest*)request;
 - (void)removeRemoteRequest:(TDRemoteRequest*)request;
@@ -156,3 +155,4 @@ NS_ASSUME_NONNULL_END;
 @property (readonly) BOOL savingCheckpoint;
 #endif
 @end
+NS_ASSUME_NONNULL_END;

@@ -30,9 +30,9 @@
 #import "TDMisc.h"
 #import "Test.h"
 
-#import <FMDB/FMDatabase.h>
-#import <FMDB/FMDatabaseAdditions.h>
-#import <FMDB/FMDatabaseQueue.h>
+#import <fmdb/FMDatabase.h>
+#import <fmdb/FMDatabaseAdditions.h>
+#import <fmdb/FMDatabaseQueue.h>
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
@@ -215,7 +215,7 @@ int runningProcess;
 }
 
 ///  This function will help to set Encryption MODE. Set a mode according to your need.
-/// @param mode - It's a ENUM value that users can set from predefined enum cases.
+/// @param level - It's a ENUM value that users can set from predefined enum cases.
 -(void)setProtectionLevel: (OTFProtectionLevel)level error:(NSError *__autoreleasing *)error {
     switch(level) {
         case OTFProtectionLevelRunToCompletionWithIn10Seconds:

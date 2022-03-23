@@ -48,14 +48,14 @@
                       path:@""
                       body:nil
               onCompletion:^(id result, NSError* error) {
-                  _creatingTarget = NO;
+                  self->_creatingTarget = NO;
                   if (error && error.code != kTDStatusDuplicate) {
                       os_log_info(CDTOSLog, "Failed to create remote db: %{public}@", error);
                       self.error = error;
                       [self stop];
                   } else {
                       os_log_info(CDTOSLog, "Created remote db");
-                      _createTarget = NO;  // remember that I created the target
+                      self->_createTarget = NO;  // remember that I created the target
                       [self beginReplicating];
                   }
                   [self asyncTasksFinished:1];
@@ -216,8 +216,8 @@
 
                               // Get the revision's properties:
                               TDContentOptions options = kTDIncludeAttachments | kTDIncludeRevs;
-                              if (!_dontSendMultipart) options |= kTDBigAttachmentsFollow;
-                              if ([_db loadRevisionBody:rev options:options] >= 300) {
+                              if (!self->_dontSendMultipart) options |= kTDBigAttachmentsFollow;
+                              if ([self->_db loadRevisionBody:rev options:options] >= 300) {
                                   os_log_debug(CDTOSLog, "%{public}@: Couldn't get local contents of %{public}@", self, rev);
                                   [self revisionFailed];
                                   return nil;
@@ -227,7 +227,7 @@
 
                               // Strip any attachments already known to the target db:
                               if (properties[@"_attachments"]) {
-                                  if (_sendAllDocumentsWithAttachmentsAsMultipart) {
+                                  if (self->_sendAllDocumentsWithAttachmentsAsMultipart) {
                                       // We saw an error which indicates we should send all
                                       // documents
                                       // with attachments using multipart/related AND include all
@@ -258,7 +258,7 @@
                                       properties = rev.properties;
                                       // If the rev has huge attachments, send it under separate
                                       // cover:
-                                      if (!_dontSendMultipart && [self uploadMultipartRevision:rev])
+                                      if (!self->_dontSendMultipart && [self uploadMultipartRevision:rev])
                                           return nil;
                                   }
                               }
@@ -354,7 +354,7 @@
                                   for (TD_Revision* rev in [changes revsWithDocID:docID]) {
                                       [revisionsToRetry addRev:rev];
                                   }
-                                  _sendAllDocumentsWithAttachmentsAsMultipart = YES;
+                                  self->_sendAllDocumentsWithAttachmentsAsMultipart = YES;
 
                                   // The rev also failed, so don't remove from pending
                                   [failedIDs addObject:docID];
@@ -367,7 +367,7 @@
                                   [failedIDs addObject:docID];
                                   url = nil;
                                   if (docID) {
-                                      url = [_remote URLByAppendingPathComponent:docID];
+                                      url = [self->_remote URLByAppendingPathComponent:docID];
                                   }
                                   error = TDStatusToNSError(status, url);
                                   break;
@@ -390,7 +390,7 @@
                       for (TD_Revision* rev in changes.allRevisions) {
                           [revisionsToRetry addRev:rev];
                       }
-                      _sendAllDocumentsWithAttachmentsAsMultipart = YES;
+                      self->_sendAllDocumentsWithAttachmentsAsMultipart = YES;
                   } else if (error) {
                       // Another error in the request as a whole; fail replication.
                       self.error = error;
@@ -476,7 +476,7 @@ static TDStatus statusFromBulkDocsResponseItem(NSDictionary* item)
                                                 error.code == kTDStatusUnsupportedType) {
                                                 // Server doesn't like multipart, eh? Fall back to
                                                 // JSON.
-                                                _dontSendMultipart = YES;
+                                                self->_dontSendMultipart = YES;
                                                 [self uploadJSONRevision:rev];
                                             } else {
                                                 self.error = error;
@@ -490,7 +490,7 @@ static TDStatus statusFromBulkDocsResponseItem(NSDictionary* item)
                                         [self asyncTasksFinished:1];
                                         [self removeRemoteRequest:uploader];
 
-                                        _uploading = NO;
+                                        self->_uploading = NO;
                                         [self startNextUpload];
                                     }];
     uploader.authorizer = _authorizer;

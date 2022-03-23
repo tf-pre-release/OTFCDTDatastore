@@ -200,7 +200,7 @@ typedef NS_ENUM(NSInteger, CDTReplicationErrors) {
 /**
  Validates user supplied optional headers.
  
- @param optional user-defined headers
+ @param candidateHeaders optional user-defined headers
  @param error reports error information
  @return YES on valid optional headers.
  */

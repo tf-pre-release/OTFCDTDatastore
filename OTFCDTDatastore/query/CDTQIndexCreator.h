@@ -26,9 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Add a single, possibly compound, index for the given field names.
 
- @param fieldNames List of fieldnames in the sort format
- @param indexName Name of index to create.
- @returns name of created index
+ @param index List of fieldnames in the sort format
+ @param database Database in which index should be created..
+ @param datastore The source datastore.
  */
 + (nullable NSString *)ensureIndexed:(CDTQIndex *)index
                           inDatabase:(FMDatabaseQueue *)database

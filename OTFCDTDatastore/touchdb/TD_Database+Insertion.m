@@ -28,9 +28,9 @@
 #import "TDMisc.h"
 #import "Test.h"
 
-#import <FMDB/FMDatabase.h>
-#import <FMDB/FMDatabaseAdditions.h>
-#import <FMDB/FMDatabaseQueue.h>
+#import <fmdb/FMDatabase.h>
+#import <fmdb/FMDatabaseAdditions.h>
+#import <fmdb/FMDatabaseQueue.h>
 
 #import "CDTLogging.h"
 
@@ -589,7 +589,7 @@ NSString* const TD_DatabaseChangeNotification = @"TD_DatabaseChange";
             }
 
             // Validate against the latest common ancestor:
-            if (_validations.count > 0) {
+            if (self->_validations.count > 0) {
                 TD_Revision* oldRev = nil;
                 for (NSUInteger i = 1; i < historyCount; ++i) {
                     oldRev = [localRevs revWithDocID:docID revID:history[i]];

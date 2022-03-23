@@ -173,7 +173,7 @@
  object (excluding the completion block) to process the results.
 
  @param datastore The datastore containing the changes that should be fetched.
- @param previousServerChangeToken The sequence value from a previous fetch operation. This
+ @param startSequenceValue The sequence value from a previous fetch operation. This
             is the value passed to the completionHandler for this object. This value limits
             the changes retrieved to those occuring after this sequence value. Pass `nil` to
             receive all changes.

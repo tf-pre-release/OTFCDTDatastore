@@ -22,8 +22,8 @@
 #import "TDJSON.h"
 #import "Test.h"
 
-#import <FMDB/FMDatabase.h>
-#import <FMDB/FMDatabaseQueue.h>
+#import <fmdb/FMDatabase.h>
+#import <fmdb/FMDatabaseQueue.h>
 #import <sqlite3.h>
 
 @implementation TD_Database (LocalDocs)

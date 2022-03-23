@@ -22,9 +22,9 @@
 #import "TDJSON.h"
 #import "CollectionUtils.h"
 
-#import <FMDB/FMDatabase.h>
-#import <FMDB/FMDatabaseAdditions.h>
-#import <FMDB/FMDatabaseQueue.h>
+#import <fmdb/FMDatabase.h>
+#import <fmdb/FMDatabaseAdditions.h>
+#import <fmdb/FMDatabaseQueue.h>
 
 #define kActiveReplicatorCleanupDelay 10.0
 

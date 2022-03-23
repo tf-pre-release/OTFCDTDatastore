@@ -22,10 +22,10 @@
 #import "TDMisc.h"
 #import "TDJSON.h"
 
-#import <FMDB/FMDatabase.h>
-#import <FMDB/FMDatabaseAdditions.h>
-#import <FMDB/FMDatabaseQueue.h>
-#import <FMDB/FMResultSet.h>
+#import <fmdb/FMDatabase.h>
+#import <fmdb/FMDatabaseAdditions.h>
+#import <fmdb/FMDatabaseQueue.h>
+#import <fmdb/FMResultSet.h>
 
 #import "FMDatabase+LongLong.h"
 
@@ -72,7 +72,7 @@ static id<TDViewCompiler> sCompiler;
     if (_viewID < 0) {
         __block int result;
         [_db.fmdbQueue inDatabase:^(FMDatabase* db) {
-            result = [db intForQuery:@"SELECT view_id FROM views WHERE name=?", _name];
+            result = [db intForQuery:@"SELECT view_id FROM views WHERE name=?", self->_name];
         }];
         _viewID = result;
     }
@@ -113,7 +113,7 @@ static id<TDViewCompiler> sCompiler;
     // avoid modifying the db if the version didn't change, and because the row might not exist yet.
     __block BOOL result;
     [_db.fmdbQueue inDatabase:^(FMDatabase* db) {
-        if (![db executeUpdate:@"INSERT OR IGNORE INTO views (name, version) VALUES (?, ?)", _name,
+        if (![db executeUpdate:@"INSERT OR IGNORE INTO views (name, version) VALUES (?, ?)", self->_name,
                                version]) {
             result = NO;
             return;
@@ -124,7 +124,7 @@ static id<TDViewCompiler> sCompiler;
         }
         if (![db executeUpdate:@"UPDATE views SET version=?, lastSequence=0 "
                                 "WHERE name=? AND version!=?",
-                               version, _name, version]) {
+                               version, self->_name, version]) {
             result = NO;
             return;
         }
@@ -168,8 +168,8 @@ static id<TDViewCompiler> sCompiler;
 {
     if (self.viewID <= 0) return;
     [_db.fmdbQueue inTransaction:^(FMDatabase* db, BOOL* rollback) {
-        [db executeUpdate:@"DELETE FROM maps WHERE view_id=?", @(_viewID)];
-        [db executeUpdate:@"UPDATE views SET lastsequence=0 WHERE view_id=?", @(_viewID)];
+        [db executeUpdate:@"DELETE FROM maps WHERE view_id=?", @(self->_viewID)];
+        [db executeUpdate:@"UPDATE views SET lastsequence=0 WHERE view_id=?", @(self->_viewID)];
     }];
 }
 
@@ -217,7 +217,7 @@ static id fromJSON(NSData* json)
         @try {
             // Check whether we need to update at all:
             const SequenceNumber lastSequence = [strongSelf lastSequenceIndexedInDatabase:db];
-            const SequenceNumber dbMaxSequence = _db.lastSequence;
+            const SequenceNumber dbMaxSequence = self->_db.lastSequence;
             if (lastSequence == dbMaxSequence) {
                 status = kTDStatusNotModified;
                 return;
@@ -236,13 +236,13 @@ static id fromJSON(NSData* json)
             BOOL ok;
             if (lastSequence == 0) {
                 // If the lastSequence has been reset to 0, make sure to remove all map results:
-                ok = [fmdb executeUpdate:@"DELETE FROM maps WHERE view_id=?", @(_viewID)];
+                ok = [fmdb executeUpdate:@"DELETE FROM maps WHERE view_id=?", @(self->_viewID)];
             } else {
                 // Delete all obsolete map results (ones from since-replaced revisions):
                 ok = [fmdb executeUpdate:@"DELETE FROM maps WHERE view_id=? AND sequence IN ("
                                           "SELECT parent FROM revs WHERE sequence>? "
                                           "AND parent>0 AND parent<=?)",
-                                         @(_viewID), @(lastSequence), @(lastSequence)];
+                                         @(self->_viewID), @(lastSequence), @(lastSequence)];
             }
             if (!ok) {
                 status = kTDStatusDBError;
@@ -322,7 +322,7 @@ static id fromJSON(NSData* json)
                                 SequenceNumber oldSequence = [r2 longLongIntForColumnIndex:1];
                                 [fmdb executeUpdate:
                                           @"DELETE FROM maps WHERE view_id=? AND sequence=?",
-                                          @(_viewID), @(oldSequence)];
+                                          @(self->_viewID), @(oldSequence)];
                                 if (TDCompareRevIDs(oldRevID, revID) > 0) {
                                     // It still 'wins' the conflict, so it's the one that
                                     // should be mapped [again], not the current revision!
@@ -347,12 +347,12 @@ static id fromJSON(NSData* json)
                     }
 
                     // Get the document properties, to pass to the map function:
-                    NSDictionary* properties = [_db documentPropertiesFromJSON:json
+                    NSDictionary* properties = [self->_db documentPropertiesFromJSON:json
                                                                          docID:docID
                                                                          revID:revID
                                                                        deleted:NO
                                                                       sequence:sequence
-                                                                       options:_mapContentOptions
+                                                                       options:self->_mapContentOptions
                                                                     inDatabase:db];
                     if (!properties) {
                         os_log_debug(CDTOSLog, "Failed to parse JSON of doc %{public}@ rev %{public}@", docID, revID);
@@ -368,7 +368,7 @@ static id fromJSON(NSData* json)
 
                     // Call the user-defined map() to emit new key/value pairs from this revision:
                     os_log_info(CDTOSLog, "  call map for sequence=%{public}lld...", sequence);
-                    _mapBlock(properties, emit);
+                    self->_mapBlock(properties, emit);
                     if (emitFailed) {
                         status = kTDStatusCallbackError;
                         return;
@@ -383,14 +383,14 @@ static id fromJSON(NSData* json)
                 return;
             }
 
-            os_log_info(CDTOSLog, "...Finished re-indexing view %{public}@ to #%{public}lld (deleted %{public}u, added %{public}u)", _name, dbMaxSequence, deleted, inserted);
+            os_log_info(CDTOSLog, "...Finished re-indexing view %{public}@ to #%{public}lld (deleted %{public}u, added %{public}u)", self->_name, dbMaxSequence, deleted, inserted);
             status = kTDStatusOK;
         }
         @finally
         {
             [r close];
             if (status >= kTDStatusBadRequest)
-                os_log_debug(CDTOSLog, "TouchDB: Failed to rebuild view '%{public}@': %{public}@", _name, @(status));
+                os_log_debug(CDTOSLog, "TouchDB: Failed to rebuild view '%{public}@': %{public}@", self->_name, @(status));
             *rollback = (status < kTDStatusBadRequest);
         }
     }];
@@ -487,8 +487,8 @@ static id fromJSON(NSData* json)
         if (options->reduce || group) {
             // Reduced or grouped query:
             // Reduced or grouped query:
-            if (!_reduceBlock && !group) {
-                os_log_debug(CDTOSLog, "Cannot use reduce option in view %{public}@ which has no reduce block defined", _name);
+            if (!self->_reduceBlock && !group) {
+                os_log_debug(CDTOSLog, "Cannot use reduce option in view %{public}@ which has no reduce block defined", self->_name);
                 *outStatus = kTDStatusBadParam;
                 return;
             }
@@ -512,23 +512,23 @@ static id fromJSON(NSData* json)
                             // http://wiki.apache.org/couchdb/Introduction_to_CouchDB_views#Linked_documents
                             NSString* linkedRev = value[@"_rev"];  // usually nil
                             TDStatus linkedStatus;
-                            TD_Revision* linked = [_db getDocumentWithID:linkedID
-                                                              revisionID:linkedRev
-                                                                 options:options->content
-                                                                  status:&linkedStatus];
+                            TD_Revision* linked = [self->_db getDocumentWithID:linkedID
+                                                                    revisionID:linkedRev
+                                                                       options:options->content
+                                                                        status:&linkedStatus];
                             docContents = linked ? linked.properties : $null;
                         } else {
                             docContents =
-                                [_db documentPropertiesFromJSON:[r dataNoCopyForColumnIndex:4]
-                                                          docID:docID
-                                                          revID:[r stringForColumnIndex:3]
-                                                        deleted:NO
-                                                       sequence:[r longLongIntForColumnIndex:5]
-                                                        options:options->content
-                                                     inDatabase:db];
+                                [self->_db documentPropertiesFromJSON:[r dataNoCopyForColumnIndex:4]
+                                                                docID:docID
+                                                                revID:[r stringForColumnIndex:3]
+                                                              deleted:NO
+                                                             sequence:[r longLongIntForColumnIndex:5]
+                                                              options:options->content
+                                                           inDatabase:db];
                         }
                     }
-                    os_log_debug(CDTOSLog, "Query %{public}@: Found row with key=%{public}@, value=%{public}@, id=%{public}@", _name, toJSONString(key), toJSONString(value), toJSONString(docID));
+                    os_log_debug(CDTOSLog, "Query %{public}@: Found row with key=%{public}@, value=%{public}@, id=%{public}@", self->_name, toJSONString(key), toJSONString(value), toJSONString(docID));
                     [rows addObject:$dict({ @"id", docID }, { @"key", key }, { @"value", value },
                                           { @"doc", docContents })];
                 }
@@ -537,7 +537,7 @@ static id fromJSON(NSData* json)
 
         [r close];
         *outStatus = kTDStatusOK;
-        os_log_info(CDTOSLog, "Query %{public}@: Returning %{public}u rows", _name, (unsigned)rows.count);
+        os_log_info(CDTOSLog, "Query %{public}@: Returning %{public}u rows", self->_name, (unsigned)rows.count);
     }];
     return rows;
 }
@@ -629,7 +629,7 @@ static id groupKey(NSData* keyJSON, unsigned groupLevel)
 
         FMResultSet* r = [db executeQuery:@"SELECT sequence, key, value FROM maps "
                                            "WHERE view_id=? ORDER BY key",
-                                          @(_viewID)];
+                                          @(self->_viewID)];
         if (!r) {
             return;
         }

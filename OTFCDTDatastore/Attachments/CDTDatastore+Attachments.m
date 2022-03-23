@@ -17,9 +17,9 @@
 
 #import "CDTDatastore+Attachments.h"
 
-#import <FMDB/FMDatabase.h>
-#import <FMDB/FMDatabaseAdditions.h>
-#import <FMDB/FMDatabaseQueue.h>
+#import <fmdb/FMDatabase.h>
+#import <fmdb/FMDatabaseAdditions.h>
+#import <fmdb/FMDatabaseQueue.h>
 
 #import "TD_Database.h"
 #import "TD_Database+Attachments.h"

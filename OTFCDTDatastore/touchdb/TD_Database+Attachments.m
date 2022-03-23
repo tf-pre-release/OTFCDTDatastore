@@ -38,10 +38,10 @@
 #import "TDInternal.h"
 
 #import "CollectionUtils.h"
-#import <FMDB/FMDatabase.h>
-#import <FMDB/FMDatabaseQueue.h>
-#import <FMDB/FMDatabaseAdditions.h>
-#import <FMDB/FMResultSet.h>
+#import <fmdb/FMDatabase.h>
+#import <fmdb/FMDatabaseQueue.h>
+#import <fmdb/FMDatabaseAdditions.h>
+#import <fmdb/FMResultSet.h>
 #import <GoogleToolboxForMac/GTMNSData+zlib.h>
 #import "Test.h"
 
@@ -128,7 +128,7 @@
     __block NSUInteger n = 0;
     
     [self.fmdbQueue inDatabase:^(FMDatabase *db) {
-        n = [_attachments countWithDatabase:db];
+        n = [self->_attachments countWithDatabase:db];
     }];
     
     return n;
@@ -139,7 +139,7 @@
     __block id<CDTBlobReader> reader = nil;
     
     [self.fmdbQueue inDatabase:^(FMDatabase *db) {
-        reader = [_attachments blobForKey:key withDatabase:db];
+        reader = [self->_attachments blobForKey:key withDatabase:db];
     }];
     
     return reader;
@@ -171,7 +171,7 @@
     __block BOOL success = YES;
 
     [self.fmdbQueue inDatabase:^(FMDatabase *db) {
-      success = [_attachments storeBlob:blob creatingKey:outKey withDatabase:db error:outError];
+      success = [self->_attachments storeBlob:blob creatingKey:outKey withDatabase:db error:outError];
     }];
 
     return success;
@@ -305,7 +305,7 @@
  */
 - (id<CDTBlobReader>)getAttachmentBlobForSequence:(SequenceNumber)sequence
                                             named:(NSString *)filename
-                                             type:(NSString **)outType
+                                             type:(NSString *__strong*)outType
                                          encoding:(TDAttachmentEncoding *)outEncoding
                                            status:(TDStatus *)outStatus
 {
@@ -333,7 +333,7 @@
                 *outStatus = kTDStatusCorruptError;
                 return;
             }
-            blob = [_attachments blobForKey:*(TDBlobKey*)keyData.bytes withDatabase:db];
+            blob = [self->_attachments blobForKey:*(TDBlobKey*)keyData.bytes withDatabase:db];
             *outStatus = kTDStatusOK;
             if (outType) *outType = [r stringForColumnIndex:1];
 
@@ -350,7 +350,7 @@
  */
 - (NSData *)getAttachmentForSequence:(SequenceNumber)sequence
                                named:(NSString *)filename
-                                type:(NSString **)outType
+                                type:(NSString *__strong*)outType
                             encoding:(TDAttachmentEncoding *)outEncoding
                               status:(TDStatus *)outStatus
 {

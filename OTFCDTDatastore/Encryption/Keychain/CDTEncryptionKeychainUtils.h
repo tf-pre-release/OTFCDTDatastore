@@ -30,7 +30,7 @@ extern NSString *const CDTENCRYPTION_KEYCHAIN_UTILS_ERROR_LABEL_DECRYPT;
 /**
  Generates a buffer with random bytes in it.
 
- @param bytes Number of bytes in the buffer (it can not be bigger than SIZE_T_MAX)
+ @param length Number of bytes in the buffer (it can not be bigger than SIZE_T_MAX)
 
  @return The buffer, nil if the operation fails
  */
