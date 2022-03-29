@@ -216,16 +216,16 @@ int runningProcess;
 
 ///  This function will help to set Encryption MODE. Set a mode according to your need.
 /// @param level - It's a ENUM value that users can set from predefined enum cases.
--(void)setProtectionLevel: (OTFProtectionLevel)level error:(NSError *__autoreleasing *)error {
+-(void)setProtectionLevel: (OTFProtectionLevel)level error:(NSError **)error {
     switch(level) {
         case OTFProtectionLevelRunToCompletionWithIn10Seconds:
-            *error = [self setRunToCompletionModeWithin10Sec];
+            if (error) *error = [self setRunToCompletionModeWithin10Sec];
             break;
         case OTFProtectionLevelRunToCompletionBeyond10Seconds:
-            *error = [self setRunToCompletionBeyond10Sec];
+            if (error) *error = [self setRunToCompletionBeyond10Sec];
             break;
         case OTFProtectionLevelBackgroundMode:
-            *error = [self setBackgroundMode];
+            if (error) *error = [self setBackgroundMode];
             break;
     }
 }
@@ -357,7 +357,7 @@ int runningProcess;
     return revision;
 }
 
-- (NSArray *)getAllDocuments
+- (nullable NSArray *)getAllDocuments
 {
     NSError *error;
     if (![self ensureDatabaseOpen]) {
@@ -416,7 +416,7 @@ int runningProcess;
     return result;
 }
 
-- (NSArray *)getAllDocumentIds
+- (nullable NSArray *)getAllDocumentIds
 {
     if (![self ensureDatabaseOpen]) {
         return nil;

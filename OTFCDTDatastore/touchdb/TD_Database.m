@@ -972,11 +972,11 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
  This method was created seperately with the numericID specified in
  order to be used within TD_Database+Insertion -forceInsert:revisionHistory:source
  **/
-- (TD_RevisionList*)getAllRevisionsOfDocumentID:(NSString*)docID
-                                      numericID:(SInt64)docNumericID
-                                    onlyCurrent:(BOOL)onlyCurrent
-                                 excludeDeleted:(BOOL)excludeDeleted
-                                       database:(FMDatabase*)db
+- (nullable TD_RevisionList*)getAllRevisionsOfDocumentID:(NSString*)docID
+                                               numericID:(SInt64)docNumericID
+                                             onlyCurrent:(BOOL)onlyCurrent
+                                          excludeDeleted:(BOOL)excludeDeleted
+                                                database:(FMDatabase*)db
 {
     NSString* sql = @"SELECT sequence, revid, deleted FROM revs WHERE doc_id=? ";
 
@@ -1200,9 +1200,9 @@ extern NSDictionary* makeRevisionHistoryDict(NSArray* history)
 
 /** Returns the rev ID of the 'winning' revision of this document, and whether it's deleted. */
 /** Only call from within a queued transaction **/
-- (NSString*)winningRevIDOfDocNumericID:(SInt64)docNumericID
-                              isDeleted:(BOOL*)outIsDeleted
-                               database:(FMDatabase*)db
+- (nullable NSString*)winningRevIDOfDocNumericID:(SInt64)docNumericID
+                                       isDeleted:(BOOL*)outIsDeleted
+                                        database:(FMDatabase*)db
 {
     Assert(docNumericID > 0);
     FMResultSet* r = [db executeQuery:@"SELECT revid, deleted FROM revs"

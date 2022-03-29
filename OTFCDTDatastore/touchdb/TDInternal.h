@@ -36,11 +36,11 @@ NS_ASSUME_NONNULL_BEGIN
                                database:(FMDatabase*)database;
 
 /** Must be called from within a queue -inDatabase: or -inTransaction: **/
-- (TD_RevisionList*)getAllRevisionsOfDocumentID:(NSString*)docID
-                                      numericID:(SInt64)docNumericID
-                                    onlyCurrent:(BOOL)onlyCurrent
-                                 excludeDeleted:(BOOL)excludeDeleted
-                                       database:(FMDatabase*)database;
+- (nullable TD_RevisionList*)getAllRevisionsOfDocumentID:(NSString*)docID
+                                               numericID:(SInt64)docNumericID
+                                             onlyCurrent:(BOOL)onlyCurrent
+                                          excludeDeleted:(BOOL)excludeDeleted
+                                                database:(FMDatabase*)database;
 
 /** Must be called from within a queue -inDatabase: or -inTransaction: **/
 - (TD_Revision*)getDocumentWithID:(NSString*)docID
@@ -61,19 +61,19 @@ NS_ASSUME_NONNULL_BEGIN
                                         inDatabase:(FMDatabase*)db;
 
 /** Must be called from within a queue -inDatabase: or -inTransaction: **/
-- (NSString*)winningRevIDOfDocNumericID:(SInt64)docNumericID
-                              isDeleted:(BOOL*)outIsDeleted
-                               database:(FMDatabase*)database;
+- (nullable NSString*)winningRevIDOfDocNumericID:(SInt64)docNumericID
+                                       isDeleted:(BOOL*)outIsDeleted
+                                        database:(FMDatabase*)database;
 @end
 
 @interface TD_Database (Insertion_Internal)
-- (NSData*)encodeDocumentJSON:(TD_Revision*)rev;
+- (nullable NSData*)encodeDocumentJSON:(TD_Revision*)rev;
 - (TDStatus)validateRevision:(TD_Revision*)newRev previousRevision:(TD_Revision*_Nullable)oldRev;
 @end
 
 @interface TD_Database (Attachments_Internal)
 - (void)rememberAttachmentWritersForDigests:(NSDictionary*)writersByDigests;
-- (id)attachmentWriterForAttachment:(NSDictionary*)attachment;
+- (nullable id)attachmentWriterForAttachment:(NSDictionary*)attachment;
 
 - (NSUInteger)blobCount;
 - (id<CDTBlobReader>)blobForKey:(TDBlobKey)key;
@@ -115,7 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TD_View ()
 - (id)initWithDatabase:(TD_Database*)db name:(NSString*)name;
 @property (readonly) int viewID;
-- (NSArray*)dump;
+- (nullable NSArray*)dump;
 - (void)databaseClosing;
 @end
 
@@ -134,7 +134,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)beginReplicating;
 - (void)addToInbox:(TD_Revision*)rev;
 - (void)addRevsToInbox:(TD_RevisionList*)revs;
-- (void)processInbox:(TD_RevisionList*)inbox;  // override this
+- (void)processInbox:(nullable TD_RevisionList*)inbox;  // override this
 - (TDRemoteJSONRequest*)sendAsyncRequest:(NSString*)method
                                     path:(NSString*)relativePath
                                     body:(id _Nullable)body

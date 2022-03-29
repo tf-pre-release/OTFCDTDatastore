@@ -336,7 +336,6 @@
                           os_log_debug(CDTOSLog, "%{public}@: _bulk_docs got an error: %{public}@", self, item);
 
                           NSString* docID;
-                          NSURL* url;
                           switch (status) {
                               // 403/Forbidden means validation failed; don't treat it as an error
                               // because I did my job in sending the revision. Other statuses are
@@ -365,11 +364,6 @@
                               default:
                                   docID = item[@"id"];
                                   [failedIDs addObject:docID];
-                                  url = nil;
-                                  if (docID) {
-                                      url = [self->_remote URLByAppendingPathComponent:docID];
-                                  }
-                                  error = TDStatusToNSError(status, url);
                                   break;
                           }
                       }

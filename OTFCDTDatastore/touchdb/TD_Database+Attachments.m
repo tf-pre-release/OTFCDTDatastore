@@ -80,7 +80,7 @@
 }
 
 // This is ONLY FOR TESTS (see TDMultipartDownloader.m)
-- (id)attachmentWriterForAttachment:(NSDictionary*)attachment
+- (id _Nullable)attachmentWriterForAttachment:(NSDictionary*)attachment
 {
     NSString* digest = $castIf(NSString, attachment[@"digest"]);
     if (!digest) return nil;

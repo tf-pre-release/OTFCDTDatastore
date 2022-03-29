@@ -81,9 +81,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Generate the INSERT statement to add a document to an index.
  */
-+ (NSArray<CDTQSqlParts *> *)partsToIndexRevision:(CDTDocumentRevision *)rev
-                                          inIndex:(NSString *)indexName
-                                   withFieldNames:(NSArray<NSString *> *)fieldNames;
++ (nullable NSArray<CDTQSqlParts *> *)partsToIndexRevision:(CDTDocumentRevision *)rev
+                                                   inIndex:(NSString *)indexName
+                                            withFieldNames:(NSArray<NSString *> *)fieldNames;
 
 /**
  Return the sequence number for the given index

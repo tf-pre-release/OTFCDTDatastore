@@ -232,7 +232,7 @@ static NSString *const CDTAttachmentsErrorDomain = @"CDTAttachmentsErrorDomain";
     success = [db executeUpdate:[SQL_DELETE_ATTACHMENT_ROW copy] withParameterDictionary:params];
 
     if (!success) {
-        *error = [db lastError];
+        if (error) *error = [db lastError];
         return NO;
     }
 
@@ -254,7 +254,9 @@ static NSString *const CDTAttachmentsErrorDomain = @"CDTAttachmentsErrorDomain";
     // it could be referenced from another attachment (as files are
     // only stored once per sha1 of file data).
 
-    if (!success) *error = [db lastError];
+    if (!success) {
+        if (error) *error = [db lastError];
+    }
 
     return success;
 }

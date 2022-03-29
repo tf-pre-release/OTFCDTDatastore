@@ -23,7 +23,7 @@
  *
  * @return an array of NSString* document ids.
  */
-- (nonnull NSArray *)getConflictedDocumentIds;
+- (nullable NSArray *)getConflictedDocumentIds;
 
 /**
  Resolve conflicts for a specific document using an object that conforms to the

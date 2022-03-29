@@ -322,7 +322,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
 #pragma mark - REVISION CHECKING:
 
 // Process a bunch of remote revisions from the _changes feed at once
-- (void)processInbox:(TD_RevisionList*)inbox
+- (void)processInbox:(nullable TD_RevisionList*)inbox
 {
     // Ask the local database which of the revs are not known to it:
     os_log_debug(CDTOSLog, "%{public}@: Looking up %{public}@", self, inbox);

@@ -620,7 +620,7 @@ static id groupKey(NSData* keyJSON, unsigned groupLevel)
 #pragma mark - OTHER:
 
 // This is really just for unit tests & debugging
-- (NSArray*)dump
+- (NSArray* _Nullable)dump
 {
     if (self.viewID <= 0) return nil;
 
@@ -633,7 +633,7 @@ static id groupKey(NSData* keyJSON, unsigned groupLevel)
         if (!r) {
             return;
         }
-        NSMutableArray* result = $marray();
+        result = $marray();
         while ([r next]) {
             [result addObject:$dict({ @"seq", [r objectForColumnIndex:0] },
                                     { @"key", [r stringForColumnIndex:1] },
