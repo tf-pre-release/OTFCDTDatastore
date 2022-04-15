@@ -322,7 +322,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
 #pragma mark - REVISION CHECKING:
 
 // Process a bunch of remote revisions from the _changes feed at once
-- (void)processInbox:(TD_RevisionList*)inbox
+- (void)processInbox:(nullable TD_RevisionList*)inbox
 {
     // Ask the local database which of the revs are not known to it:
     os_log_debug(CDTOSLog, "%{public}@: Looking up %{public}@", self, inbox);
@@ -459,7 +459,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
                                                    gotRev.sequence = rev.sequence;
                                                    // Add to batcher ... eventually it will be fed to
                                                    // -insertRevisions:.
-                                                   [_downloadsToInsert queueObject:gotRev];
+                                                   [self->_downloadsToInsert queueObject:gotRev];
                                                    [strongSelf asyncTaskStarted];
                                                }
                                                
@@ -469,7 +469,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
                                                // Note that we've finished this task:
                                                [strongSelf removeRemoteRequest:dl];
                                                [strongSelf asyncTasksFinished:1];
-                                               --_httpConnectionCount;
+                                               --self->_httpConnectionCount;
                                            }];
     [self addRemoteRequest:dl];
     dl.authorizer = _authorizer;
@@ -490,7 +490,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
     // body needs to be in form:
     // {"docs":[{"id":"1-foo","rev":"rev123","atts_since":["1-foo,...]}]}
     NSArray* keys = [bulkRevs my_map:^(TD_Revision* rev) {
-        NSArray* knownRevs = [_db getPossibleAncestorRevisionIDs:rev limit:kMaxNumberOfAttsSince];
+        NSArray* knownRevs = [self->_db getPossibleAncestorRevisionIDs:rev limit:kMaxNumberOfAttsSince];
         return @{@"id": rev.docID,
                  @"rev": rev.revID,
                  @"atts_since": knownRevs != nil ? knownRevs : @[]};
@@ -530,7 +530,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
                                   if (pos != NSNotFound) {
                                       rev.sequence = [remainingRevs[pos] sequence];
                                       [remainingRevs removeObjectAtIndex:pos];
-                                      [_downloadsToInsert queueObject:rev];
+                                      [self->_downloadsToInsert queueObject:rev];
                                       [self asyncTaskStarted];
                                   }
                               } else {
@@ -541,7 +541,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
                   }
                   
                   [self asyncTasksFinished:1];
-                  --_httpConnectionCount;
+                  --self->_httpConnectionCount;
                   // Start another task if there are still revisions waiting to be pulled:
                   [self pullRemoteRevisions];
               }];
@@ -582,7 +582,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
                               if (pos != NSNotFound) {
                                   rev.sequence = [remainingRevs[pos] sequence];
                                   [remainingRevs removeObjectAtIndex:pos];
-                                  [_downloadsToInsert queueObject:rev];
+                                  [self->_downloadsToInsert queueObject:rev];
                                   [self asyncTaskStarted];
                               }
                           }
@@ -598,7 +598,7 @@ static NSString* joinQuotedEscaped(NSArray* strings);
 
                   // Note that we've finished this task:
                   [self asyncTasksFinished:1];
-                  --_httpConnectionCount;
+                  --self->_httpConnectionCount;
                   // Start another task if there are still revisions waiting to be pulled:
                   [self pullRemoteRevisions];
               }];

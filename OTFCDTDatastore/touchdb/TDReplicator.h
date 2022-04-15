@@ -158,5 +158,5 @@ typedef void(^ __nonnull ReplicatorTestCompletionHandler)(id __nullable response
  */
 - (void)testBulkGet:(NSDictionary* _Nullable)requestBody handler:(ReplicatorTestCompletionHandler) completionHandler;
 
--(void) startReplicationThread:(dispatch_group_t _Nonnull )taskGroup;
+-(void) startReplicationThread:(nullable dispatch_group_t)taskGroup;
 @end

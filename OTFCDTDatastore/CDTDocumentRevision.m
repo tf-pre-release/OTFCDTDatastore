@@ -124,7 +124,7 @@
 
     if (!json) {
         os_log_debug(CDTOSLog, "CDTDocumentRevision: couldn't convert to JSON");
-        *error = innerError;
+        if (error) *error = innerError;
         return nil;
     }
 

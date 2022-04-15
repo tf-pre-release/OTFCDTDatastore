@@ -123,7 +123,7 @@ typedef NS_ENUM(NSUInteger, OTFProtectionLevel) {
  * @return current revision as CDTDocumentRevision of given document
  */
 - (nullable CDTDocumentRevision *)getDocumentWithId:(nonnull NSString *)docId
-                                     error:(NSError *__autoreleasing __nullable * __nullable)error;
+                                              error:(NSError *__nullable * __nullable)error;
 
 /**
  * Return a specific revision of a document.
@@ -140,8 +140,8 @@ typedef NS_ENUM(NSUInteger, OTFProtectionLevel) {
  *     document id or nil if it doesn't exist
  */
 - (nullable CDTDocumentRevision *)getDocumentWithId:(nonnull NSString *)docId
-                                       rev:(nullable NSString *)rev
-                                     error:(NSError *__autoreleasing __nullable *  __nullable)error;
+                                                rev:(nullable NSString *)rev
+                                              error:(NSError *__nullable *  __nullable)error;
 
 /**
  * Unpaginated read of all documents.
@@ -152,7 +152,7 @@ typedef NS_ENUM(NSUInteger, OTFProtectionLevel) {
  *
  * @return NSArray of CDTDocumentRevisions
  */
-- (nonnull NSArray<CDTDocumentRevision*> *)getAllDocuments;
+- (nullable NSArray<CDTDocumentRevision*> *)getAllDocuments;
 
 /**
  * Enumerates the current winning revision for all documents in the
@@ -160,7 +160,7 @@ typedef NS_ENUM(NSUInteger, OTFProtectionLevel) {
  *
  * @return NSArray of NSStrings
  */
-- (nonnull NSArray<NSString*> *)getAllDocumentIds;
+- (nullable NSArray<NSString*> *)getAllDocumentIds;
 
 /**
  * Enumerate the current winning revisions for all documents in the
@@ -222,7 +222,7 @@ typedef NS_ENUM(NSUInteger, OTFProtectionLevel) {
  * @return document revision created
  */
 - (nullable CDTDocumentRevision *)createDocumentFromRevision:(nonnull CDTDocumentRevision *)revision
-                                                       error:(NSError *__autoreleasing __nullable * __nullable )error;
+                                                       error:(NSError *__nullable * __nullable )error;
 
 /**
  * Updates a document in the datastore with a new revision
@@ -234,7 +234,7 @@ typedef NS_ENUM(NSUInteger, OTFProtectionLevel) {
  *
  */
 - (nullable CDTDocumentRevision *)updateDocumentFromRevision:(nonnull CDTDocumentRevision *)revision
-                                              error:(NSError *__autoreleasing __nullable  * __nullable )error;
+                                                       error:(NSError *__nullable * __nullable )error;
 /**
  * Deletes a document from the datastore.
  *
@@ -244,7 +244,7 @@ typedef NS_ENUM(NSUInteger, OTFProtectionLevel) {
  * @return the deleted document
  */
 - (nullable CDTDocumentRevision *)deleteDocumentFromRevision:(nonnull CDTDocumentRevision *)revision
-                                              error:(NSError *__autoreleasing __nullable * __nullable)error;
+                                                       error:(NSError *__nullable * __nullable)error;
 
 /**
  *
@@ -256,7 +256,7 @@ typedef NS_ENUM(NSUInteger, OTFProtectionLevel) {
  * @return an array of deleted documents
  *
  */
-- (nullable NSArray *)deleteDocumentWithId:(nonnull NSString *)docId error:(NSError *__autoreleasing __nullable * __nullable)error;
+- (nullable NSArray *)deleteDocumentWithId:(nonnull NSString *)docId error:(NSError *__nullable * __nullable)error;
 
 /**
  *
@@ -265,7 +265,7 @@ typedef NS_ENUM(NSUInteger, OTFProtectionLevel) {
  *
  * @param error will point to an NSError object in the case of an error
  */
-- (BOOL)compactWithError:(NSError *__autoreleasing __nullable * __nullable)error;
+- (BOOL)compactWithError:(NSError *__nullable * __nullable)error;
 
 #if TARGET_OS_IPHONE
 /// This function will help to set FILE Protection manually by users.
@@ -274,7 +274,7 @@ typedef NS_ENUM(NSUInteger, OTFProtectionLevel) {
 
 ///  This function will help to set Protection level. Set a mode according to your need.
 /// @param level - It's a ENUM value that users can set from predefined enum cases.
--(void)setProtectionLevel: (OTFProtectionLevel)level error:(NSError *__autoreleasing __nullable * __nullable)error;
+-(void)setProtectionLevel: (OTFProtectionLevel)level error:(NSError *__nullable * __nullable)error;
 
 /// This funtion will return the current applied file protection policy on files.
 - (NSFileProtectionType _Nullable)appliedProtectionPolicyOnDb;

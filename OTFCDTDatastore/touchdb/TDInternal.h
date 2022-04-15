@@ -19,6 +19,7 @@
 
 @class TD_Attachment;
 
+NS_ASSUME_NONNULL_BEGIN
 @interface TD_Database ()
 
 @property (readwrite, copy) NSString* name;  // make it settable
@@ -35,11 +36,11 @@
                                database:(FMDatabase*)database;
 
 /** Must be called from within a queue -inDatabase: or -inTransaction: **/
-- (TD_RevisionList*)getAllRevisionsOfDocumentID:(NSString*)docID
-                                      numericID:(SInt64)docNumericID
-                                    onlyCurrent:(BOOL)onlyCurrent
-                                 excludeDeleted:(BOOL)excludeDeleted
-                                       database:(FMDatabase*)database;
+- (nullable TD_RevisionList*)getAllRevisionsOfDocumentID:(NSString*)docID
+                                               numericID:(SInt64)docNumericID
+                                             onlyCurrent:(BOOL)onlyCurrent
+                                          excludeDeleted:(BOOL)excludeDeleted
+                                                database:(FMDatabase*)database;
 
 /** Must be called from within a queue -inDatabase: or -inTransaction: **/
 - (TD_Revision*)getDocumentWithID:(NSString*)docID
@@ -60,19 +61,19 @@
                                         inDatabase:(FMDatabase*)db;
 
 /** Must be called from within a queue -inDatabase: or -inTransaction: **/
-- (NSString*)winningRevIDOfDocNumericID:(SInt64)docNumericID
-                              isDeleted:(BOOL*)outIsDeleted
-                               database:(FMDatabase*)database;
+- (nullable NSString*)winningRevIDOfDocNumericID:(SInt64)docNumericID
+                                       isDeleted:(BOOL*)outIsDeleted
+                                        database:(FMDatabase*)database;
 @end
 
 @interface TD_Database (Insertion_Internal)
-- (NSData*)encodeDocumentJSON:(TD_Revision*)rev;
-- (TDStatus)validateRevision:(TD_Revision*)newRev previousRevision:(TD_Revision*)oldRev;
+- (nullable NSData*)encodeDocumentJSON:(TD_Revision*)rev;
+- (TDStatus)validateRevision:(TD_Revision*)newRev previousRevision:(TD_Revision*_Nullable)oldRev;
 @end
 
 @interface TD_Database (Attachments_Internal)
 - (void)rememberAttachmentWritersForDigests:(NSDictionary*)writersByDigests;
-- (id)attachmentWriterForAttachment:(NSDictionary*)attachment;
+- (nullable id)attachmentWriterForAttachment:(NSDictionary*)attachment;
 
 - (NSUInteger)blobCount;
 - (id<CDTBlobReader>)blobForKey:(TDBlobKey)key;
@@ -102,21 +103,19 @@
 
 @interface TD_Database (Replication_Internal)
 - (void)stopAndForgetReplicator:(TDReplicator*)repl;
-NS_ASSUME_NONNULL_BEGIN
 - (nullable NSDictionary<NSString *, NSObject *> *)checkpointDocumentWithID:
     (nonnull NSString *)checkpointID;
 - (BOOL)saveCheckpointDocument:(nonnull NSDictionary<NSString *, NSObject *> *)checkpoint
                          error:(NSError *__autoreleasing *)error;
 - (BOOL)deleteCheckpointDocunemtWithID:(NSString *)checkpointID
                                  error:(NSError *__autoreleasing *)error;
-NS_ASSUME_NONNULL_END;
 + (NSString*)joinQuotedStrings:(NSArray*)strings;
 @end
 
 @interface TD_View ()
 - (id)initWithDatabase:(TD_Database*)db name:(NSString*)name;
 @property (readonly) int viewID;
-- (NSArray*)dump;
+- (nullable NSArray*)dump;
 - (void)databaseClosing;
 @end
 
@@ -135,10 +134,10 @@ NS_ASSUME_NONNULL_END;
 - (void)beginReplicating;
 - (void)addToInbox:(TD_Revision*)rev;
 - (void)addRevsToInbox:(TD_RevisionList*)revs;
-- (void)processInbox:(TD_RevisionList*)inbox;  // override this
+- (void)processInbox:(nullable TD_RevisionList*)inbox;  // override this
 - (TDRemoteJSONRequest*)sendAsyncRequest:(NSString*)method
                                     path:(NSString*)relativePath
-                                    body:(id)body
+                                    body:(id _Nullable)body
                             onCompletion:(TDRemoteRequestCompletionBlock)onCompletion;
 - (void)addRemoteRequest:(TDRemoteRequest*)request;
 - (void)removeRemoteRequest:(TDRemoteRequest*)request;
@@ -156,3 +155,4 @@ NS_ASSUME_NONNULL_END;
 @property (readonly) BOOL savingCheckpoint;
 #endif
 @end
+NS_ASSUME_NONNULL_END;

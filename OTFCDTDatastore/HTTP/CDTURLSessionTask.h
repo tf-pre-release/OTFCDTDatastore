@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
  * we retry the request.
  *
  * @param response the response to process
- * @param the thread on which to process the response if the interceptors do not indicate
+ * @param thread the thread on which to process the response if the interceptors do not indicate
  *        that we need to retry the request.
  */
 - (void)processResponse:(NSURLResponse *)response onThread:(NSThread *)thread;
@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
  * we retry the request.
  *
  * @param error the error to process
- * @param the thread on which to process the error if the interceptors do not indicate
+ * @param thread the thread on which to process the error if the interceptors do not indicate
  *        that we need to retry the request.
  */
 - (void)processError:(NSError *)error onThread:(NSThread *)thread;

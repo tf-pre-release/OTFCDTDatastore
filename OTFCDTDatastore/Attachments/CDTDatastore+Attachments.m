@@ -17,9 +17,9 @@
 
 #import "CDTDatastore+Attachments.h"
 
-#import <FMDB/FMDatabase.h>
-#import <FMDB/FMDatabaseAdditions.h>
-#import <FMDB/FMDatabaseQueue.h>
+#import <fmdb/FMDatabase.h>
+#import <fmdb/FMDatabaseAdditions.h>
+#import <fmdb/FMDatabaseQueue.h>
 
 #import "TD_Database.h"
 #import "TD_Database+Attachments.h"
@@ -232,7 +232,7 @@ static NSString *const CDTAttachmentsErrorDomain = @"CDTAttachmentsErrorDomain";
     success = [db executeUpdate:[SQL_DELETE_ATTACHMENT_ROW copy] withParameterDictionary:params];
 
     if (!success) {
-        *error = [db lastError];
+        if (error) *error = [db lastError];
         return NO;
     }
 
@@ -254,7 +254,9 @@ static NSString *const CDTAttachmentsErrorDomain = @"CDTAttachmentsErrorDomain";
     // it could be referenced from another attachment (as files are
     // only stored once per sha1 of file data).
 
-    if (!success) *error = [db lastError];
+    if (!success) {
+        if (error) *error = [db lastError];
+    }
 
     return success;
 }

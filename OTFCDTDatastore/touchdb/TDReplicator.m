@@ -352,7 +352,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
         os_log_debug(CDTOSLog, "*** %{public}@: BEGIN processInbox (%{public}u sequences)", self, (unsigned)inbox.count);
         TD_RevisionList* revs = [[TD_RevisionList alloc] initWithArray:inbox];
         [self processInbox:revs];
-        os_log_debug(CDTOSLog, "*** %{public}@: END processInbox (lastSequence=%{public}@)", self, _lastSequence);
+        os_log_debug(CDTOSLog, "*** %{public}@: END processInbox (lastSequence=%{public}@)", self, self->_lastSequence);
         [self updateActive];
     }];
 
@@ -673,9 +673,9 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
                                              TDReplicator* strongSelf = weakSelf;
                                              [strongSelf removeRemoteRequest:req];
                                              id<TDAuthorizer> auth = req.authorizer;
-                                             if (auth && auth != _authorizer && error.code != 401) {
+                                             if (auth && auth != self->_authorizer && error.code != 401) {
                                                  os_log_info(CDTOSLog, "%{public}@: Updated to %{public}@", self, auth);
-                                                 _authorizer = auth;
+                                                 self->_authorizer = auth;
                                              }
                                              onCompletion(result, error);
                                          }];
@@ -784,8 +784,8 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
                     }
 
                     if ($equal(remoteLastSequence, localLastSequence)) {
-                        _lastSequence = localLastSequence;
-                        os_log_info(CDTOSLog, "%{public}@: Replicating from lastSequence=%{public}@", self, _lastSequence);
+                        self->_lastSequence = localLastSequence;
+                        os_log_info(CDTOSLog, "%{public}@: Replicating from lastSequence=%{public}@", self, self->_lastSequence);
                     } else {
                         // traverse the history object looking for the last session where the
                         // session ids match.
@@ -912,7 +912,7 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
                       os_log_debug(CDTOSLog, "%{public}@: Unable to save remote checkpoint: %{public}@", self, error);
                       // TODO: If error is 401 or 403, and this is a pull, remember that remote is
                       // read-only and don't attempt to read its checkpoint next time.
-                  } else if (_db) {
+                  } else if (self->_db) {
                       os_log_debug(CDTOSLog, "%{public}@: Saving checkpoint to local database", self);
                       id rev = response[@"rev"];
                       id ID = response[@"id"];
@@ -928,14 +928,14 @@ NSString* TDReplicatorStartedNotification = @"TDReplicatorStarted";
                       }
                   }
 
-        os_log_debug(CDTOSLog, "PUT last sequence %{public}@ to checkpoint doc response: %{public}@", _lastSequence, response);
-                  _savingCheckpoint = NO;
+                  os_log_debug(CDTOSLog, "PUT last sequence %{public}@ to checkpoint doc response: %{public}@", self->_lastSequence, response);
+                  self->_savingCheckpoint = NO;
                   [self asyncTasksFinished:1];
-                  if (_replicatorStopped) {
+                  if (self->_replicatorStopped) {
                       os_log_debug(CDTOSLog, "%{public}@ Final PUT checkpoint. Run loop will be stopped.", self);
                   }
 
-                  if (_db && _overdueForSave)
+                  if (self->_db && self->_overdueForSave)
                       [self saveLastSequence];  // start a save that was waiting on me
               }];
 }

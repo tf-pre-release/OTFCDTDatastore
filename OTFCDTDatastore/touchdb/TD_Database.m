@@ -32,11 +32,11 @@
 #import "TDJSON.h"
 #import "Test.h"
 
-#import <FMDB/FMDatabase.h>
-#import <FMDB/FMDatabaseAdditions.h>
+#import <fmdb/FMDatabase.h>
+#import <fmdb/FMDatabaseAdditions.h>
 #import "FMDatabase+LongLong.h"
 #import "FMDatabase+EncryptionKey.h"
-#import <FMDB/FMDatabaseQueue.h>
+#import <fmdb/FMDatabaseQueue.h>
 #import "CDTEncryptionKeyProvider.h"
 #import "CDTLogging.h"
 
@@ -229,7 +229,7 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
                 NSError* error = nil;
                 result = [db setKeyWithProvider:provider error:&error];
                 if (!result) {
-                    os_log_error(CDTOSLog, "Key not set for DB at %{public}@: %{public}@", _path, error);
+                    os_log_error(CDTOSLog, "Key not set for DB at %{public}@: %{public}@", self->_path, error);
                 }
             }];
         }
@@ -513,10 +513,10 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
         // Open attachment store:
         NSString* attachmentsPath = strongSelf.attachmentStorePath;
         NSError* error;
-        _attachments = [[TDBlobStore alloc] initWithPath:attachmentsPath
-                                   encryptionKeyProvider:provider
-                                                   error:&error];
-        if (!_attachments) {
+        self->_attachments = [[TDBlobStore alloc] initWithPath:attachmentsPath
+                                         encryptionKeyProvider:provider
+                                                         error:&error];
+        if (!self->_attachments) {
             os_log_debug(CDTOSLog, "%{public}@: Couldn't open attachment store at %{public}@",
                          self, self.attachmentStorePath);
             [db close];
@@ -582,9 +582,13 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
 - (BOOL)deleteDatabase:(NSError **)outError
 {
     __block BOOL result =  NO;
+    __block NSError *strongError = nil;
     dispatch_sync(self.queue, ^{
-        result = [self deleteDatabaseInternal:outError];
+        NSError *innerError = nil;
+        result = [self deleteDatabaseInternal:&innerError];
+        if (innerError) strongError = innerError;
     });
+    if (outError != nil) *outError = strongError;
     return result;
 }
 
@@ -968,11 +972,11 @@ static BOOL removeItemIfExists(NSString* path, NSError** outError)
  This method was created seperately with the numericID specified in
  order to be used within TD_Database+Insertion -forceInsert:revisionHistory:source
  **/
-- (TD_RevisionList*)getAllRevisionsOfDocumentID:(NSString*)docID
-                                      numericID:(SInt64)docNumericID
-                                    onlyCurrent:(BOOL)onlyCurrent
-                                 excludeDeleted:(BOOL)excludeDeleted
-                                       database:(FMDatabase*)db
+- (nullable TD_RevisionList*)getAllRevisionsOfDocumentID:(NSString*)docID
+                                               numericID:(SInt64)docNumericID
+                                             onlyCurrent:(BOOL)onlyCurrent
+                                          excludeDeleted:(BOOL)excludeDeleted
+                                                database:(FMDatabase*)db
 {
     NSString* sql = @"SELECT sequence, revid, deleted FROM revs WHERE doc_id=? ";
 
@@ -1196,9 +1200,9 @@ extern NSDictionary* makeRevisionHistoryDict(NSArray* history)
 
 /** Returns the rev ID of the 'winning' revision of this document, and whether it's deleted. */
 /** Only call from within a queued transaction **/
-- (NSString*)winningRevIDOfDocNumericID:(SInt64)docNumericID
-                              isDeleted:(BOOL*)outIsDeleted
-                               database:(FMDatabase*)db
+- (nullable NSString*)winningRevIDOfDocNumericID:(SInt64)docNumericID
+                                       isDeleted:(BOOL*)outIsDeleted
+                                        database:(FMDatabase*)db
 {
     Assert(docNumericID > 0);
     FMResultSet* r = [db executeQuery:@"SELECT revid, deleted FROM revs"
@@ -1338,7 +1342,7 @@ const TDChangesOptions kDefaultTDChangesOptions = {UINT_MAX, 0, NO, NO, YES};
             result = kTDStatusDBError;
             return;
         }
-        [_views removeObjectForKey:name];
+        [self->_views removeObjectForKey:name];
         result = (db.changes ? kTDStatusOK : kTDStatusNotFound);
     }];
     return result;

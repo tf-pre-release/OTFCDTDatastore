@@ -60,7 +60,7 @@
 #import "FMDatabase+EncryptionKey.h"
 
 #import <CloudantSync.h>
-#import <FMDB/FMDB.h>
+#import <fmdb/FMDB.h>
 
 #import <objc/runtime.h>
 

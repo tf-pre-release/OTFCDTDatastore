@@ -56,14 +56,14 @@
    encodings and just want the 'real' data, so it'll be decoded for you. */
 - (NSData *)getAttachmentForSequence:(SequenceNumber)sequence
                                named:(NSString *)filename
-                                type:(NSString **)outType
+                                type:(NSString *__strong*)outType
                             encoding:(TDAttachmentEncoding *)outEncoding
                               status:(TDStatus *)outStatus;
 
 /** Returns the blob for an attachment in the blob store. */
 - (id<CDTBlobReader>)getAttachmentBlobForSequence:(SequenceNumber)sequence
                                             named:(NSString *)filename
-                                             type:(NSString **)outType
+                                             type:(NSString *__strong*)outType
                                          encoding:(TDAttachmentEncoding *)outEncoding
                                            status:(TDStatus *)outStatus;
 

@@ -90,9 +90,9 @@ void _RequireTestCase( const char *name );
 
 // Nasty internals ...
 #if DEBUG
-void _RunTestCase( void (*testptr)(), const char *name );
+void _RunTestCase( void (*testptr)(void), const char *name );
 
-struct TestCaseLink {void (*testptr)(); const char *name; BOOL passed; struct TestCaseLink *next;};
+struct TestCaseLink {void (*testptr)(void); const char *name; BOOL passed; struct TestCaseLink *next;};
 extern struct TestCaseLink *gAllTestCases;
 #endif // DEBUG
 void _AssertFailed( id rcvr, const void *selOrFn, const char *sourceFile, int sourceLine,

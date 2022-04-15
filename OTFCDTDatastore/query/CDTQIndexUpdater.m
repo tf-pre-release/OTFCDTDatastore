@@ -284,9 +284,9 @@
  For most revisions, a single insert statement will be returned. If a field
  is an array, however, multiple statements are required.
  */
-+ (NSArray /*CDTQSqlParts*/ *)partsToIndexRevision:(CDTDocumentRevision *)rev
-                                           inIndex:(NSString *)indexName
-                                    withFieldNames:(NSArray *)fieldNames
++ (nullable NSArray /*CDTQSqlParts*/ *)partsToIndexRevision:(CDTDocumentRevision *)rev
+                                                    inIndex:(NSString *)indexName
+                                             withFieldNames:(NSArray *)fieldNames
 {
     if (!rev) {
         return nil;

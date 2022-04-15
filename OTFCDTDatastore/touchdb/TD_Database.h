@@ -143,7 +143,7 @@ extern const TDChangesOptions kDefaultTDChangesOptions;
     @param databasePath  Path of the database file that should replace this one.
     @param attachmentsPath  Path of the associated attachments directory, or nil if there are no
    attachments.
-    @param error  If an error occurs, it will be stored into this parameter on return.
+    @param outError  If an error occurs, it will be stored into this parameter on return.
     @return  YES if the database was copied, NO if an error occurred. */
 - (BOOL)replaceWithDatabaseFile:(NSString*)databasePath
                 withAttachments:(NSString*)attachmentsPath

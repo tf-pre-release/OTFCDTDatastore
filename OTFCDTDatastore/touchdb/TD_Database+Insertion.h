@@ -30,7 +30,7 @@ typedef BOOL (^TD_ValidationBlock)(TD_Revision* newRevision, id<TD_ValidationCon
    nil if this is a new document.
     @param allowConflict  If NO, an error status kTDStatusConflict will be returned if the insertion
    would create a conflict, i.e. if the previous revision already has a child.
-    @param status  On return, an HTTP status code indicating success or failure.
+    @param outStatus  On return, an HTTP status code indicating success or failure.
     @return  A new TD_Revision with the docID, revID and sequence filled in (but no body). */
 - (TD_Revision*)putRevision:(TD_Revision*)revision
              prevRevisionID:(NSString*)prevRevID
